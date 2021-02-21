@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,18 +15,46 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// Документацию по шаблону элемента "Пустая страница" см. по адресу https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x419
-
 namespace Hotels
 {
-    /// <summary>
-    /// Пустая страница, которую можно использовать саму по себе или для перехода внутри фрейма.
-    /// </summary>
+
     public sealed partial class MainPage : Page
     {
+        private int timesClicked = 0;
+
         public MainPage()
         {
             this.InitializeComponent();
+
+            var mainTextBlock = this.FindName("MainText") as TextBlock;
+            mainTextBlock.Text = "Hello world";
+
+            Button mainButton = this.FindName("MainButton") as Button;
+            mainButton.Click += (sender, e) =>
+            {
+                ChangeText();
+            };
+
+            Task.Run(new Action(TaskLogic));
+        }
+
+        private void ChangeText()
+        {
+            var mainTextBlock = this.FindName("MainText") as TextBlock;
+            mainTextBlock.Text = "Clicked " + ++timesClicked;
+        }
+
+        private async void TaskLogic()
+        {
+            await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
+            {
+                (FindName("MainText") as TextBlock).Text = "In task";
+                while (true)
+                {
+                    await Task.Delay(3000, new CancellationTokenSource().Token);
+                    ChangeText();
+                }
+            });
         }
     }
 }

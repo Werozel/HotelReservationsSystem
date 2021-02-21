@@ -8,7 +8,19 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
+    <StackPanel VerticalAlignment="Center">
+        <TextBlock
+            Name="MainText"
+            Text="Hello world!" 
+            HorizontalAlignment="Center"
+            />
 
-    </Grid>
+        <Button
+            Name="MainButton" 
+            Content="Change text"
+            HorizontalAlignment="Center" 
+            Margin="0, 30, 0, 0"
+            />
+    </StackPanel>
+    
 </Page>
