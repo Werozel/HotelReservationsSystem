@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hotels.Models
 {
@@ -20,14 +17,14 @@ namespace Hotels.Models
 
     class Room
     {
-        public RoomType roomType { get; set; }
-        public List<TimeRange> bookedTimes { get; set; }
+        public RoomType RoomType { get; set; }
+        public List<TimeRange> BookedTimes { get; set; }
 
         public bool Book(TimeRange timeToBook)
         {
             DateTime timeToBookStart = timeToBook.Item1;
             DateTime timeToBookEnd = timeToBook.Item2;
-            foreach (TimeRange time in bookedTimes)
+            foreach (TimeRange time in BookedTimes)
             {
                 DateTime start = time.Item1;
                 DateTime end = time.Item2;
@@ -36,7 +33,7 @@ namespace Hotels.Models
                     return false;
                 }
             }
-            bookedTimes.Add(timeToBook);
+            BookedTimes.Add(timeToBook);
             return true;
         }
 
