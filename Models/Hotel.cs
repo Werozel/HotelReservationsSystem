@@ -19,5 +19,10 @@ namespace Hotels.Models
             return false;
         }
 
+        public bool Book(Request request)
+        {
+            return this.Book(request.TimeRange);
+        }
+
     }
 }
