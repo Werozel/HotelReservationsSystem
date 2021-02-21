@@ -4,8 +4,6 @@ using System.Collections.Generic;
 namespace Hotels.Models
 {
 
-    using TimeRange = Tuple<DateTime, DateTime>;
-
     enum RoomType
     {
         SINGLE = 20,
@@ -22,13 +20,9 @@ namespace Hotels.Models
 
         public bool Book(TimeRange timeToBook)
         {
-            DateTime timeToBookStart = timeToBook.Item1;
-            DateTime timeToBookEnd = timeToBook.Item2;
             foreach (TimeRange time in BookedTimes)
             {
-                DateTime start = time.Item1;
-                DateTime end = time.Item2;
-                if ((start <= timeToBookStart && timeToBookStart <= end) || (start <= timeToBookEnd && timeToBookEnd <= end))
+                if (timeToBook.Intersects(time))
                 {
                     return false;
                 }
