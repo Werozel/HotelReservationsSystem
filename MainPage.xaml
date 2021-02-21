@@ -8,19 +8,47 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <StackPanel VerticalAlignment="Center">
-        <TextBlock
-            Name="MainText"
-            Text="Hello world!" 
-            HorizontalAlignment="Center"
-            />
+    <StackPanel
+        VerticalAlignment="Center" 
+        HorizontalAlignment="Center"
+        Orientation="Vertical">
+
+        <StackPanel 
+            Orientation="Horizontal"
+            Padding="0, 0, 20, 0">
+
+            <TextBox
+                Name = "RoomsCountTextBox"
+                PlaceholderText="Количество номеров"
+                Margin="0, 0, 25, 0"
+                />
+
+
+            <TextBox
+                Name = "StepsCountTextBox"
+                PlaceholderText="Количество шагов"
+                Margin="0, 0, 0, 0"
+                />
+
+        </StackPanel>
 
         <Button
-            Name="MainButton" 
-            Content="Change text"
-            HorizontalAlignment="Center" 
-            Margin="0, 30, 0, 0"
+            Name="StartButton"
+            Content="Запуск"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Margin="0, 20, 0, 0"
             />
+
+        <TextBlock
+            Name="DebugTextBlock"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Margin="0, 20, 0, 0"
+            Text="Debug"/>
+
+
     </StackPanel>
+    
     
 </Page>

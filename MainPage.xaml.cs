@@ -14,46 +14,44 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Windows.UI;
 
 namespace Hotels
 {
 
     public sealed partial class MainPage : Page
     {
-        private int timesClicked = 0;
-
         public MainPage()
         {
             this.InitializeComponent();
 
-            var mainTextBlock = this.FindName("MainText") as TextBlock;
-            mainTextBlock.Text = "Hello world";
-
-            Button mainButton = this.FindName("MainButton") as Button;
-            mainButton.Click += (sender, e) =>
+            Button startButton = this.FindName("StartButton") as Button;
+            startButton.Click += (s, e) =>
             {
-                ChangeText();
+                TextBox roomsCountTextBox = this.FindName("RoomsCountTextBox") as TextBox;
+                TextBox stepsCountTextBox = this.FindName("StepsCountTextBox") as TextBox;
+                string roomsCountString = roomsCountTextBox.Text;
+                string stepsCountString = StepsCountTextBox.Text;
+                
+                bool success = int.TryParse(roomsCountString, out int roomsCount);
+                success &= int.TryParse(stepsCountString, out int stepsCount);
+                TextBlock debugTextBlock = this.FindName("DebugTextBlock") as TextBlock;
+                if (!success)
+                {
+                    debugTextBlock.Text = "Need to be numbers";
+                } else
+                {
+                    debugTextBlock.Text = "" + roomsCount + stepsCount;
+                }
             };
 
-            Task.Run(new Action(TaskLogic));
-        }
-
-        private void ChangeText()
-        {
-            var mainTextBlock = this.FindName("MainText") as TextBlock;
-            mainTextBlock.Text = "Clicked " + ++timesClicked;
         }
 
         private async void TaskLogic()
         {
             await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
             {
-                (FindName("MainText") as TextBlock).Text = "In task";
-                while (true)
-                {
-                    await Task.Delay(3000, new CancellationTokenSource().Token);
-                    ChangeText();
-                }
+                
             });
         }
     }
