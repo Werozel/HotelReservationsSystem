@@ -18,6 +18,12 @@ namespace Hotels.Models
         public RoomType RoomType { get; set; }
         public List<TimeRange> BookedTimes { get; set; }
 
+        public Room(RoomType roomType)
+        {
+            this.RoomType = roomType;
+            this.BookedTimes = new List<TimeRange>();
+        }
+
         public bool Book(TimeRange timeToBook)
         {
             foreach (TimeRange time in BookedTimes)

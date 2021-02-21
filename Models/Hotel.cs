@@ -7,6 +7,11 @@ namespace Hotels.Models
     {
         public List<Room> Rooms { get; set; }
 
+        public Hotel(List<Room> rooms)
+        {
+            this.Rooms = rooms;
+        }
+
         public bool Book(TimeRange timeToBook)
         {
             foreach (Room room in Rooms)
