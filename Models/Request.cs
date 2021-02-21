@@ -10,12 +10,13 @@ namespace Hotels.Models
     enum RequestType
     {
         BOOK,
-        NOW,
+        IMMEDIATE,
     }
 
     class Request
     {
 
+        public RequestType RequestType { get; set; }
         public TimeRange TimeRange { get; set; }
 
     }
