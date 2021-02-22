@@ -119,8 +119,11 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
+    <Compile Include="Pages\ExperimentPage\ExperimentPage.xaml.cs">
+      <DependentUpon>ExperimentPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\InitPage\InitPage.xaml.cs">
+      <DependentUpon>InitPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\Request.cs" />
     <Compile Include="Models\TimeRange.cs" />
@@ -149,7 +152,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="MainPage.xaml">
+    <Page Include="Pages\ExperimentPage\ExperimentPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\InitPage\InitPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

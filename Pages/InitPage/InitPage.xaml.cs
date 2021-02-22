@@ -16,12 +16,12 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI;
 
-namespace Hotels
+namespace Hotels.Pages.InitPage
 {
 
-    public sealed partial class MainPage : Page
+    public sealed partial class InitPage : Page
     {
-        public MainPage()
+        public InitPage()
         {
             this.InitializeComponent();
 
@@ -29,19 +29,19 @@ namespace Hotels
             startButton.Click += (s, e) =>
             {
                 TextBox roomsCountTextBox = this.FindName("RoomsCountTextBox") as TextBox;
-                TextBox stepsCountTextBox = this.FindName("StepsCountTextBox") as TextBox;
+                TextBox daysCountTextBox = this.FindName("DaysCountTextBox") as TextBox;
                 string roomsCountString = roomsCountTextBox.Text;
-                string stepsCountString = StepsCountTextBox.Text;
+                string daysCountString = daysCountTextBox.Text;
                 
                 bool success = int.TryParse(roomsCountString, out int roomsCount);
-                success &= int.TryParse(stepsCountString, out int stepsCount);
+                success &= int.TryParse(daysCountString, out int daysCount);
                 TextBlock debugTextBlock = this.FindName("DebugTextBlock") as TextBlock;
                 if (!success)
                 {
                     debugTextBlock.Text = "Need to be numbers";
                 } else
                 {
-                    debugTextBlock.Text = "" + roomsCount + stepsCount;
+                    debugTextBlock.Text = "" + roomsCount + daysCount;
                 }
             };
 

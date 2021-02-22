@@ -1,0 +1,73 @@
+﻿<Page
+    x:Class="Hotels.Pages.InitPage.InitPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Hotels"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <StackPanel
+        VerticalAlignment="Center" 
+        HorizontalAlignment="Center"
+        Orientation="Vertical">
+
+        <StackPanel 
+            Orientation="Horizontal">
+
+            <StackPanel
+                Orientation="Vertical"
+                Margin="0, 0, 25, 0">
+
+                <TextBlock
+                    Text="Количество номеров"
+                    Margin="0, 0, 0, 5"
+                    HorizontalAlignment="Center"
+                    />
+
+                <TextBox
+                    Name = "RoomsCountTextBox"
+                    Width="140"
+                    PlaceholderText="Введите число..."
+                    />
+
+            </StackPanel>
+
+            <StackPanel
+                Orientation="Vertical">
+
+                <TextBlock
+                    Text="Количество дней"
+                    Margin="0, 0, 0, 5"
+                    HorizontalAlignment="Center"
+                    />
+
+                <TextBox
+                    Name = "DaysCountTextBox"
+                    Width="140"
+                    PlaceholderText="Введите число..."
+                    />
+
+            </StackPanel>
+
+        </StackPanel>
+
+        <Button
+            Name="StartButton"
+            Content="Запуск"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Margin="0, 20, 0, 0"
+            />
+
+        <TextBlock
+            Name="DebugTextBlock"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Margin="0, 20, 0, 0"
+            Text="Debug"/>
+
+    </StackPanel>
+
+</Page>
