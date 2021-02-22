@@ -13,26 +13,39 @@ namespace Hotels.Models
         IMMEDIATE,
     }
 
+    enum RequestStatus
+    {
+        PENDING,
+        APPROVED,
+        DENIED,
+    }
+
     class Request
     {
 
-        public RequestType RequestType { get; set; }
+        public RequestType Type { get; set; }
+        public RequestStatus Status { get; set; }
+        public RoomType RoomType { get; set; }
         public TimeRange TimeRange { get; set; }
 
-        public Request(RequestType type, TimeRange timeRange)
+        public Request(RequestType type, RoomType roomType, TimeRange timeRange)
         {
-            this.RequestType = type;
+            this.Type = type;
+            this.RoomType = roomType;
             this.TimeRange = timeRange;
+            this.Status = RequestStatus.PENDING;
         }
 
-        public Request(RequestType type, int length)
+        public Request(RequestType type, RoomType roomType, int length)
         {
             if (type != RequestType.IMMEDIATE)
             {
                 throw new Exception("type can only be RequestType.IMMEDIATE in this constructor");
             }
-            this.RequestType = RequestType.IMMEDIATE;
+            this.Type = RequestType.IMMEDIATE;
+            this.RoomType = roomType;
             this.TimeRange = new TimeRange(length);
+            this.Status = RequestStatus.PENDING;
         }
 
     }

@@ -8,7 +8,31 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
+    <StackPanel
+        Orientation="Horizontal">
 
-    </Grid>
+        <ListView 
+            Width="400"
+            Name="RequestsListView">
+
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="local:RequestCell">
+                    <StackPanel
+                        Orientation="Vertical">
+
+                        <TextBlock
+                            Text="{x:Bind RoomType}"/>
+
+                        <TextBlock
+                            Text="{x:Bind TimeRange}"/>
+
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            
+            
+        </ListView>
+        
+    </StackPanel>
+    
 </Page>

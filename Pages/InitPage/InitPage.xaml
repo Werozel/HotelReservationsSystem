@@ -2,7 +2,7 @@
     x:Class="Hotels.Pages.InitPage.InitPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Hotels"
+    xmlns:local="using:Hotels.Pages.InitPage"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -62,11 +62,10 @@
             />
 
         <TextBlock
-            Name="DebugTextBlock"
+            Name="ErrorTextBlock"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            Margin="0, 20, 0, 0"
-            Text="Debug"/>
+            Margin="0, 20, 0, 0"/>
 
     </StackPanel>
 

@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI;
+using Hotels.Pages.ExperimentPage;
 
 namespace Hotels.Pages.InitPage
 {
@@ -35,24 +36,16 @@ namespace Hotels.Pages.InitPage
                 
                 bool success = int.TryParse(roomsCountString, out int roomsCount);
                 success &= int.TryParse(daysCountString, out int daysCount);
-                TextBlock debugTextBlock = this.FindName("DebugTextBlock") as TextBlock;
+                TextBlock errorTextBlock = this.FindName("ErrorTextBlock") as TextBlock;
                 if (!success)
                 {
-                    debugTextBlock.Text = "Need to be numbers";
+                    errorTextBlock.Text = "Need to be numbers";
                 } else
                 {
-                    debugTextBlock.Text = "" + roomsCount + daysCount;
+                    this.Frame.Navigate(typeof(ExperimentPage.ExperimentPage), new Parameters(roomsCount, daysCount));
                 }
             };
 
-        }
-
-        private async void TaskLogic()
-        {
-            await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
-            {
-                
-            });
         }
     }
 }
