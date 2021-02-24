@@ -26,25 +26,7 @@ namespace Hotels.Pages.InitPage
         {
             this.InitializeComponent();
 
-            Button startButton = this.FindName("StartButton") as Button;
-            startButton.Click += (s, e) =>
-            {
-                TextBox roomsCountTextBox = this.FindName("RoomsCountTextBox") as TextBox;
-                TextBox daysCountTextBox = this.FindName("DaysCountTextBox") as TextBox;
-                string roomsCountString = roomsCountTextBox.Text;
-                string daysCountString = daysCountTextBox.Text;
-                
-                bool success = int.TryParse(roomsCountString, out int roomsCount);
-                success &= int.TryParse(daysCountString, out int daysCount);
-                TextBlock errorTextBlock = this.FindName("ErrorTextBlock") as TextBlock;
-                if (!success)
-                {
-                    errorTextBlock.Text = "Need to be numbers";
-                } else
-                {
-                    this.Frame.Navigate(typeof(ExperimentPage.ExperimentPage), new Parameters(roomsCount, daysCount));
-                }
-            };
+            
 
         }
     }

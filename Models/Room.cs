@@ -6,11 +6,11 @@ namespace Hotels.Models
 
     enum RoomType
     {
-        SINGLE = 20,
-        DOUBLE = 35,
-        DOUBLE_WITH_SOFA = 45,
-        JUNIOR_SUITE = 60,
-        SUITE = 80,
+        SINGLE,
+        DOUBLE,
+        DOUBLE_WITH_SOFA,
+        JUNIOR_SUITE,
+        SUITE,
     }
 
     class Room
