@@ -84,10 +84,27 @@
 
         </StackPanel>
 
+        <Border
+            Name="ErrorBlock"
+            RelativePanel.Below="DaysCountSP"
+            RelativePanel.AlignHorizontalCenterWith="DaysCountSP"
+            Margin="20, 0, 0, 0"
+            BorderBrush="Red"
+            BorderThickness="1"
+            Visibility="Collapsed">
+
+            <TextBlock
+                Name="ErrorTextBlock"
+                Padding="10, 2"
+                Text="Введены не все поля или введены не числа"/>
+
+        </Border>
+        
         <Button
+            Name="StartButton"
             Content="Запуск"
             Margin="0, 10"
-            RelativePanel.Below="DaysCountSP"
+            RelativePanel.Below="ErrorBlock"
             RelativePanel.AlignHorizontalCenterWith="DaysCountSP"
             RelativePanel.AlignBottomWithPanel="True"/>
 

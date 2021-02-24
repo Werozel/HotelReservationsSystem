@@ -13,21 +13,10 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using System.Collections.ObjectModel;
+using Hotels.Models;
 
 namespace Hotels.Pages.ExperimentPage
 {
-
-    public class Parameters
-    {
-        public int RoomsCount { get; set; }
-        public int DaysCount { get; set; }
-
-        public Parameters(int roomsCount, int daysCount)
-        {
-            this.RoomsCount = roomsCount;
-            this.DaysCount = daysCount;
-        }
-    }
 
     public class RequestCell
     {
@@ -44,7 +33,7 @@ namespace Hotels.Pages.ExperimentPage
     public sealed partial class ExperimentPage : Page
     {
 
-        public int RoomsCount { get; set; }
+        public IDictionary<RoomType, RoomInitInfo> RoomsInfoMap;
         public int DaysCount { get; set; }
 
         public ObservableCollection<RequestCell> RequestCells { get; } = new ObservableCollection<RequestCell>();
@@ -62,9 +51,9 @@ namespace Hotels.Pages.ExperimentPage
         {
             base.OnNavigatedTo(e);
 
-            Parameters parameters = e.Parameter as Parameters;
-            this.RoomsCount = parameters.RoomsCount;
+            ExperimentParameters parameters = e.Parameter as ExperimentParameters;
             this.DaysCount = parameters.DaysCount;
+            this.RoomsInfoMap = parameters.RoomsInfoMap;
 
             RequestCells.Add(new RequestCell("Text1", "Text2"));
         }
