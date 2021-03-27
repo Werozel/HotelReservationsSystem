@@ -27,6 +27,11 @@ namespace Hotels.Pages.InitPage
         {
             this.InitializeComponent();
 
+            (this.FindName("ExitButton") as Button).Click += (s, e) =>
+            {
+                Application.Current.Exit();
+            };
+
             (this.FindName("StartButton") as Button).Click += (s, e) =>
             {
                 IDictionary<RoomType, RoomInitInfo> roomsMap = new Dictionary<RoomType, RoomInitInfo>();
