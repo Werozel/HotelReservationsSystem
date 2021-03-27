@@ -23,10 +23,10 @@ namespace Hotels.Models
     class Request
     {
 
-        public RequestType Type { get; set; }
-        public RequestStatus Status { get; set; }
-        public RoomType RoomType { get; set; }
-        public TimeRange TimeRange { get; set; }
+        public RequestType Type { get; }
+        public RequestStatus Status { get; }
+        public RoomType RoomType { get; }
+        public TimeRange TimeRange { get; }
 
         public Request(RequestType type, RoomType roomType, TimeRange timeRange)
         {
@@ -36,7 +36,7 @@ namespace Hotels.Models
             this.Status = RequestStatus.PENDING;
         }
 
-        public Request(RequestType type, RoomType roomType, int length)
+        public Request(RequestType type, RoomType roomType, int lengthDays)
         {
             if (type != RequestType.IMMEDIATE)
             {
@@ -44,7 +44,7 @@ namespace Hotels.Models
             }
             this.Type = RequestType.IMMEDIATE;
             this.RoomType = roomType;
-            this.TimeRange = new TimeRange(length);
+            this.TimeRange = new TimeRange(lengthDays);
             this.Status = RequestStatus.PENDING;
         }
 

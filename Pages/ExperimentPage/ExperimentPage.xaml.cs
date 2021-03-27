@@ -34,9 +34,9 @@ namespace Hotels.Pages.ExperimentPage
     {
 
         public IDictionary<RoomType, RoomInitInfo> RoomsInfoMap;
-        public int DaysCount { get; set; }
+        public int DaysCount;
 
-        public ObservableCollection<RequestCell> RequestCells { get; } = new ObservableCollection<RequestCell>();
+        public ObservableCollection<RequestCell> RequestCells = new ObservableCollection<RequestCell>();
 
         public ExperimentPage()
         {
