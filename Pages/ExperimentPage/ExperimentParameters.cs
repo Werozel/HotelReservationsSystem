@@ -11,17 +11,17 @@ namespace Hotels.Pages.ExperimentPage
     {
         public IDictionary<RoomType, RoomInitInfo> RoomsInfoMap { get; }
         public int DaysCount { get; }
-        public int HoursPerStep { get; }
+        public int MaxHoursPerStep { get; }
 
         public ExperimentParameters(
             IDictionary<RoomType, RoomInitInfo> roomsInfoMap, 
             int daysCount,
-            int hoursPerStep
+            int maxHoursPerStep
         )
         {
             this.RoomsInfoMap = roomsInfoMap;
             this.DaysCount = daysCount;
-            this.HoursPerStep = hoursPerStep;
+            this.MaxHoursPerStep = maxHoursPerStep;
         }
     }
 

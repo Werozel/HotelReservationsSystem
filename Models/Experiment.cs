@@ -77,7 +77,7 @@ namespace Hotels.Models
         public void Step()
         {
             int hoursPassed = Rand.Next(1, this.MaxHoursPerStep);
-            CurrentDateTime = CurrentDateTime.AddHours(Convert.ToDouble(hoursPassed);
+            CurrentDateTime = CurrentDateTime.AddHours(Convert.ToDouble(hoursPassed));
             RequestType requestType = (RequestType)Rand.Next(0, MaxRequestTypeInt);
             RoomType roomType = (RoomType)Rand.Next(0, MaxRoomTypeInt);
 

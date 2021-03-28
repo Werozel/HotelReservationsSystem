@@ -35,7 +35,7 @@ namespace Hotels.Pages.ExperimentPage
     public sealed partial class ExperimentPage : Page
     {
 
-        // private Experiment experiment;
+        private Experiment experiment;
 
         public IDictionary<RoomType, RoomInitInfo> RoomsInfoMap;
         public int DaysCount;
@@ -49,19 +49,9 @@ namespace Hotels.Pages.ExperimentPage
             ListView requestsListView = this.FindName("RequestsListView") as ListView;
             requestsListView.ItemsSource = RequestCells;
 
-            /* DateTime today = DateTime.Today;
-            DateTime experimentEndTime = today.AddDays(this.DaysCount);
-            experiment = new Experiment(
-                this.RoomsInfoMap, 
-                new TimeRange(today, experimentEndTime),
-                5 // TODO: Change from init
-            ); */
-
-
-
         }
 
-        // Executed before constructor
+        // Executed after constructor
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -69,6 +59,14 @@ namespace Hotels.Pages.ExperimentPage
             ExperimentParameters parameters = e.Parameter as ExperimentParameters;
             this.DaysCount = parameters.DaysCount;
             this.RoomsInfoMap = parameters.RoomsInfoMap;
+
+            DateTime today = DateTime.Today;
+            DateTime experimentEndTime = today.AddDays(this.DaysCount);
+            experiment = new Experiment(
+                this.RoomsInfoMap,
+                new TimeRange(today, experimentEndTime),
+                parameters.MaxHoursPerStep
+            );
 
             // TODO: Remove
             RequestCells.Add(new RequestCell("Text1", "Text2", false));
