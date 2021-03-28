@@ -18,36 +18,69 @@ namespace Hotels.Models
 
     class Experiment
     {
-
-        private int DaysCount;
+        
         private readonly IDictionary<RoomType, RoomInitInfo> RoomsInfoMap;
 
         private Random Rand = new Random();
 
-        private readonly int MaxRoomTypeInt = Enum.GetValues(typeof(RoomType)).Cast<int>().Max();
-        private readonly int MaxRquestTypeInt = Enum.GetValues(typeof(RequestType)).Cast<int>().Max();
+        private static readonly Array RoomTypeValues = Enum.GetValues(typeof(RoomType));
+        private static readonly int MaxRoomTypeInt = Enum.GetValues(typeof(RoomType)).Cast<int>().Max();
+        private static readonly int MaxRequestTypeInt = Enum.GetValues(typeof(RequestType)).Cast<int>().Max();
 
-        private readonly DateTime CurrentDateTime;
+        private readonly int HoursPerStep;
+        private DateTime CurrentDateTime;
         private readonly DateTime StartDateTime;
         private readonly DateTime EndDateTime;
 
-        Experiment(int daysCount, IDictionary<RoomType, RoomInitInfo> roomInfoMap, TimeRange experimentTimeRange)
+        public IList<Request> RequestList { get; } = new List<Request>();
+        public Hotel hotel = new Hotel(new List<Room>());
+
+        public Experiment(IDictionary<RoomType, RoomInitInfo> roomInfoMap, TimeRange experimentTimeRange, int hoursPerStep)
         {
-            this.DaysCount = daysCount;
             this.RoomsInfoMap = roomInfoMap;
             this.StartDateTime = experimentTimeRange.Start;
             this.EndDateTime = experimentTimeRange.End;
             this.CurrentDateTime = this.StartDateTime;
+            this.HoursPerStep = hoursPerStep;
+
+            foreach (RoomType roomType in RoomTypeValues)
+            {
+                bool roomInitValueFound = roomInfoMap.TryGetValue(roomType, out RoomInitInfo roomInitInfo);
+                if (!roomInitValueFound)
+                {
+                    throw new Exception("Unknown RoomType: " + roomType);
+                }
+
+                for (int i = 0; i < roomInitInfo.Count; i++)
+                {
+                    Room room = new Room(
+                        RoomTypeHelper.RoomTypeToRoomNumber(roomType, i),
+                        roomType,
+                        roomInitInfo.Price
+                    );
+                    hotel.Rooms.Add(room);
+                }
+            }
         }
 
-        public IList<Request> Step()
+        public IList<RequestCell> GetCells() { 
+            return RequestList
+                .Select(request =>
+                    new RequestCell(
+                        RoomTypeHelper.RoomTypeToString(request.RoomType),
+                        request.TimeRange.ToCellString(),
+                        request.IsApproved()
+                    )
+                )
+                .ToList();
+        }
+
+        public void Step()
         {
-
-            IList<Request> requestList = new List<Request>();
-
-            for (int requestsCount = Rand.Next(0, 5); requestsCount > 0; requestsCount++)
+            CurrentDateTime = CurrentDateTime.AddHours(Convert.ToDouble(this.CurrentDateTime));
+            for (int requestsCount = Rand.Next(0, ExperimentConfig.MAX_REQUESTS_PER_STEP); requestsCount > 0; requestsCount++)
             {
-                RequestType requestType = (RequestType)Rand.Next(0, MaxRquestTypeInt);
+                RequestType requestType = (RequestType)Rand.Next(0, MaxRequestTypeInt);
                 RoomType roomType = (RoomType)Rand.Next(0, MaxRoomTypeInt);
 
                 Request request;
@@ -70,13 +103,13 @@ namespace Hotels.Models
                     default:
                         throw new Exception(String.Format("Unknown request Type: %s", requestType));
                 }
-                requestList.Add(request);
+                Room bookedRoom = hotel.Book(request);
+                request.RoomNumber = bookedRoom.Number;
+                this.RequestList.Add(request);
             }
-            return requestList;
 
         }
-
-        // FIXME: Only days, not minutes
+        
         private DateTime getRandomValidDateTime(DateTime start, DateTime end)
         {
             TimeSpan timeSpan = end - start;

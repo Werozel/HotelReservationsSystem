@@ -22,16 +22,20 @@ namespace Hotels.Pages.ExperimentPage
     {
         public string RoomType { get; set; }
         public string TimeRange { get; set; }
+        public bool IsApproved { get; set; }
 
-        public RequestCell(string roomType, string timeRange)
+        public RequestCell(string roomType, string timeRange, bool isApproved)
         {
             this.RoomType = roomType;
             this.TimeRange = timeRange;
+            this.IsApproved = isApproved;
         }
     }
 
     public sealed partial class ExperimentPage : Page
     {
+
+        // private Experiment experiment;
 
         public IDictionary<RoomType, RoomInitInfo> RoomsInfoMap;
         public int DaysCount;
@@ -45,8 +49,19 @@ namespace Hotels.Pages.ExperimentPage
             ListView requestsListView = this.FindName("RequestsListView") as ListView;
             requestsListView.ItemsSource = RequestCells;
 
+            /* DateTime today = DateTime.Today;
+            DateTime experimentEndTime = today.AddDays(this.DaysCount);
+            experiment = new Experiment(
+                this.RoomsInfoMap, 
+                new TimeRange(today, experimentEndTime),
+                5 // TODO: Change from init
+            ); */
+
+
+
         }
 
+        // Executed before constructor
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -55,15 +70,8 @@ namespace Hotels.Pages.ExperimentPage
             this.DaysCount = parameters.DaysCount;
             this.RoomsInfoMap = parameters.RoomsInfoMap;
 
-            RequestCells.Add(new RequestCell("Text1", "Text2"));
-        }
-
-        private async void TaskLogic()
-        {
-            await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
-            {
-
-            });
+            // TODO: Remove
+            RequestCells.Add(new RequestCell("Text1", "Text2", false));
         }
     }
 }

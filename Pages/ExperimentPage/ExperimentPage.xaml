@@ -8,31 +8,244 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <StackPanel
-        Orientation="Horizontal">
+    <Grid>
 
-        <ListView 
-            Width="400"
-            Name="RequestsListView">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="7*"/>
+        </Grid.ColumnDefinitions>
 
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="local:RequestCell">
-                    <StackPanel
-                        Orientation="Vertical">
+        <RelativePanel 
+            Name="RequestsListContainer"
+            Grid.Column="0"
+            BorderBrush="Black" 
+            BorderThickness="1"
+            >
 
-                        <TextBlock
-                            Text="{x:Bind RoomType}"/>
+            <TextBlock
+                Name="HeaderTextBlock"
+                Text="Поступающие заявки"
+                TextAlignment="Center"
+                RelativePanel.AlignLeftWithPanel="True"
+                RelativePanel.AlignRightWithPanel="True"
+                RelativePanel.AlignTopWithPanel="True"
+                Padding="20"
+                />
 
-                        <TextBlock
-                            Text="{x:Bind TimeRange}"/>
+            <ListView 
+                Name="RequestsListView"
+                RelativePanel.Below="HeaderTextBlock"
+                RelativePanel.AlignLeftWithPanel="True"
+                RelativePanel.AlignRightWithPanel="True"
+                RelativePanel.Above="ProfitTextBlockContainer"
+                ScrollViewer.VerticalScrollMode="Enabled"
+                >
 
-                    </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-            
-            
-        </ListView>
-        
-    </StackPanel>
-    
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="local:RequestCell">
+                        <StackPanel
+                            Orientation="Vertical">
+
+                            <TextBlock
+                                Text="{x:Bind RoomType}"/>
+
+                            <TextBlock
+                                Text="{x:Bind TimeRange}"/>
+
+                            <TextBlock
+                                Text="{x:Bind IsApproved}"/>
+
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+
+
+            </ListView>
+
+            <Border
+                Name="ProfitTextBlockContainer"
+                RelativePanel.AlignBottomWithPanel="True"
+                RelativePanel.AlignLeftWithPanel="True"
+                RelativePanel.AlignRightWithPanel="True"
+                BorderBrush="Black"
+                BorderThickness="1">
+
+                <TextBlock
+                    Name="ProfitTextBlock"
+                    Text="Прибыль: 340"
+                    TextAlignment="Center"
+                    Padding="20"
+                    />
+            </Border>
+
+        </RelativePanel>
+
+        <RelativePanel
+            Name="MainContentContainer"
+            Grid.Column="1"
+            RelativePanel.AlignTopWithPanel="True"
+            RelativePanel.AlignBottomWithPanel="True"
+            RelativePanel.RightOf="RequestsListContainer"
+            RelativePanel.AlignLeftWithPanel="True">
+
+
+            <Button
+                Name="ExitButton"
+                Content="Выход"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                RelativePanel.AlignTopWithPanel="True"
+                RelativePanel.AlignRightWithPanel="True"
+                Margin="0, 10, 40, 0"/>
+
+            <TextBlock
+                Name="StatisticsTextBlock"
+                Text="Статистика"
+                TextAlignment="Center"
+                Padding="20"
+                RelativePanel.AlignBottomWithPanel="True"
+                RelativePanel.AlignHorizontalCenterWithPanel="True"
+                Margin="0, 0, 0, 20"
+                />
+
+            <StackPanel
+                Name="StepButtonContainer"
+                RelativePanel.AlignRightWithPanel="True"
+                RelativePanel.AlignVerticalCenterWith="RestartButton"
+                Margin="0, 0, 40, 0"
+                >
+
+                <TextBlock 
+                    Name="CurrentTimeTextBlock"
+                    Text="12:00, 01.01.1990"
+                    Margin="0, 0, 0, 5"/>
+
+                <Button
+                    Name="StepBlock"
+                    Content="Шаг"
+                    HorizontalAlignment="Stretch"
+                    />
+
+            </StackPanel>
+
+            <Button
+                Name="RestartButton"
+                RelativePanel.AlignLeftWithPanel="True"
+                RelativePanel.AlignBottomWithPanel="True"
+                Margin="20"
+                Background="White">
+
+                <StackPanel
+                    Orientation="Vertical">
+
+                    <Image 
+                        Width="36"
+                        Height="36"
+                        Source="/Assets/baseline_restart_alt_black_48dp.png" 
+                        Stretch="UniformToFill"
+                        />
+                    
+                    <TextBlock
+                        Text="Заново"
+                        TextAlignment="Center"
+                        Margin="0, 5, 0, 0"/>
+
+
+                </StackPanel>
+
+            </Button>
+
+            <Grid
+                RelativePanel.AlignHorizontalCenterWithPanel="True"
+                RelativePanel.AlignVerticalCenterWithPanel="True">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="7*" MaxWidth="800"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock
+                    Text="Одноместный"
+                    TextAlignment="Center"
+                    Padding="20"
+                    Grid.Column="0"
+                    Grid.Row="0"/>
+                <ListView
+                    ScrollViewer.HorizontalScrollMode="Enabled"
+                    Margin="20, 0, 0, 0"
+                    Grid.Column="1"
+                    Grid.Row="0">
+                    <!-- TODO: Complete with data-->
+                </ListView>
+
+                <TextBlock
+                    Text="Двухместный"
+                    TextAlignment="Center"
+                    Padding="20"
+                    Grid.Column="0"
+                    Grid.Row="1"/>
+                <ListView
+                    ScrollViewer.HorizontalScrollMode="Enabled"
+                    Margin="20, 0, 0, 0"
+                    Grid.Column="1"
+                    Grid.Row="1">
+                    <!-- TODO: Complete with data-->
+                </ListView>
+
+                <TextBlock
+                    Text="Двухместный с диваном"
+                    TextAlignment="Center"
+                    Padding="20"
+                    Grid.Column="0"
+                    Grid.Row="2"/>
+                <ListView
+                    ScrollViewer.HorizontalScrollMode="Enabled"
+                    Margin="20, 0, 0, 0"
+                    Grid.Column="1"
+                    Grid.Row="2">
+                    <!-- TODO: Complete with data-->
+                </ListView>
+
+                <TextBlock
+                    Text="Полулюкс"
+                    TextAlignment="Center"
+                    Padding="20"
+                    Grid.Column="0"
+                    Grid.Row="3"/>
+                <ListView
+                    ScrollViewer.HorizontalScrollMode="Enabled"
+                    Margin="20, 0, 0, 0"
+                    Grid.Column="1"
+                    Grid.Row="3">
+                    <!-- TODO: Complete with data-->
+                </ListView>
+
+                <TextBlock
+                    Text="Люкс"
+                    TextAlignment="Center"
+                    Padding="20"
+                    Grid.Column="0"
+                    Grid.Row="4"/>
+                <ListView
+                    ScrollViewer.HorizontalScrollMode="Enabled"
+                    Margin="20, 0, 0, 0"
+                    Grid.Column="1"
+                    Grid.Row="4">
+                    <!-- TODO: Complete with data-->
+                </ListView>
+
+
+            </Grid>
+
+        </RelativePanel>
+
+    </Grid>
+
 </Page>

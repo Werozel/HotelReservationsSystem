@@ -13,27 +13,19 @@ namespace Hotels.Models
         IMMEDIATE,
     }
 
-    enum RequestStatus
-    {
-        PENDING,
-        APPROVED,
-        DENIED,
-    }
-
     class Request
     {
 
         public RequestType Type { get; }
-        public RequestStatus Status { get; }
         public RoomType RoomType { get; }
         public TimeRange TimeRange { get; }
+        public string RoomNumber { get; set; } = null;
 
         public Request(RequestType type, RoomType roomType, TimeRange timeRange)
         {
             this.Type = type;
             this.RoomType = roomType;
             this.TimeRange = timeRange;
-            this.Status = RequestStatus.PENDING;
         }
 
         public Request(RequestType type, RoomType roomType, int lengthDays)
@@ -45,8 +37,11 @@ namespace Hotels.Models
             this.Type = RequestType.IMMEDIATE;
             this.RoomType = roomType;
             this.TimeRange = new TimeRange(lengthDays);
-            this.Status = RequestStatus.PENDING;
         }
 
+        public bool IsApproved()
+        {
+            return this.RoomNumber != null;
+        }
     }
 }

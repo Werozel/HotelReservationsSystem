@@ -6,27 +6,26 @@ namespace Hotels.Models
     class Hotel
     {
         public List<Room> Rooms { get; set; }
+        public int Profit { get; private set; } = 0;
 
         public Hotel(List<Room> rooms)
         {
             this.Rooms = rooms;
         }
 
-        public bool Book(TimeRange timeToBook)
+        public Room Book(Request request)
         {
+            IList<Room> roomsFilteredByType = Rooms.FindAll(room => room.RoomType == request.RoomType);
+
             foreach (Room room in Rooms)
             {
-                if (room.Book(timeToBook))
+                if (room.Book(request.TimeRange))
                 {
-                    return true;
+                    this.Profit += room.Price;
+                    return room;
                 }
             }
-            return false;
-        }
-
-        public bool Book(Request request)
-        {
-            return this.Book(request.TimeRange);
+            return null;
         }
 
     }

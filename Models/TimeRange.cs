@@ -4,6 +4,8 @@ namespace Hotels.Models
 {
     class TimeRange
     {
+        private static string FormatString = "H:mm, dd.MM.yy";
+
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
 
@@ -28,6 +30,11 @@ namespace Hotels.Models
         public bool Intersects(TimeRange other)
         {
             return this.Contains(other.Start) || this.Contains(other.End);
+        }
+
+        public string ToCellString()
+        {
+            return Start.ToString(FormatString) + " - " + End.ToString(FormatString);
         }
     }
 }
