@@ -44,7 +44,8 @@
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="local:RequestCell">
                         <StackPanel
-                            Orientation="Vertical">
+                            Orientation="Vertical"
+                            Margin="0, 10">
 
                             <TextBlock
                                 Text="{x:Bind RoomType}"/>
@@ -54,6 +55,9 @@
 
                             <TextBlock
                                 Text="{x:Bind IsApproved}"/>
+
+                            <TextBlock
+                                Text="{x:Bind RoomNumber}"/>
 
                         </StackPanel>
                     </DataTemplate>
@@ -121,7 +125,7 @@
                     Margin="0, 0, 0, 5"/>
 
                 <Button
-                    Name="StepBlock"
+                    Name="StepButton"
                     Content="Шаг"
                     HorizontalAlignment="Stretch"
                     />

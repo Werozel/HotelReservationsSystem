@@ -4,7 +4,7 @@ namespace Hotels.Models
 {
     class TimeRange
     {
-        private static string FormatString = "H:mm, dd.MM.yy";
+        public static string FORMAT_STRING = "H:mm, dd.MM.yy";
 
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
@@ -34,7 +34,7 @@ namespace Hotels.Models
 
         public string ToCellString()
         {
-            return Start.ToString(FormatString) + " - " + End.ToString(FormatString);
+            return Start.ToString(FORMAT_STRING) + " - " + End.ToString(FORMAT_STRING);
         }
     }
 }

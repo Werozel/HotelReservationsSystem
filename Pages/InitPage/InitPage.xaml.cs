@@ -79,6 +79,7 @@ namespace Hotels.Pages.InitPage
                 
                 success &= int.TryParse(daysCountTextBox.Text, out int daysCount);
                 success &= int.TryParse(maxHoursPerStepTextBox.Text, out int maxHoursPerStep);
+                success &= 12 <= daysCount && daysCount <= 30;
 
                 if (success)
                 {

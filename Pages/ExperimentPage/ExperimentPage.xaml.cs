@@ -23,12 +23,14 @@ namespace Hotels.Pages.ExperimentPage
         public string RoomType { get; set; }
         public string TimeRange { get; set; }
         public bool IsApproved { get; set; }
+        public string RoomNumber { get; set; }
 
-        public RequestCell(string roomType, string timeRange, bool isApproved)
+        public RequestCell(string roomType, string timeRange, bool isApproved, string roomNumber)
         {
             this.RoomType = roomType;
             this.TimeRange = timeRange;
             this.IsApproved = isApproved;
+            this.RoomNumber = roomNumber;
         }
     }
 
@@ -37,10 +39,11 @@ namespace Hotels.Pages.ExperimentPage
 
         private Experiment experiment;
 
-        public IDictionary<RoomType, RoomInitInfo> RoomsInfoMap;
-        public int DaysCount;
+        private IDictionary<RoomType, RoomInitInfo> RoomsInfoMap;
+        private int DaysCount;
 
-        public ObservableCollection<RequestCell> RequestCells = new ObservableCollection<RequestCell>();
+        private ObservableCollection<RequestCell> RequestCells = new ObservableCollection<RequestCell>();
+        
 
         public ExperimentPage()
         {
@@ -48,6 +51,25 @@ namespace Hotels.Pages.ExperimentPage
 
             ListView requestsListView = this.FindName("RequestsListView") as ListView;
             requestsListView.ItemsSource = RequestCells;
+
+            (this.FindName("ExitButton") as Button).Click += (s, e) =>
+            {
+                Application.Current.Exit();
+            };
+
+            (this.FindName("RestartButton") as Button).Click += (s, e) =>
+            {
+                this.Frame.Navigate(typeof(InitPage.InitPage));
+            };
+            (this.FindName("StepButton") as Button).Click += (s, e) =>
+            {
+                experiment.Step();
+                UpdateCells();
+                UpdateCurrentTimeText();
+                UpdateRoomsList();
+                UpdateStatisticsText();
+                UpdateProfitText();
+            };
 
         }
 
@@ -67,9 +89,41 @@ namespace Hotels.Pages.ExperimentPage
                 new TimeRange(today, experimentEndTime),
                 parameters.MaxHoursPerStep
             );
+            
+            UpdateCells();
+            UpdateCurrentTimeText();
+            UpdateRoomsList();
+            UpdateStatisticsText();
+            UpdateProfitText();
+        }
 
-            // TODO: Remove
-            RequestCells.Add(new RequestCell("Text1", "Text2", false));
+        private void UpdateCells()
+        {
+            RequestCells.Clear();
+            foreach (RequestCell cell in experiment.GetCells())
+            {
+                RequestCells.Add(cell);
+            }
+        }
+
+        private void UpdateCurrentTimeText()
+        {
+            this.CurrentTimeTextBlock.Text = this.experiment.CurrentDateTime.ToString(TimeRange.FORMAT_STRING);
+        }
+
+        private void UpdateRoomsList()
+        {
+
+        }
+
+        private void UpdateStatisticsText()
+        {
+
+        }
+
+        private void UpdateProfitText()
+        {
+            this.ProfitTextBlock.Text = "Прибыль: " + this.experiment.Hotel.Profit;
         }
     }
 }

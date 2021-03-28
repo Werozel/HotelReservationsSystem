@@ -27,12 +27,12 @@ namespace Hotels.Models
         private static readonly int MaxRequestTypeInt = Enum.GetValues(typeof(RequestType)).Cast<int>().Max();
 
         private readonly int MaxHoursPerStep;
-        private DateTime CurrentDateTime;
+        public DateTime CurrentDateTime { get; private set; }
         private readonly DateTime StartDateTime;
         private readonly DateTime EndDateTime;
 
         public IList<Request> RequestList { get; } = new List<Request>();
-        public Hotel hotel = new Hotel(new List<Room>());
+        public Hotel Hotel = new Hotel(new List<Room>());
 
         public Experiment(IDictionary<RoomType, RoomInitInfo> roomInfoMap, TimeRange experimentTimeRange, int maxHoursPerStep)
         {
@@ -57,18 +57,19 @@ namespace Hotels.Models
                         roomType,
                         roomInitInfo.Price
                     );
-                    hotel.Rooms.Add(room);
+                    Hotel.Rooms.Add(room);
                 }
             }
         }
 
-        public IList<RequestCell> GetCells() { 
+        public IList<RequestCell> GetCells() {
             return RequestList
                 .Select(request =>
                     new RequestCell(
                         RoomTypeHelper.RoomTypeToString(request.RoomType),
                         request.TimeRange.ToCellString(),
-                        request.IsApproved()
+                        request.IsApproved(),
+                        request.RoomNumber
                     )
                 )
                 .ToList();
@@ -101,15 +102,19 @@ namespace Hotels.Models
                 default:
                     throw new Exception(String.Format("Unknown request Type: %s", requestType));
             }
-            Room bookedRoom = hotel.Book(request);
-            request.RoomNumber = bookedRoom.Number;
+            Room bookedRoom = Hotel.Book(request);
+            if (bookedRoom != null)
+            {
+                request.RoomNumber = bookedRoom.Number;
+            }
             this.RequestList.Add(request);
         }
         
         private DateTime getRandomValidDateTime(DateTime start, DateTime end)
         {
-            TimeSpan timeSpan = end - start;
-            TimeSpan newSpan = new TimeSpan(Rand.Next(1, (int)timeSpan.TotalDays), 0, 0, 0);
+            TimeSpan timeSpan = end.Date - start.Date;
+            int totalDays = (int) timeSpan.TotalDays;
+            TimeSpan newSpan = new TimeSpan(Rand.Next(1, totalDays), 0, 0, 0);
             DateTime newDate = start + newSpan;
             return newDate;
         }

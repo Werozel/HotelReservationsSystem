@@ -64,17 +64,17 @@
                         <TextBlock Text="Полулюкс" Margin="20, 17" VerticalAlignment="Center" Grid.Column="0" Grid.Row="3"/>
                         <TextBlock Text="Люкс" Margin="20, 17" VerticalAlignment="Center" Grid.Column="0" Grid.Row="4"/>
 
-                        <TextBox Name="SingleCountTB" PlaceholderText="Количество" Margin="20, 10" Width="110" Grid.Column="1" Grid.Row="0"/>
-                        <TextBox Name="DoubleCountTB" PlaceholderText="Количество" Margin="20, 10" Width="110" Grid.Column="1" Grid.Row="1"/>
-                        <TextBox Name="DoubleWithSofaCountTB" PlaceholderText="Количество" Margin="20, 10" Width="110" Grid.Column="1" Grid.Row="2"/>
-                        <TextBox Name="JuniorSuiteCountTB" PlaceholderText="Количество" Margin="20, 10" Width="110" Grid.Column="1" Grid.Row="3"/>
-                        <TextBox Name="SuiteCountTB" PlaceholderText="Количество" Margin="20, 10" Width="110" Grid.Column="1" Grid.Row="4"/>
+                        <TextBox Name="SingleCountTB" Text="1" PlaceholderText="Количество" Margin="20, 10" Width="110" Grid.Column="1" Grid.Row="0"/>
+                        <TextBox Name="DoubleCountTB" Text="1" PlaceholderText="Количество" Margin="20, 10" Width="110" Grid.Column="1" Grid.Row="1"/>
+                        <TextBox Name="DoubleWithSofaCountTB" Text="1" PlaceholderText="Количество" Margin="20, 10" Width="110" Grid.Column="1" Grid.Row="2"/>
+                        <TextBox Name="JuniorSuiteCountTB" Text="1" PlaceholderText="Количество" Margin="20, 10" Width="110" Grid.Column="1" Grid.Row="3"/>
+                        <TextBox Name="SuiteCountTB" Text="1" PlaceholderText="Количество" Margin="20, 10" Width="110" Grid.Column="1" Grid.Row="4"/>
 
-                        <TextBox Name="SinglePriceTB" PlaceholderText="Цена" Margin="20, 10" Width="110" Grid.Column="2" Grid.Row="0"/>
-                        <TextBox Name="DoublePriceTB" PlaceholderText="Цена" Margin="20, 10" Width="110" Grid.Column="2" Grid.Row="1"/>
-                        <TextBox Name="DoubleWithSofaPriceTB" PlaceholderText="Цена" Margin="20, 10" Width="110" Grid.Column="2" Grid.Row="2"/>
-                        <TextBox Name="JuniorSuitePriceTB" PlaceholderText="Цена" Margin="20, 10" Width="110" Grid.Column="2" Grid.Row="3"/>
-                        <TextBox Name="SuitePriceTB" PlaceholderText="Цена" Margin="20, 10" Width="110" Grid.Column="2" Grid.Row="4"/>
+                        <TextBox Name="SinglePriceTB" Text="1" PlaceholderText="Цена" Margin="20, 10" Width="110" Grid.Column="2" Grid.Row="0"/>
+                        <TextBox Name="DoublePriceTB" Text="2" PlaceholderText="Цена" Margin="20, 10" Width="110" Grid.Column="2" Grid.Row="1"/>
+                        <TextBox Name="DoubleWithSofaPriceTB" Text="3" PlaceholderText="Цена" Margin="20, 10" Width="110" Grid.Column="2" Grid.Row="2"/>
+                        <TextBox Name="JuniorSuitePriceTB" Text="4" PlaceholderText="Цена" Margin="20, 10" Width="110" Grid.Column="2" Grid.Row="3"/>
+                        <TextBox Name="SuitePriceTB" Text="5" PlaceholderText="Цена" Margin="20, 10" Width="110" Grid.Column="2" Grid.Row="4"/>
                     </Grid>
 
                 </StackPanel>
@@ -97,8 +97,8 @@
                     Orientation="Horizontal"
                     >
 
-                    <TextBlock Text="Количество дней" VerticalAlignment="Center" Margin="20, 10"/>
-                    <TextBox Name="DaysCountTB" PlaceholderText="Введите число..." Margin="20, 10" Width="140"/>
+                    <TextBlock Text="Количество дней (от 12 до 30)" VerticalAlignment="Center" Margin="20, 10"/>
+                    <TextBox Name="DaysCountTB" Text="12" PlaceholderText="Введите число..." Margin="20, 10" Width="140"/>
 
                 </StackPanel>
 
@@ -110,7 +110,7 @@
                     >
 
                     <TextBlock Text="Максимальное количество часов за один шаг" VerticalAlignment="Center" Margin="20, 10"/>
-                    <TextBox Name="HoursPerStepTB" PlaceholderText="Введите число..." Margin="20, 10" Width="140"/>
+                    <TextBox Name="HoursPerStepTB" Text="12" PlaceholderText="Введите число..." Margin="20, 10" Width="140"/>
 
                 </StackPanel>
 
