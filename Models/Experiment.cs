@@ -10,7 +10,6 @@ namespace Hotels.Models
 
     class ExperimentConfig
     {
-        public static readonly int MAX_REQUESTS_PER_STEP = 5;
         public static readonly int MIN_DAYS_TO_STAY = 1;
         public static readonly int MAX_DAYS_TO_STAY = 14;
     }
@@ -27,7 +26,7 @@ namespace Hotels.Models
         private static readonly int MaxRoomTypeInt = Enum.GetValues(typeof(RoomType)).Cast<int>().Max();
         private static readonly int MaxRequestTypeInt = Enum.GetValues(typeof(RequestType)).Cast<int>().Max();
 
-        private readonly int HoursPerStep;
+        private readonly int MaxHoursPerStep;
         private DateTime CurrentDateTime;
         private readonly DateTime StartDateTime;
         private readonly DateTime EndDateTime;
@@ -35,13 +34,13 @@ namespace Hotels.Models
         public IList<Request> RequestList { get; } = new List<Request>();
         public Hotel hotel = new Hotel(new List<Room>());
 
-        public Experiment(IDictionary<RoomType, RoomInitInfo> roomInfoMap, TimeRange experimentTimeRange, int hoursPerStep)
+        public Experiment(IDictionary<RoomType, RoomInitInfo> roomInfoMap, TimeRange experimentTimeRange, int maxHoursPerStep)
         {
             this.RoomsInfoMap = roomInfoMap;
             this.StartDateTime = experimentTimeRange.Start;
             this.EndDateTime = experimentTimeRange.End;
             this.CurrentDateTime = this.StartDateTime;
-            this.HoursPerStep = hoursPerStep;
+            this.MaxHoursPerStep = maxHoursPerStep;
 
             foreach (RoomType roomType in RoomTypeValues)
             {
@@ -77,37 +76,34 @@ namespace Hotels.Models
 
         public void Step()
         {
-            CurrentDateTime = CurrentDateTime.AddHours(Convert.ToDouble(this.CurrentDateTime));
-            for (int requestsCount = Rand.Next(0, ExperimentConfig.MAX_REQUESTS_PER_STEP); requestsCount > 0; requestsCount++)
+            int hoursPassed = Rand.Next(1, this.MaxHoursPerStep);
+            CurrentDateTime = CurrentDateTime.AddHours(Convert.ToDouble(hoursPassed);
+            RequestType requestType = (RequestType)Rand.Next(0, MaxRequestTypeInt);
+            RoomType roomType = (RoomType)Rand.Next(0, MaxRoomTypeInt);
+
+            Request request;
+            switch (requestType)
             {
-                RequestType requestType = (RequestType)Rand.Next(0, MaxRequestTypeInt);
-                RoomType roomType = (RoomType)Rand.Next(0, MaxRoomTypeInt);
+                case RequestType.BOOK:
 
-                Request request;
-                switch (requestType)
-                {
-                    case RequestType.BOOK:
+                    DateTime randomStartDateTime = getRandomValidDateTime(CurrentDateTime, EndDateTime);
+                    DateTime randomEndDateTime = getRandomValidDateTime(randomStartDateTime, EndDateTime);
+                    TimeRange bookTimeRange = new TimeRange(randomStartDateTime, randomEndDateTime);
 
-                        DateTime randomStartDateTime = getRandomValidDateTime(CurrentDateTime, EndDateTime);
-                        DateTime randomEndDateTime = getRandomValidDateTime(randomStartDateTime, EndDateTime);
-                        TimeRange bookTimeRange = new TimeRange(randomStartDateTime, randomEndDateTime);
+                    request = new Request(requestType, roomType, bookTimeRange);
+                    break;
+                case RequestType.IMMEDIATE:
 
-                        request = new Request(requestType, roomType, bookTimeRange);
-                        break;
-                    case RequestType.IMMEDIATE:
+                    int lengthDays = Rand.Next(ExperimentConfig.MIN_DAYS_TO_STAY, ExperimentConfig.MAX_DAYS_TO_STAY + 1);
 
-                        int lengthDays = Rand.Next(ExperimentConfig.MIN_DAYS_TO_STAY, ExperimentConfig.MAX_DAYS_TO_STAY + 1);
-
-                        request = new Request(requestType, roomType, lengthDays);
-                        break;
-                    default:
-                        throw new Exception(String.Format("Unknown request Type: %s", requestType));
-                }
-                Room bookedRoom = hotel.Book(request);
-                request.RoomNumber = bookedRoom.Number;
-                this.RequestList.Add(request);
+                    request = new Request(requestType, roomType, lengthDays);
+                    break;
+                default:
+                    throw new Exception(String.Format("Unknown request Type: %s", requestType));
             }
-
+            Room bookedRoom = hotel.Book(request);
+            request.RoomNumber = bookedRoom.Number;
+            this.RequestList.Add(request);
         }
         
         private DateTime getRandomValidDateTime(DateTime start, DateTime end)

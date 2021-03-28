@@ -48,6 +48,7 @@ namespace Hotels.Pages.InitPage
             TextBox suitePriceTextBox = this.FindName("SuitePriceTB") as TextBox;
 
             TextBox daysCountTextBox = this.FindName("DaysCountTB") as TextBox;
+            TextBox maxHoursPerStepTextBox = this.FindName("HoursPerStepTB") as TextBox;
 
             Border errorBlock = this.FindName("ErrorBlock") as Border;
 
@@ -77,10 +78,11 @@ namespace Hotels.Pages.InitPage
                 roomsMap.Add(RoomType.SUITE, new RoomInitInfo(suiteCount, suitePrice));
                 
                 success &= int.TryParse(daysCountTextBox.Text, out int daysCount);
+                success &= int.TryParse(maxHoursPerStepTextBox.Text, out int maxHoursPerStep);
 
                 if (success)
                 {
-                    this.Frame.Navigate(typeof(ExperimentPage.ExperimentPage), new ExperimentParameters(roomsMap, daysCount));
+                    this.Frame.Navigate(typeof(ExperimentPage.ExperimentPage), new ExperimentParameters(roomsMap, daysCount, maxHoursPerStep));
                 } else
                 {
                     errorBlock.Visibility = Visibility.Visible;

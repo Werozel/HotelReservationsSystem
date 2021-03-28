@@ -9,13 +9,19 @@ namespace Hotels.Pages.ExperimentPage
 {
     public class ExperimentParameters
     {
-        public IDictionary<RoomType, RoomInitInfo> RoomsInfoMap { get; set; }
-        public int DaysCount { get; set; }
+        public IDictionary<RoomType, RoomInitInfo> RoomsInfoMap { get; }
+        public int DaysCount { get; }
+        public int HoursPerStep { get; }
 
-        public ExperimentParameters(IDictionary<RoomType, RoomInitInfo> roomsInfoMap, int daysCount)
+        public ExperimentParameters(
+            IDictionary<RoomType, RoomInitInfo> roomsInfoMap, 
+            int daysCount,
+            int hoursPerStep
+        )
         {
             this.RoomsInfoMap = roomsInfoMap;
             this.DaysCount = daysCount;
+            this.HoursPerStep = hoursPerStep;
         }
     }
 
