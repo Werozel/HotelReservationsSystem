@@ -8,7 +8,7 @@ namespace Hotels.Models
     class Hotel
     {
         public List<Room> Rooms { get; }
-        public int Profit { get; private set; } = 0;
+        public double Profit { get; private set; } = 0;
 
         public Hotel(List<Room> rooms)
         {
@@ -17,13 +17,14 @@ namespace Hotels.Models
 
         public Room Book(Request request)
         {
-            IList<Room> roomsFilteredByType = GetAllRoomsByRoomType(request.RoomType);
+            RoomType roomType = request.HasDiscount ? request.DiscountRoomType : request.RoomType;
+            IList<Room> roomsFilteredByType = GetAllRoomsByRoomType(roomType);
 
             foreach (Room room in roomsFilteredByType)
             {
                 if (room.Book(request.TimeRange))
                 {
-                    this.Profit += room.Price;
+                    this.Profit +=  room.Price * (request.HasDiscount ? 0.7 : 1);
                     return room;
                 }
             }

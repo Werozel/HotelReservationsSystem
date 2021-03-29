@@ -19,7 +19,7 @@ namespace Hotels.Models.Experiments
 
         private Random Rand = new Random();
 
-        public Statistics statistics { get; } = new Statistics(0, 0, 0, 0); 
+        public Statistics Statistics { get; } = new Statistics(0, 0, 0, 0); 
 
         private static readonly Array RoomTypeValues = Enum.GetValues(typeof(RoomType));
         private static readonly int MaxRoomTypeInt = Enum.GetValues(typeof(RoomType)).Cast<int>().Max();
@@ -72,7 +72,8 @@ namespace Hotels.Models.Experiments
                         request.TimeRange.ToCellString(),
                         request.IsApproved(),
                         request.RoomNumber,
-                        RequestTypeHelper.RequestTypeToString(request.Type)
+                        RequestTypeHelper.RequestTypeToString(request.Type),
+                        request.HasDiscount
                     )
                 )
                 .ToList();
@@ -80,7 +81,6 @@ namespace Hotels.Models.Experiments
 
         public bool Step()
         {
-            // TODO: true/false & room number in list not correct
             int hoursPassed = Rand.Next(1, this.MaxHoursPerStep);
             CurrentDateTime = CurrentDateTime.AddHours(Convert.ToDouble(hoursPassed));
             if (CurrentDateTime >= EndDateTime)
@@ -122,20 +122,45 @@ namespace Hotels.Models.Experiments
                 default:
                     throw new Exception(String.Format("Unknown request Type: %s", requestType));
             }
-            statistics.TotalRequestCount++;
+            Statistics.TotalRequestCount++;
             Room bookedRoom = Hotel.Book(request);
             if (bookedRoom != null)
             {
-                statistics.RequestsAcceptedCount++;
+                Statistics.RequestsAcceptedCount++;
                 request.RoomNumber = bookedRoom.Number;
             } else
             {
-                statistics.RequestsRejectedCount++;
+                Statistics.RequestsRejectedCount++;
                 bool gotRoomInfo = RoomsInfoMap.TryGetValue(roomType, out RoomInitInfo roomInfo);
                 if (gotRoomInfo)
                 {
-                    statistics.MissedProfit += roomInfo.Price;
+                    Statistics.MissedProfit += roomInfo.Price;
                 }
+
+                if (roomType == RoomType.SUITE)
+                {
+                    this.RequestList.Add(request);
+                    return true;
+                }
+
+                request.HasDiscount = true;
+                request.DiscountRoomType = roomType + 1;
+
+                Room discountBookedRoom = Hotel.Book(request);
+                if (discountBookedRoom != null)
+                {
+                    Statistics.RequestsAcceptedCount++;
+                    request.RoomNumber = discountBookedRoom.Number;
+                } else
+                {
+                    Statistics.RequestsRejectedCount++;
+                    bool gotDiscountRoomInfo = RoomsInfoMap.TryGetValue(roomType, out RoomInitInfo discountRoomInfo);
+                    if (gotDiscountRoomInfo)
+                    {
+                        Statistics.MissedProfit += 0.7 * discountRoomInfo.Price;
+                    }
+                }
+
             }
             this.RequestList.Add(request);
             return true;

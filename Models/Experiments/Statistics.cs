@@ -11,13 +11,13 @@ namespace Hotels.Models.Experiments
         public int TotalRequestCount;
         public int RequestsAcceptedCount;
         public int RequestsRejectedCount;
-        public int MissedProfit;
+        public double MissedProfit;
 
         public Statistics(
             int totalRequestsCount,
             int requestsAcceptedCount,
             int requestsRejectedCount,
-            int missedProfit
+            double missedProfit
         )
         {
             this.TotalRequestCount = totalRequestsCount;

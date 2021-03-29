@@ -14,6 +14,8 @@ namespace Hotels.Models.Requests
         public RoomType RoomType { get; }
         public TimeRange TimeRange { get; }
         public String RoomNumber { get; set; } = null;
+        public bool HasDiscount { get; set; } = false;
+        public RoomType DiscountRoomType { get; set; }
 
         public Request(RequestType type, RoomType roomType, TimeRange timeRange)
         {

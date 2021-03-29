@@ -234,7 +234,7 @@ namespace Hotels.Pages.ExperimentPage
 
         private void UpdateStatisticsText()
         {
-            StatisticsTextBlock.Text = experiment.statistics.ToString();
+            StatisticsTextBlock.Text = experiment.Statistics.ToString();
         }
 
         private void UpdateProfitText()
