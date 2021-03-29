@@ -7,7 +7,7 @@ using Hotels.Models;
 
 namespace Hotels.Pages.ExperimentPage
 {
-    public class ExperimentParameters
+    class ExperimentParameters
     {
         public IDictionary<RoomType, RoomInitInfo> RoomsInfoMap { get; }
         public int DaysCount { get; }

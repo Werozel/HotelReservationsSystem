@@ -101,7 +101,8 @@ namespace Hotels.Models
                         RoomTypeHelper.RoomTypeToString(request.RoomType),
                         request.TimeRange.ToCellString(),
                         request.IsApproved(),
-                        request.RoomNumber
+                        request.RoomNumber,
+                        RequestTypeHelper.RequestTypeToString(request.Type)
                     )
                 )
                 .ToList();
@@ -116,8 +117,8 @@ namespace Hotels.Models
             {
                 return false;
             }
-            RequestType requestType = (RequestType)Rand.Next(0, MaxRequestTypeInt);
-            RoomType roomType = (RoomType)Rand.Next(0, MaxRoomTypeInt);
+            RequestType requestType = (RequestType)Rand.Next(0, MaxRequestTypeInt + 1);
+            RoomType roomType = (RoomType)Rand.Next(0, MaxRoomTypeInt + 1);
 
             Request request;
             switch (requestType)
@@ -142,7 +143,11 @@ namespace Hotels.Models
 
                     int lengthDays = Rand.Next(1, MaxDaysToBook + 1);
 
-                    request = new Request(requestType, roomType, lengthDays);
+                    DateTime start = CurrentDateTime.Date;
+                    DateTime end = start.AddDays(lengthDays);
+                    TimeRange immediateBookTimeRange = new TimeRange(start, end);
+
+                    request = new Request(requestType, roomType, immediateBookTimeRange);
                     break;
                 default:
                     throw new Exception(String.Format("Unknown request Type: %s", requestType));

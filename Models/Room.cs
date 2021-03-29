@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Hotels.Models
 {
 
-    public enum RoomType
+    enum RoomType
     {
         SINGLE,
         DOUBLE,
@@ -13,10 +13,8 @@ namespace Hotels.Models
         SUITE,
     }
 
-    class RoomTypeHelper
+    static class RoomTypeHelper
     {
-
-        private RoomTypeHelper() { }
 
         public static string RoomTypeToRoomNumber(RoomType roomType, int roomTypeCount)
         {

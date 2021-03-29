@@ -13,6 +13,23 @@ namespace Hotels.Models
         IMMEDIATE,
     }
 
+    static class RequestTypeHelper
+    {
+
+        public static string RequestTypeToString(RequestType requestType)
+        {
+            switch (requestType)
+            {
+                case RequestType.BOOK:
+                    return "Бронирование";
+                case RequestType.IMMEDIATE:
+                    return "Поселение";
+                default:
+                    throw new Exception("RequestTypeToString: Unknown request type: " + requestType);
+            }
+        }
+    }
+
     class Request
     {
 
@@ -26,18 +43,6 @@ namespace Hotels.Models
             this.Type = type;
             this.RoomType = roomType;
             this.TimeRange = timeRange;
-            this.RoomNumber = null;
-        }
-
-        public Request(RequestType type, RoomType roomType, int lengthDays)
-        {
-            if (type != RequestType.IMMEDIATE)
-            {
-                throw new Exception("type can only be RequestType.IMMEDIATE in this constructor");
-            }
-            this.Type = RequestType.IMMEDIATE;
-            this.RoomType = roomType;
-            this.TimeRange = new TimeRange(lengthDays);
             this.RoomNumber = null;
         }
 

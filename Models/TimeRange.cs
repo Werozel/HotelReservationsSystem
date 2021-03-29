@@ -20,13 +20,6 @@ namespace Hotels.Models
             this.End = end;
         }
 
-        public TimeRange(int length)
-        {
-            this.Start = DateTime.Now;
-            this.End = DateTime.Now;
-            this.End.AddDays(length);
-        }
-
         public bool Contains(DateTime dateTime)
         {
             return Start <= dateTime && dateTime <= End;

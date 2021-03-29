@@ -32,13 +32,15 @@ namespace Hotels.Pages.ExperimentPage
         public string TimeRange { get; }
         public bool IsApproved { get; }
         public string RoomNumber { get; set; }
+        public string RequestType { get; }
 
-        public RequestCell(string roomType, string timeRange, bool isApproved, string roomNumber)
+        public RequestCell(string roomType, string timeRange, bool isApproved, string roomNumber, string requestType)
         {
             this.RoomType = roomType;
             this.TimeRange = timeRange;
             this.IsApproved = isApproved;
             this.RoomNumber = roomNumber;
+            this.RequestType = requestType;
         }
 
         public string FormatRoomNumber()

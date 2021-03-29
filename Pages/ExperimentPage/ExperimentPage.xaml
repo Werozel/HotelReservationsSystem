@@ -55,8 +55,11 @@
                         <StackPanel
                             Orientation="Vertical"
                             Background="{x:Bind GetBackgroundBrush()}"
-                            Padding="0, 5"
+                            Padding="5"
                             Margin="0, 0, 0, 5">
+
+                            <TextBlock
+                                Text="{x:Bind RequestType}"/>
 
                             <TextBlock
                                 Text="{x:Bind RoomType}"/>
@@ -194,6 +197,7 @@
                     ScrollViewer.HorizontalScrollMode="Auto"
                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
                     ScrollViewer.VerticalScrollMode="Disabled"
+                    IsItemClickEnabled="True"
                     SelectionMode="None"
                     Margin="20, 0, 0, 0"
                     Grid.Column="1"
@@ -243,6 +247,7 @@
                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
                     ScrollViewer.VerticalScrollMode="Disabled"
                     SelectionMode="None"
+                    IsItemClickEnabled="True"
                     Margin="20, 0, 0, 0"
                     Grid.Column="1"
                     Grid.Row="1">
@@ -291,6 +296,7 @@
                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
                     ScrollViewer.VerticalScrollMode="Disabled"
                     SelectionMode="None"
+                    IsItemClickEnabled="True"
                     Margin="20, 0, 0, 0"
                     Grid.Column="1"
                     Grid.Row="2">
@@ -339,6 +345,7 @@
                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
                     ScrollViewer.VerticalScrollMode="Disabled"
                     SelectionMode="None"
+                    IsItemClickEnabled="True"
                     Margin="20, 0, 0, 0"
                     Grid.Column="1"
                     Grid.Row="3">
@@ -387,6 +394,7 @@
                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
                     ScrollViewer.VerticalScrollMode="Disabled"
                     SelectionMode="None"
+                    IsItemClickEnabled="True"
                     Margin="20, 0, 0, 0"
                     Grid.Column="1"
                     Grid.Row="4">
