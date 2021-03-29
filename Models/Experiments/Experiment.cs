@@ -132,9 +132,10 @@ namespace Hotels.Models.Experiments
             {
                 Statistics.RequestsRejectedCount++;
                 bool gotRoomInfo = RoomsInfoMap.TryGetValue(roomType, out RoomInitInfo roomInfo);
+                double roomTypeProfit = 0;
                 if (gotRoomInfo)
                 {
-                    Statistics.MissedProfit += roomInfo.Price;
+                    roomTypeProfit = roomInfo.Price;
                 }
 
                 if (roomType == RoomType.SUITE)
@@ -144,21 +145,26 @@ namespace Hotels.Models.Experiments
                 }
 
                 request.HasDiscount = true;
-                request.DiscountRoomType = roomType + 1;
+                var discountRoomType = roomType + 1;
+                request.DiscountRoomType = discountRoomType;
+
+                bool gotDiscountRoomInfo = RoomsInfoMap.TryGetValue(discountRoomType, out RoomInitInfo discountRoomInfo);
+                double discountRoomTypeProfit = 0;
+                if (gotDiscountRoomInfo)
+                {
+                    discountRoomTypeProfit = 0.7 * discountRoomInfo.Price;
+                }
 
                 Room discountBookedRoom = Hotel.Book(request);
                 if (discountBookedRoom != null)
                 {
                     Statistics.RequestsAcceptedCount++;
                     request.RoomNumber = discountBookedRoom.Number;
+                    Statistics.MissedProfit += roomTypeProfit - discountRoomTypeProfit;
                 } else
                 {
                     Statistics.RequestsRejectedCount++;
-                    bool gotDiscountRoomInfo = RoomsInfoMap.TryGetValue(roomType, out RoomInitInfo discountRoomInfo);
-                    if (gotDiscountRoomInfo)
-                    {
-                        Statistics.MissedProfit += 0.7 * discountRoomInfo.Price;
-                    }
+                    Statistics.MissedProfit += roomTypeProfit;
                 }
 
             }

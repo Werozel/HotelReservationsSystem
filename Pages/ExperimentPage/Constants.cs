@@ -14,7 +14,7 @@ namespace Hotels.Pages.ExperimentPage
         public static class Colors
         {
             public static Color RED = Color.FromArgb(255, 248, 206, 204);
-            public static Color GREED = Color.FromArgb(255, 213, 232, 212);
+            public static Color GREEN = Color.FromArgb(255, 213, 232, 212);
             public static Color YELLOW = Color.FromArgb(255, 255, 242, 204);
         }
     }

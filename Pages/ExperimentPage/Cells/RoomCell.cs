@@ -25,7 +25,7 @@ namespace Hotels.Pages.ExperimentPage.Cells
         public SolidColorBrush GetBackgroundBrush()
         {
             return IsAvaliable
-                ? new SolidColorBrush(Constants.Colors.GREED)
+                ? new SolidColorBrush(Constants.Colors.GREEN)
                 : new SolidColorBrush(Constants.Colors.RED);
         }
     }

@@ -40,14 +40,15 @@ namespace Hotels.Pages.ExperimentPage.Cells
 
         public SolidColorBrush GetBackgroundBrush()
         {
-            if (this.HasDiscount)
+            if (!this.IsApproved)
+            {
+                return new SolidColorBrush(Constants.Colors.RED);
+            } else if (this.HasDiscount)
             {
                 return new SolidColorBrush(Constants.Colors.YELLOW);
             } else
             {
-                return IsApproved
-                    ? new SolidColorBrush(Constants.Colors.GREED)
-                    : new SolidColorBrush(Constants.Colors.RED);
+                return new SolidColorBrush(Constants.Colors.GREEN);
             }
         }
     }
