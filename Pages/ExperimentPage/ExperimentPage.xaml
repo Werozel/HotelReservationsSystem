@@ -147,6 +147,14 @@
                     Name="StepButton"
                     Content="Шаг"
                     HorizontalAlignment="Stretch"
+                    Margin="0, 0, 0, 5"
+                    />
+
+                <Button
+                    Name="StartStopButton"
+                    Content="Запуск"
+                    HorizontalAlignment="Stretch"
+                    Margin="0, 0, 0, 5"
                     />
 
             </StackPanel>

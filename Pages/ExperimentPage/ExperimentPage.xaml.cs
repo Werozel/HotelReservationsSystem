@@ -8,6 +8,8 @@ using Hotels.Models;
 using Hotels.Pages.ExperimentPage.Cells;
 using Hotels.Models.Rooms;
 using Hotels.Models.Experiments;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace Hotels.Pages.ExperimentPage
 {
@@ -31,6 +33,8 @@ namespace Hotels.Pages.ExperimentPage
         private ObservableCollection<RoomCell> JuniorSuiteRoomCells = new ObservableCollection<RoomCell>();
         private ObservableCollection<RoomCell> SuiteRoomCells = new ObservableCollection<RoomCell>();
 
+        private bool BackgroundTaskRunning = false;
+
         public ExperimentPage()
         {
             this.InitializeComponent();
@@ -50,16 +54,16 @@ namespace Hotels.Pages.ExperimentPage
 
             this.BookedTimesList.ItemsSource = this.BookedTimeCells;
 
-            (this.ExitButton).Click += (s, e) =>
+            this.ExitButton.Click += (s, e) =>
             {
                 Application.Current.Exit();
             };
 
-            (this.RestartButton).Click += (s, e) =>
+            this.RestartButton.Click += (s, e) =>
             {
                 this.Frame.Navigate(typeof(InitPage.InitPage));
             };
-            (this.StepButton).Click += (s, e) =>
+            this.StepButton.Click += (s, e) =>
             {
                 if (IsExperimentEnded)
                 {
@@ -72,6 +76,21 @@ namespace Hotels.Pages.ExperimentPage
                 UpdateRoomsList(experiment.Hotel, experiment.CurrentDateTime);
                 UpdateStatisticsText();
                 UpdateProfitText();
+            };
+
+            this.StartStopButton.Click += (s, e) =>
+            {
+                if (BackgroundTaskRunning)
+                {
+                    this.StartStopButton.Content = "Запуск";
+                    BackgroundTaskRunning = false;
+                }
+                else
+                {
+                    this.StartStopButton.Content = "Стоп";
+                    BackgroundTaskRunning = true;
+                    RunBackground();
+                }
             };
 
         }
@@ -235,6 +254,29 @@ namespace Hotels.Pages.ExperimentPage
         {
             StepButton.IsEnabled = false;
             CurrentTimeTextBlock.Text = "Эксперимент закончен";
+        }
+
+        private async void RunBackground()
+        {
+            await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
+            {
+                while (BackgroundTaskRunning)
+                {
+                    if (IsExperimentEnded)
+                    {
+                        ToExperimentEndedState();
+                        BackgroundTaskRunning = false;
+                        return;
+                    }
+                    IsExperimentEnded = !experiment.Step();
+                    UpdateCells();
+                    UpdateCurrentTimeText();
+                    UpdateRoomsList(experiment.Hotel, experiment.CurrentDateTime);
+                    UpdateStatisticsText();
+                    UpdateProfitText();
+                    await Task.Delay(1000, new CancellationTokenSource().Token);
+                }
+            });
         }
     }
 }
