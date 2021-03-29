@@ -254,6 +254,9 @@ namespace Hotels.Pages.ExperimentPage
         {
             StepButton.IsEnabled = false;
             CurrentTimeTextBlock.Text = "Эксперимент закончен";
+            BackgroundTaskRunning = false;
+            StartStopButton.Content = "Старт";
+            StartStopButton.IsEnabled = false;
         }
 
         private async void RunBackground()
@@ -265,7 +268,6 @@ namespace Hotels.Pages.ExperimentPage
                     if (IsExperimentEnded)
                     {
                         ToExperimentEndedState();
-                        BackgroundTaskRunning = false;
                         return;
                     }
                     IsExperimentEnded = !experiment.Step();

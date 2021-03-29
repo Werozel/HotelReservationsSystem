@@ -164,6 +164,7 @@ namespace Hotels.Models.Experiments
                     Statistics.RequestsAcceptedCount++;
                     request.RoomNumber = discountBookedRoom.Number;
                     request.Price = discountRoomTypeProfit;
+                    Statistics.MissedProfit +=  Math.Max(roomTypeProfit - discountRoomTypeProfit, 0); 
                 } else
                 {
                     Statistics.RequestsRejectedCount++;
