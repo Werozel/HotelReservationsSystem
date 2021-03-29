@@ -40,12 +40,19 @@
                 RelativePanel.Above="ProfitTextBlockContainer"
                 ScrollViewer.VerticalScrollMode="Enabled"
                 >
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="local:RequestCell">
                         <StackPanel
                             Orientation="Vertical"
                             Background="{x:Bind BackgroundBrush}"
-                            Margin="0, 10">
+                            Padding="0, 5"
+                            Margin="0, 0, 0, 5">
 
                             <TextBlock
                                 Text="{x:Bind RoomType}"/>
@@ -196,8 +203,8 @@
                     </ListView.ItemsPanel>
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
-                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                            <Setter Property="VerticalAlignment" Value="Stretch"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
                         </Style>
                     </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
@@ -205,7 +212,8 @@
                             <StackPanel
                                 Orientation="Vertical"
                                 Background="{x:Bind BackgroundBrush}"
-                                Margin="0, 10">
+                                Padding="10"
+                                Margin="0, 5">
 
                                 <TextBlock
                                     Text="{x:Bind Number}"/>
@@ -239,8 +247,8 @@
                     </ListView.ItemsPanel>
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
-                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                            <Setter Property="VerticalAlignment" Value="Stretch"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
                         </Style>
                     </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
@@ -248,7 +256,8 @@
                             <StackPanel
                                 Orientation="Vertical"
                                 Background="{x:Bind BackgroundBrush}"
-                                Margin="0, 10">
+                                Padding="10"
+                                Margin="0, 5">
 
                                 <TextBlock
                                     Text="{x:Bind Number}"/>
@@ -282,8 +291,8 @@
                     </ListView.ItemsPanel>
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
-                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                            <Setter Property="VerticalAlignment" Value="Stretch"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
                         </Style>
                     </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
@@ -291,7 +300,8 @@
                             <StackPanel
                                 Orientation="Vertical"
                                 Background="{x:Bind BackgroundBrush}"
-                                Margin="0, 10">
+                                Padding="10"
+                                Margin="0, 5">
 
                                 <TextBlock
                                     Text="{x:Bind Number}"/>
@@ -325,8 +335,8 @@
                     </ListView.ItemsPanel>
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
-                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                            <Setter Property="VerticalAlignment" Value="Stretch"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
                         </Style>
                     </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
@@ -334,7 +344,8 @@
                             <StackPanel
                                 Orientation="Vertical"
                                 Background="{x:Bind BackgroundBrush}"
-                                Margin="0, 10">
+                                Padding="10"
+                                Margin="0, 5">
 
                                 <TextBlock
                                     Text="{x:Bind Number}"/>
@@ -368,8 +379,8 @@
                     </ListView.ItemsPanel>
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
-                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                            <Setter Property="VerticalAlignment" Value="Stretch"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
                         </Style>
                     </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
@@ -377,7 +388,8 @@
                             <StackPanel
                                 Orientation="Vertical"
                                 Background="{x:Bind BackgroundBrush}"
-                                Margin="0, 10">
+                                Padding="10"
+                                Margin="0, 5">
 
                                 <TextBlock
                                     Text="{x:Bind Number}"/>

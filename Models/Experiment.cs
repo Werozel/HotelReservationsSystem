@@ -10,8 +10,7 @@ namespace Hotels.Models
 
     class ExperimentConfig
     {
-        public static readonly int MIN_DAYS_TO_STAY = 1;
-        public static readonly int MAX_DAYS_TO_STAY = 14;
+        public static readonly int VALID_DAYS_AFTER_ENDING = 14;
     }
 
 
@@ -34,13 +33,16 @@ namespace Hotels.Models
         public IList<Request> RequestList { get; } = new List<Request>();
         public Hotel Hotel = new Hotel(new List<Room>());
 
-        public Experiment(IDictionary<RoomType, RoomInitInfo> roomInfoMap, TimeRange experimentTimeRange, int maxHoursPerStep)
+        private int MaxDaysToBook;
+
+        public Experiment(IDictionary<RoomType, RoomInitInfo> roomInfoMap, TimeRange experimentTimeRange, int maxHoursPerStep, int maxDaysToBook)
         {
             this.RoomsInfoMap = roomInfoMap;
             this.StartDateTime = experimentTimeRange.Start;
             this.EndDateTime = experimentTimeRange.End;
             this.CurrentDateTime = this.StartDateTime;
             this.MaxHoursPerStep = maxHoursPerStep;
+            this.MaxDaysToBook = maxDaysToBook;
 
             foreach (RoomType roomType in RoomTypeValues)
             {
@@ -75,11 +77,15 @@ namespace Hotels.Models
                 .ToList();
         }
 
-        public void Step()
+        public Request Step()
         {
             // TODO: true/false & room number in list not correct
             int hoursPassed = Rand.Next(1, this.MaxHoursPerStep);
             CurrentDateTime = CurrentDateTime.AddHours(Convert.ToDouble(hoursPassed));
+            if (CurrentDateTime >= EndDateTime)
+            {
+                return null;
+            }
             RequestType requestType = (RequestType)Rand.Next(0, MaxRequestTypeInt);
             RoomType roomType = (RoomType)Rand.Next(0, MaxRoomTypeInt);
 
@@ -88,16 +94,23 @@ namespace Hotels.Models
             {
                 case RequestType.BOOK:
 
-                    DateTime randomStartDateTime = getRandomValidDateTime(CurrentDateTime, EndDateTime).Date;
-                    DateTime randomEndDateTime = getRandomValidDateTime(randomStartDateTime, EndDateTime).Date;
+                    DateTime offsetEndDate = EndDateTime.AddDays(ExperimentConfig.VALID_DAYS_AFTER_ENDING).Date;
+                    DateTime randomStartDateTime = getRandomValidDateTime(CurrentDateTime.Date, offsetEndDate);
+                    DateTime randomEndDateTime = getRandomValidDateTime(
+                        randomStartDateTime.Date, 
+                        offsetEndDate
+                    );
 
-                    TimeRange bookTimeRange = new TimeRange(randomStartDateTime, randomEndDateTime);
+                    TimeRange bookTimeRange = new TimeRange(
+                        randomStartDateTime.Date,
+                        randomEndDateTime.Date
+                    );
 
                     request = new Request(requestType, roomType, bookTimeRange);
                     break;
                 case RequestType.IMMEDIATE:
 
-                    int lengthDays = Rand.Next(ExperimentConfig.MIN_DAYS_TO_STAY, ExperimentConfig.MAX_DAYS_TO_STAY + 1);
+                    int lengthDays = Rand.Next(1, MaxDaysToBook + 1);
 
                     request = new Request(requestType, roomType, lengthDays);
                     break;
@@ -110,6 +123,7 @@ namespace Hotels.Models
                 request.RoomNumber = bookedRoom.Number;
             }
             this.RequestList.Add(request);
+            return request;
         }
         
         private DateTime getRandomValidDateTime(DateTime start, DateTime end)

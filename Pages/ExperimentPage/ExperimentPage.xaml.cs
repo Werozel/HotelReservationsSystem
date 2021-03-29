@@ -71,6 +71,7 @@ namespace Hotels.Pages.ExperimentPage
     {
 
         private Experiment experiment;
+        private bool IsExperimentEnded;
 
         private IDictionary<RoomType, RoomInitInfo> RoomsInfoMap;
         private int DaysCount;
@@ -107,8 +108,21 @@ namespace Hotels.Pages.ExperimentPage
             };
             (this.FindName("StepButton") as Button).Click += (s, e) =>
             {
-                experiment.Step();
-                UpdateCells();
+                if (IsExperimentEnded)
+                {
+                    ToExperimentEndedState();
+                    return;
+                }
+                Request newRequest = experiment.Step();
+                IsExperimentEnded = newRequest == null;
+                UpdateCells(
+                    new RequestCell(
+                        RoomTypeHelper.RoomTypeToString(newRequest.RoomType),
+                        newRequest.TimeRange.ToCellString(),
+                        newRequest.IsApproved(),
+                        newRequest.RoomNumber
+                    )
+                );
                 UpdateCurrentTimeText();
                 UpdateRoomsList(experiment.Hotel, experiment.CurrentDateTime);
                 UpdateStatisticsText();
@@ -131,17 +145,24 @@ namespace Hotels.Pages.ExperimentPage
             experiment = new Experiment(
                 this.RoomsInfoMap,
                 new TimeRange(today, experimentEndTime),
-                parameters.MaxHoursPerStep
+                parameters.MaxHoursPerStep,
+                parameters.MaxDaysToBook
             );
             
-            UpdateCells();
+            InitCells();
             UpdateCurrentTimeText();
             UpdateRoomsList(experiment.Hotel, experiment.CurrentDateTime);
             UpdateStatisticsText();
             UpdateProfitText();
         }
 
-        private void UpdateCells()
+        private void UpdateCells(RequestCell cell)
+        {
+            RequestCells.Add(cell);
+            RequestsListView.ScrollIntoView(RequestsListView.Items[RequestsListView.Items.Count - 1]);
+        }
+
+        private void InitCells()
         {
             RequestCells.Clear();
             var cells = experiment.GetCells();
@@ -227,6 +248,12 @@ namespace Hotels.Pages.ExperimentPage
         private void UpdateProfitText()
         {
             this.ProfitTextBlock.Text = "Прибыль: " + this.experiment.Hotel.Profit;
+        }
+
+        private void ToExperimentEndedState()
+        {
+            StepButton.IsEnabled = false;
+            CurrentTimeTextBlock.Text = "Эксперимент закончен";
         }
     }
 }

@@ -24,17 +24,17 @@ namespace Hotels.Models
             {
                 throw new Exception("Negative roomTypeCount!");
             }
-            else if (roomTypeCount >= 100)
+            else if (roomTypeCount >= 99)
             {
-                throw new Exception("Room type can't be >= 100");
+                throw new Exception("Room type can't be >= 99");
             }
             else if (roomTypeCount < 10)
             {
-                return (int)roomType + 1 + "0" + roomTypeCount;
+                return ((int)roomType + 1) + "0" + (roomTypeCount + 1);
             }
             else
             {
-                return "" + (int)roomType + 1 + roomTypeCount;
+                return "" + ((int)roomType + 1) + (roomTypeCount + 1);
             }
         }
 

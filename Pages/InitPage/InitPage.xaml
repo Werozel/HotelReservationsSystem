@@ -40,7 +40,7 @@
 
                     <TextBlock
                         HorizontalAlignment="Center"
-                        Text="Введите количество номеров и их цену"
+                        Text="Введите количество номеров (макс. 98) и их цену"
                         Margin="20, 10, 20, 10"
                         />
 
@@ -113,6 +113,18 @@
                     <TextBox Name="HoursPerStepTB" Text="12" PlaceholderText="Введите число..." Margin="20, 10" Width="140"/>
 
                 </StackPanel>
+
+                <StackPanel
+                    Name="MaxDaysToStaySP"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal"
+                    >
+
+                <TextBlock Text="Максимальное количество дней бронирование" VerticalAlignment="Center" Margin="20, 10"/>
+                <TextBox Name="MaxDaysToStayTB" Text="14" PlaceholderText="Введите число..." Margin="20, 10" Width="140"/>
+
+            </StackPanel>
 
             </StackPanel>
             
