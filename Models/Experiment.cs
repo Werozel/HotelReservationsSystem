@@ -77,6 +77,7 @@ namespace Hotels.Models
 
         public void Step()
         {
+            // TODO: true/false & room number in list not correct
             int hoursPassed = Rand.Next(1, this.MaxHoursPerStep);
             CurrentDateTime = CurrentDateTime.AddHours(Convert.ToDouble(hoursPassed));
             RequestType requestType = (RequestType)Rand.Next(0, MaxRequestTypeInt);
@@ -87,8 +88,9 @@ namespace Hotels.Models
             {
                 case RequestType.BOOK:
 
-                    DateTime randomStartDateTime = getRandomValidDateTime(CurrentDateTime, EndDateTime);
-                    DateTime randomEndDateTime = getRandomValidDateTime(randomStartDateTime, EndDateTime);
+                    DateTime randomStartDateTime = getRandomValidDateTime(CurrentDateTime, EndDateTime).Date;
+                    DateTime randomEndDateTime = getRandomValidDateTime(randomStartDateTime, EndDateTime).Date;
+
                     TimeRange bookTimeRange = new TimeRange(randomStartDateTime, randomEndDateTime);
 
                     request = new Request(requestType, roomType, bookTimeRange);

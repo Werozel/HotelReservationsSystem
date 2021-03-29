@@ -4,13 +4,18 @@ namespace Hotels.Models
 {
     class TimeRange
     {
-        public static string FORMAT_STRING = "H:mm, dd.MM.yy";
+        public static string CELL_FORMAT_STRING = "dd.MM.yy";
+        public static string FULL_FORMAT_STRING = "hh:mm, dd.MM.yy";
 
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
 
         public TimeRange(DateTime start, DateTime end)
         {
+            if (end < start)
+            {
+                throw new Exception("TimeRange: End can't be before Start");
+            }
             this.Start = start;
             this.End = end;
         }
@@ -29,12 +34,12 @@ namespace Hotels.Models
 
         public bool Intersects(TimeRange other)
         {
-            return this.Contains(other.Start) || this.Contains(other.End);
+            return !(this.Start >= other.End || this.End <= other.Start);
         }
 
         public string ToCellString()
         {
-            return Start.ToString(FORMAT_STRING) + " - " + End.ToString(FORMAT_STRING);
+            return Start.ToString(CELL_FORMAT_STRING) + " - " + End.ToString(CELL_FORMAT_STRING);
         }
     }
 }

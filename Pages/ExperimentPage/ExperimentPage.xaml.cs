@@ -14,16 +14,25 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using System.Collections.ObjectModel;
 using Hotels.Models;
+using Windows.UI;
 
 namespace Hotels.Pages.ExperimentPage
 {
 
+    public static class Colors
+    {
+        public static Color RED = Color.FromArgb(255, 248, 206, 204);
+        public static Color GREED = Color.FromArgb(255, 213, 232, 212);
+    }
+
+
     public class RequestCell
     {
-        public string RoomType { get; set; }
-        public string TimeRange { get; set; }
-        public bool IsApproved { get; set; }
+        public string RoomType { get; }
+        public string TimeRange { get; }
+        public bool IsApproved { get; }
         public string RoomNumber { get; set; }
+        public SolidColorBrush BackgroundBrush { get; }
 
         public RequestCell(string roomType, string timeRange, bool isApproved, string roomNumber)
         {
@@ -31,6 +40,30 @@ namespace Hotels.Pages.ExperimentPage
             this.TimeRange = timeRange;
             this.IsApproved = isApproved;
             this.RoomNumber = roomNumber;
+            this.BackgroundBrush = isApproved
+                ? new SolidColorBrush(Colors.GREED)
+                : new SolidColorBrush(Colors.RED);
+        }
+
+        public string FormatRoomNumber()
+        {
+            return RoomNumber ?? "";
+        }
+    }
+
+    public class RoomCell
+    {
+        public string Number { get; }
+        public bool IsAvaliable { get; }
+        public SolidColorBrush BackgroundBrush { get; }
+
+        public RoomCell(string number, bool isAvaliable)
+        {
+            this.Number = number;
+            this.IsAvaliable = isAvaliable;
+            this.BackgroundBrush = isAvaliable
+                ? new SolidColorBrush(Colors.GREED)
+                : new SolidColorBrush(Colors.RED);
         }
     }
 
@@ -43,7 +76,12 @@ namespace Hotels.Pages.ExperimentPage
         private int DaysCount;
 
         private ObservableCollection<RequestCell> RequestCells = new ObservableCollection<RequestCell>();
-        
+
+        private ObservableCollection<RoomCell> SingleRoomCells = new ObservableCollection<RoomCell>();
+        private ObservableCollection<RoomCell> DoubleRoomCells = new ObservableCollection<RoomCell>();
+        private ObservableCollection<RoomCell> DoubleWithSofaRoomCells = new ObservableCollection<RoomCell>();
+        private ObservableCollection<RoomCell> JuniorSuiteRoomCells = new ObservableCollection<RoomCell>();
+        private ObservableCollection<RoomCell> SuiteRoomCells = new ObservableCollection<RoomCell>();
 
         public ExperimentPage()
         {
@@ -51,6 +89,12 @@ namespace Hotels.Pages.ExperimentPage
 
             ListView requestsListView = this.FindName("RequestsListView") as ListView;
             requestsListView.ItemsSource = RequestCells;
+
+            this.SingleRoomsList.ItemsSource = SingleRoomCells;
+            this.DoubleRoomsList.ItemsSource = DoubleRoomCells;
+            this.DoubleWithSofaRoomsList.ItemsSource = DoubleWithSofaRoomCells;
+            this.JuniorSuiteRoomsList.ItemsSource = JuniorSuiteRoomCells;
+            this.SuiteRoomsList.ItemsSource = SuiteRoomCells;
 
             (this.FindName("ExitButton") as Button).Click += (s, e) =>
             {
@@ -66,7 +110,7 @@ namespace Hotels.Pages.ExperimentPage
                 experiment.Step();
                 UpdateCells();
                 UpdateCurrentTimeText();
-                UpdateRoomsList();
+                UpdateRoomsList(experiment.Hotel, experiment.CurrentDateTime);
                 UpdateStatisticsText();
                 UpdateProfitText();
             };
@@ -92,7 +136,7 @@ namespace Hotels.Pages.ExperimentPage
             
             UpdateCells();
             UpdateCurrentTimeText();
-            UpdateRoomsList();
+            UpdateRoomsList(experiment.Hotel, experiment.CurrentDateTime);
             UpdateStatisticsText();
             UpdateProfitText();
         }
@@ -100,7 +144,8 @@ namespace Hotels.Pages.ExperimentPage
         private void UpdateCells()
         {
             RequestCells.Clear();
-            foreach (RequestCell cell in experiment.GetCells())
+            var cells = experiment.GetCells();
+            foreach (RequestCell cell in cells)
             {
                 RequestCells.Add(cell);
             }
@@ -108,12 +153,70 @@ namespace Hotels.Pages.ExperimentPage
 
         private void UpdateCurrentTimeText()
         {
-            this.CurrentTimeTextBlock.Text = this.experiment.CurrentDateTime.ToString(TimeRange.FORMAT_STRING);
+            this.CurrentTimeTextBlock.Text = this.experiment.CurrentDateTime.ToString(TimeRange.FULL_FORMAT_STRING);
         }
 
-        private void UpdateRoomsList()
+        private void UpdateRoomsList(Hotel hotel, DateTime currentDateTime)
         {
+            SingleRoomCells.Clear();
+            IList<Room> SingleRooms = hotel.GetAllRoomsByRoomType(RoomType.SINGLE);
+            foreach (Room room in SingleRooms)
+            {
+                SingleRoomCells.Add(
+                    new RoomCell(
+                        room.Number,
+                        room.IsFree(currentDateTime)
+                    )
+                );
+            }
 
+            DoubleRoomCells.Clear();
+            IList<Room> DoubleRooms = hotel.GetAllRoomsByRoomType(RoomType.DOUBLE);
+            foreach (Room room in DoubleRooms)
+            {
+                DoubleRoomCells.Add(
+                    new RoomCell(
+                        room.Number,
+                        room.IsFree(currentDateTime)
+                    )
+                );
+            }
+
+            DoubleWithSofaRoomCells.Clear();
+            IList<Room> DoubleWithSofaRooms = hotel.GetAllRoomsByRoomType(RoomType.DOUBLE_WITH_SOFA);
+            foreach (Room room in DoubleWithSofaRooms)
+            {
+                DoubleWithSofaRoomCells.Add(
+                    new RoomCell(
+                        room.Number,
+                        room.IsFree(currentDateTime)
+                    )
+                );
+            }
+
+            JuniorSuiteRoomCells.Clear();
+            IList<Room> JuniorSuiteRooms = hotel.GetAllRoomsByRoomType(RoomType.JUNIOR_SUITE);
+            foreach (Room room in JuniorSuiteRooms)
+            {
+                JuniorSuiteRoomCells.Add(
+                    new RoomCell(
+                        room.Number,
+                        room.IsFree(currentDateTime)
+                    )
+                );
+            }
+
+            SuiteRoomCells.Clear();
+            IList<Room> SuiteRooms = hotel.GetAllRoomsByRoomType(RoomType.SUITE);
+            foreach (Room room in SuiteRooms)
+            {
+                SuiteRoomCells.Add(
+                    new RoomCell(
+                        room.Number,
+                        room.IsFree(currentDateTime)
+                    )
+                );
+            }
         }
 
         private void UpdateStatisticsText()

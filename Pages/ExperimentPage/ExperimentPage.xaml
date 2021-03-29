@@ -40,11 +40,11 @@
                 RelativePanel.Above="ProfitTextBlockContainer"
                 ScrollViewer.VerticalScrollMode="Enabled"
                 >
-
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="local:RequestCell">
                         <StackPanel
                             Orientation="Vertical"
+                            Background="{x:Bind BackgroundBrush}"
                             Margin="0, 10">
 
                             <TextBlock
@@ -54,10 +54,7 @@
                                 Text="{x:Bind TimeRange}"/>
 
                             <TextBlock
-                                Text="{x:Bind IsApproved}"/>
-
-                            <TextBlock
-                                Text="{x:Bind RoomNumber}"/>
+                                Text="{x:Bind FormatRoomNumber()}"/>
 
                         </StackPanel>
                     </DataTemplate>
@@ -161,11 +158,12 @@
 
             <Grid
                 RelativePanel.AlignHorizontalCenterWithPanel="True"
-                RelativePanel.AlignVerticalCenterWithPanel="True">
+                RelativePanel.AlignVerticalCenterWithPanel="True"
+                Margin="40, 20">
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="7*" MaxWidth="800"/>
+                    <ColumnDefinition Width="7*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*"/>
@@ -177,72 +175,217 @@
 
                 <TextBlock
                     Text="Одноместный"
-                    TextAlignment="Center"
+                    TextAlignment="Left"
                     Padding="20"
                     Grid.Column="0"
                     Grid.Row="0"/>
                 <ListView
-                    ScrollViewer.HorizontalScrollMode="Enabled"
+                    Name="SingleRoomsList"
+                    ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                    ScrollViewer.HorizontalScrollMode="Auto"
+                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                    ScrollViewer.VerticalScrollMode="Disabled"
                     Margin="20, 0, 0, 0"
                     Grid.Column="1"
                     Grid.Row="0">
-                    <!-- TODO: Complete with data-->
+
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsStackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter Property="VerticalAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="local:RoomCell">
+                            <StackPanel
+                                Orientation="Vertical"
+                                Background="{x:Bind BackgroundBrush}"
+                                Margin="0, 10">
+
+                                <TextBlock
+                                    Text="{x:Bind Number}"/>
+
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+
                 </ListView>
 
                 <TextBlock
                     Text="Двухместный"
-                    TextAlignment="Center"
+                    TextAlignment="Left"
                     Padding="20"
                     Grid.Column="0"
                     Grid.Row="1"/>
                 <ListView
-                    ScrollViewer.HorizontalScrollMode="Enabled"
+                    Name="DoubleRoomsList"
+                    ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                    ScrollViewer.HorizontalScrollMode="Auto"
+                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                    ScrollViewer.VerticalScrollMode="Disabled"
                     Margin="20, 0, 0, 0"
                     Grid.Column="1"
                     Grid.Row="1">
-                    <!-- TODO: Complete with data-->
+
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsStackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter Property="VerticalAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="local:RoomCell">
+                            <StackPanel
+                                Orientation="Vertical"
+                                Background="{x:Bind BackgroundBrush}"
+                                Margin="0, 10">
+
+                                <TextBlock
+                                    Text="{x:Bind Number}"/>
+
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+
                 </ListView>
 
                 <TextBlock
                     Text="Двухместный с диваном"
-                    TextAlignment="Center"
+                    TextAlignment="Left"
                     Padding="20"
                     Grid.Column="0"
                     Grid.Row="2"/>
                 <ListView
-                    ScrollViewer.HorizontalScrollMode="Enabled"
+                    Name="DoubleWithSofaRoomsList"
+                    ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                    ScrollViewer.HorizontalScrollMode="Auto"
+                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                    ScrollViewer.VerticalScrollMode="Disabled"
                     Margin="20, 0, 0, 0"
                     Grid.Column="1"
                     Grid.Row="2">
-                    <!-- TODO: Complete with data-->
+
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsStackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter Property="VerticalAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="local:RoomCell">
+                            <StackPanel
+                                Orientation="Vertical"
+                                Background="{x:Bind BackgroundBrush}"
+                                Margin="0, 10">
+
+                                <TextBlock
+                                    Text="{x:Bind Number}"/>
+
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+
                 </ListView>
 
                 <TextBlock
                     Text="Полулюкс"
-                    TextAlignment="Center"
+                    TextAlignment="Left"
                     Padding="20"
                     Grid.Column="0"
                     Grid.Row="3"/>
                 <ListView
-                    ScrollViewer.HorizontalScrollMode="Enabled"
+                    Name="JuniorSuiteRoomsList"
+                    ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                    ScrollViewer.HorizontalScrollMode="Auto"
+                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                    ScrollViewer.VerticalScrollMode="Disabled"
                     Margin="20, 0, 0, 0"
                     Grid.Column="1"
                     Grid.Row="3">
-                    <!-- TODO: Complete with data-->
+
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsStackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter Property="VerticalAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="local:RoomCell">
+                            <StackPanel
+                                Orientation="Vertical"
+                                Background="{x:Bind BackgroundBrush}"
+                                Margin="0, 10">
+
+                                <TextBlock
+                                    Text="{x:Bind Number}"/>
+
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+
                 </ListView>
 
                 <TextBlock
                     Text="Люкс"
-                    TextAlignment="Center"
+                    TextAlignment="Left"
                     Padding="20"
                     Grid.Column="0"
                     Grid.Row="4"/>
                 <ListView
-                    ScrollViewer.HorizontalScrollMode="Enabled"
+                    Name="SuiteRoomsList"
+                    ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                    ScrollViewer.HorizontalScrollMode="Auto"
+                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                    ScrollViewer.VerticalScrollMode="Disabled"
                     Margin="20, 0, 0, 0"
                     Grid.Column="1"
                     Grid.Row="4">
-                    <!-- TODO: Complete with data-->
+
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsStackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter Property="VerticalAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="local:RoomCell">
+                            <StackPanel
+                                Orientation="Vertical"
+                                Background="{x:Bind BackgroundBrush}"
+                                Margin="0, 10">
+
+                                <TextBlock
+                                    Text="{x:Bind Number}"/>
+
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+
                 </ListView>
 
 

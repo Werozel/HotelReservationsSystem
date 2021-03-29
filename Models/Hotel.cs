@@ -5,7 +5,7 @@ namespace Hotels.Models
 
     class Hotel
     {
-        public List<Room> Rooms { get; set; }
+        public List<Room> Rooms { get; }
         public int Profit { get; private set; } = 0;
 
         public Hotel(List<Room> rooms)
@@ -15,9 +15,9 @@ namespace Hotels.Models
 
         public Room Book(Request request)
         {
-            IList<Room> roomsFilteredByType = Rooms.FindAll(room => room.RoomType == request.RoomType);
+            IList<Room> roomsFilteredByType = GetAllRoomsByRoomType(request.RoomType);
 
-            foreach (Room room in Rooms)
+            foreach (Room room in roomsFilteredByType)
             {
                 if (room.Book(request.TimeRange))
                 {
@@ -26,6 +26,11 @@ namespace Hotels.Models
                 }
             }
             return null;
+        }
+
+        public IList<Room> GetAllRoomsByRoomType(RoomType roomType)
+        {
+            return Rooms.FindAll(room => room.RoomType == roomType);
         }
 
     }
