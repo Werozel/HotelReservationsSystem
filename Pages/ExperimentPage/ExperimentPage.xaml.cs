@@ -15,65 +15,12 @@ using Windows.UI.Xaml.Navigation;
 using System.Collections.ObjectModel;
 using Hotels.Models;
 using Windows.UI;
+using Hotels.Pages.ExperimentPage.Cells;
+using Hotels.Models.Rooms;
+using Hotels.Models.Experiments;
 
 namespace Hotels.Pages.ExperimentPage
 {
-
-    public static class Colors
-    {
-        public static Color RED = Color.FromArgb(255, 248, 206, 204);
-        public static Color GREED = Color.FromArgb(255, 213, 232, 212);
-    }
-
-
-    public class RequestCell
-    {
-        public string RoomType { get; }
-        public string TimeRange { get; }
-        public bool IsApproved { get; }
-        public string RoomNumber { get; set; }
-        public string RequestType { get; }
-
-        public RequestCell(string roomType, string timeRange, bool isApproved, string roomNumber, string requestType)
-        {
-            this.RoomType = roomType;
-            this.TimeRange = timeRange;
-            this.IsApproved = isApproved;
-            this.RoomNumber = roomNumber;
-            this.RequestType = requestType;
-        }
-
-        public string FormatRoomNumber()
-        {
-            return RoomNumber ?? "";
-        }
-
-        public SolidColorBrush GetBackgroundBrush()
-        {
-            return IsApproved
-                ? new SolidColorBrush(Colors.GREED)
-                : new SolidColorBrush(Colors.RED);
-        }
-    }
-
-    public class RoomCell
-    {
-        public string Number { get; }
-        public bool IsAvaliable { get; }
-
-        public RoomCell(string number, bool isAvaliable)
-        {
-            this.Number = number;
-            this.IsAvaliable = isAvaliable;
-        }
-
-        public SolidColorBrush GetBackgroundBrush()
-        {
-            return IsAvaliable
-                ? new SolidColorBrush(Colors.GREED)
-                : new SolidColorBrush(Colors.RED);
-        }
-    }
 
     public sealed partial class ExperimentPage : Page
     {
@@ -85,6 +32,8 @@ namespace Hotels.Pages.ExperimentPage
         private int DaysCount;
 
         private ObservableCollection<RequestCell> RequestCells = new ObservableCollection<RequestCell>();
+
+        private ObservableCollection<BookedTimeCell> BookedTimeCells = new ObservableCollection<BookedTimeCell>();
 
         private ObservableCollection<RoomCell> SingleRoomCells = new ObservableCollection<RoomCell>();
         private ObservableCollection<RoomCell> DoubleRoomCells = new ObservableCollection<RoomCell>();
@@ -100,10 +49,17 @@ namespace Hotels.Pages.ExperimentPage
             requestsListView.ItemsSource = RequestCells;
 
             this.SingleRoomsList.ItemsSource = SingleRoomCells;
+            this.SingleRoomsList.ItemClick += OnRoomClick;
             this.DoubleRoomsList.ItemsSource = DoubleRoomCells;
+            this.DoubleRoomsList.ItemClick += OnRoomClick;
             this.DoubleWithSofaRoomsList.ItemsSource = DoubleWithSofaRoomCells;
+            this.DoubleWithSofaRoomsList.ItemClick += OnRoomClick;
             this.JuniorSuiteRoomsList.ItemsSource = JuniorSuiteRoomCells;
+            this.JuniorSuiteRoomsList.ItemClick += OnRoomClick;
             this.SuiteRoomsList.ItemsSource = SuiteRoomCells;
+            this.SuiteRoomsList.ItemClick += OnRoomClick;
+
+            this.BookedTimesList.ItemsSource = this.BookedTimeCells;
 
             (this.FindName("ExitButton") as Button).Click += (s, e) =>
             {
@@ -156,6 +112,36 @@ namespace Hotels.Pages.ExperimentPage
             UpdateProfitText();
         }
 
+        private void OnRoomClick(Object s, ItemClickEventArgs e)
+        {
+            RoomCell cell = e.ClickedItem as RoomCell;
+            List<TimeRange> bookedTimes = (cell.BookedTimes as List<TimeRange>);
+            bookedTimes.Sort(
+                new Comparison<TimeRange>((TimeRange a, TimeRange b) =>
+                {
+                    return a.Start.CompareTo(b.Start);
+                })
+            );
+            BookedTimeCells.Clear();
+            if (bookedTimes.Count == 0)
+            {
+                BookedTimeCells.Add(
+                    new BookedTimeCell(
+                        "Нет ни одной брони"
+                    )
+                );
+                return;
+            }
+            foreach (TimeRange bookedTime in bookedTimes)
+            {
+                BookedTimeCells.Add(
+                    new BookedTimeCell(
+                        bookedTime.ToCellString()
+                    )
+                );
+            }
+        }
+
         private void UpdateCells()
         {
             RequestCells.Clear();
@@ -175,7 +161,7 @@ namespace Hotels.Pages.ExperimentPage
 
         private void UpdateCurrentTimeText()
         {
-            this.CurrentTimeTextBlock.Text = this.experiment.CurrentDateTime.ToString(TimeRange.FULL_FORMAT_STRING);
+            this.CurrentTimeTextBlock.Text = this.experiment.CurrentDateTime.ToString(Constants.FULL_FORMAT_STRING);
         }
 
         private void UpdateRoomsList(Hotel hotel, DateTime currentDateTime)
@@ -187,7 +173,8 @@ namespace Hotels.Pages.ExperimentPage
                 SingleRoomCells.Add(
                     new RoomCell(
                         room.Number,
-                        room.IsFree(currentDateTime)
+                        room.IsFree(currentDateTime),
+                        room.BookedTimes
                     )
                 );
             }
@@ -199,7 +186,8 @@ namespace Hotels.Pages.ExperimentPage
                 DoubleRoomCells.Add(
                     new RoomCell(
                         room.Number,
-                        room.IsFree(currentDateTime)
+                        room.IsFree(currentDateTime),
+                        room.BookedTimes
                     )
                 );
             }
@@ -211,7 +199,8 @@ namespace Hotels.Pages.ExperimentPage
                 DoubleWithSofaRoomCells.Add(
                     new RoomCell(
                         room.Number,
-                        room.IsFree(currentDateTime)
+                        room.IsFree(currentDateTime),
+                        room.BookedTimes
                     )
                 );
             }
@@ -223,7 +212,8 @@ namespace Hotels.Pages.ExperimentPage
                 JuniorSuiteRoomCells.Add(
                     new RoomCell(
                         room.Number,
-                        room.IsFree(currentDateTime)
+                        room.IsFree(currentDateTime),
+                        room.BookedTimes
                     )
                 );
             }
@@ -235,7 +225,8 @@ namespace Hotels.Pages.ExperimentPage
                 SuiteRoomCells.Add(
                     new RoomCell(
                         room.Number,
-                        room.IsFree(currentDateTime)
+                        room.IsFree(currentDateTime),
+                        room.BookedTimes
                     )
                 );
             }

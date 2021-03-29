@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Hotels.Pages.ExperimentPage"
+    xmlns:cells="using:Hotels.Pages.ExperimentPage.Cells"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -51,7 +52,7 @@
                     <TransitionCollection/>
                 </ListView.ItemContainerTransitions>
                 <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="local:RequestCell">
+                    <DataTemplate x:DataType="cells:RequestCell">
                         <StackPanel
                             Orientation="Vertical"
                             Background="{x:Bind GetBackgroundBrush()}"
@@ -73,8 +74,6 @@
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
-
-
             </ListView>
 
             <Border
@@ -168,7 +167,37 @@
 
             </Button>
 
+            <ListView
+                Name="BookedTimesList"
+                RelativePanel.AlignTopWithPanel="True"
+                RelativePanel.Above="RoomsGrid"
+                RelativePanel.AlignHorizontalCenterWith="RoomsGrid"
+                ScrollViewer.VerticalScrollBarVisibility="Visible"
+                Margin="0, 40"
+                SelectionMode="None"
+                >
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="cells:BookedTimeCell">
+                        <StackPanel
+                            Orientation="Vertical"
+                            Padding="5">
+
+                            <TextBlock
+                                Text="{x:Bind BookTime}"/>
+
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
             <Grid
+                Name="RoomsGrid"
                 RelativePanel.AlignHorizontalCenterWithPanel="True"
                 RelativePanel.AlignVerticalCenterWithPanel="True"
                 Margin="40, 20">
@@ -218,7 +247,7 @@
                         <TransitionCollection/>
                     </ListView.ItemContainerTransitions>
                     <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="local:RoomCell">
+                        <DataTemplate x:DataType="cells:RoomCell">
                             <StackPanel
                                 Orientation="Vertical"
                                 Background="{x:Bind GetBackgroundBrush()}"
@@ -267,7 +296,7 @@
                         <TransitionCollection/>
                     </ListView.ItemContainerTransitions>
                     <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="local:RoomCell">
+                        <DataTemplate x:DataType="cells:RoomCell">
                             <StackPanel
                                 Orientation="Vertical"
                                 Background="{x:Bind GetBackgroundBrush()}"
@@ -316,7 +345,7 @@
                         <TransitionCollection/>
                     </ListView.ItemContainerTransitions>
                     <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="local:RoomCell">
+                        <DataTemplate x:DataType="cells:RoomCell">
                             <StackPanel
                                 Orientation="Vertical"
                                 Background="{x:Bind GetBackgroundBrush()}"
@@ -365,7 +394,7 @@
                         <TransitionCollection/>
                     </ListView.ItemContainerTransitions>
                     <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="local:RoomCell">
+                        <DataTemplate x:DataType="cells:RoomCell">
                             <StackPanel
                                 Orientation="Vertical"
                                 Background="{x:Bind GetBackgroundBrush()}"
@@ -414,7 +443,7 @@
                         <TransitionCollection/>
                     </ListView.ItemContainerTransitions>
                     <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="local:RoomCell">
+                        <DataTemplate x:DataType="cells:RoomCell">
                             <StackPanel
                                 Orientation="Vertical"
                                 Background="{x:Bind GetBackgroundBrush()}"

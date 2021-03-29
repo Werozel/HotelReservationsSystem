@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Navigation;
 using Windows.UI;
 using Hotels.Pages.ExperimentPage;
 using Hotels.Models;
+using Hotels.Models.Rooms;
 
 namespace Hotels.Pages.InitPage
 {

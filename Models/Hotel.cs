@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Hotels.Models.Requests;
+using Hotels.Models.Rooms;
+using System.Collections.Generic;
 
 namespace Hotels.Models
 {

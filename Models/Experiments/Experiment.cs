@@ -1,46 +1,16 @@
-﻿using Hotels.Pages.ExperimentPage;
+﻿using Hotels.Models.Experiment;
+using Hotels.Models.Requests;
+using Hotels.Models.Rooms;
+using Hotels.Pages.ExperimentPage;
+using Hotels.Pages.ExperimentPage.Cells;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hotels.Models
+namespace Hotels.Models.Experiments
 {
-
-    class ExperimentConfig
-    {
-        public static readonly int VALID_DAYS_AFTER_ENDING = 14;
-    }
-
-    class Statistics
-    {
-        public int TotalRequestCount;
-        public int RequestsAcceptedCount;
-        public int RequestsRejectedCount;
-        public int MissedProfit;
-
-        public Statistics(
-            int totalRequestsCount,
-            int requestsAcceptedCount,
-            int requestsRejectedCount,
-            int missedProfit
-        )
-        {
-            this.TotalRequestCount = totalRequestsCount;
-            this.RequestsAcceptedCount = requestsAcceptedCount;
-            this.RequestsRejectedCount = requestsRejectedCount;
-            this.MissedProfit = missedProfit;
-        }
-
-        public override string ToString()
-        {
-            return "Всего заявок: " + this.TotalRequestCount + "\n" +
-                "Одобрено: " + this.RequestsAcceptedCount + "\n" +
-                "Отклонено: " + this.RequestsRejectedCount + "\n" +
-                "Упущенная прибыль: " + this.MissedProfit + "\n";
-        }
-    }
 
     class Experiment
     {
@@ -63,7 +33,7 @@ namespace Hotels.Models
         public IList<Request> RequestList { get; } = new List<Request>();
         public Hotel Hotel = new Hotel(new List<Room>());
 
-        private int MaxDaysToBook;
+        private readonly int MaxDaysToBook;
 
         public Experiment(IDictionary<RoomType, RoomInitInfo> roomInfoMap, TimeRange experimentTimeRange, int maxHoursPerStep, int maxDaysToBook)
         {

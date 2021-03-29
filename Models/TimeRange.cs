@@ -4,8 +4,7 @@ namespace Hotels.Models
 {
     class TimeRange
     {
-        public static string CELL_FORMAT_STRING = "dd.MM.yy";
-        public static string FULL_FORMAT_STRING = "hh:mm, dd.MM.yy";
+        private static string CELL_FORMAT_STRING = "dd.MM.yy";
 
         public DateTime Start { get; set; }
         public DateTime End { get; set; }

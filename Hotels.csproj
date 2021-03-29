@@ -119,7 +119,17 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\Experiment.cs" />
+    <Compile Include="Models\Experiments\Experiment.cs" />
+    <Compile Include="Models\Experiments\ExperimentConfig.cs" />
+    <Compile Include="Models\Experiments\Statistics.cs" />
+    <Compile Include="Models\Requests\RequestType.cs" />
+    <Compile Include="Models\Requests\RequestTypeHelper.cs" />
+    <Compile Include="Models\Rooms\RoomTypeHelper.cs" />
+    <Compile Include="Models\Rooms\RoomType.cs" />
+    <Compile Include="Pages\ExperimentPage\Cells\BookedTimeCell.cs" />
+    <Compile Include="Pages\ExperimentPage\Cells\RequestCell.cs" />
+    <Compile Include="Pages\ExperimentPage\Cells\RoomCell.cs" />
+    <Compile Include="Pages\ExperimentPage\Constants.cs" />
     <Compile Include="Pages\ExperimentPage\ExperimentParameters.cs" />
     <Compile Include="Pages\ExperimentPage\ExperimentPage.xaml.cs">
       <DependentUpon>ExperimentPage.xaml</DependentUpon>
@@ -127,10 +137,10 @@
     <Compile Include="Pages\InitPage\InitPage.xaml.cs">
       <DependentUpon>InitPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\Request.cs" />
+    <Compile Include="Models\Requests\Request.cs" />
     <Compile Include="Models\TimeRange.cs" />
     <Compile Include="Models\Hotel.cs" />
-    <Compile Include="Models\Room.cs" />
+    <Compile Include="Models\Rooms\Room.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

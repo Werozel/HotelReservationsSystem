@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Hotels.Models;
+using Hotels.Models.Rooms;
 
 namespace Hotels.Pages.ExperimentPage
 {
