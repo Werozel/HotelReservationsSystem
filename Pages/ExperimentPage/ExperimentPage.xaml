@@ -59,8 +59,19 @@
                             Padding="5"
                             Margin="0, 0, 0, 5">
 
-                            <TextBlock
-                                Text="{x:Bind RequestType}"/>
+                            <RelativePanel>
+
+                                <TextBlock
+                                    RelativePanel.AlignLeftWithPanel="True"
+                                    RelativePanel.AlignTopWithPanel="True"
+                                    Text="{x:Bind RequestType}"/>
+
+                                <TextBlock
+                                    RelativePanel.AlignRightWithPanel="True"
+                                    RelativePanel.AlignTopWithPanel="True"
+                                    Text="{x:Bind Price}"/>
+
+                            </RelativePanel>
 
                             <TextBlock
                                 Text="{x:Bind RoomType}"/>

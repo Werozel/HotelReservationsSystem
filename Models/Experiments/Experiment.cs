@@ -73,7 +73,8 @@ namespace Hotels.Models.Experiments
                         request.IsApproved(),
                         request.RoomNumber,
                         RequestTypeHelper.RequestTypeToString(request.Type),
-                        request.HasDiscount
+                        request.HasDiscount,
+                        "+" + request.Price
                     )
                 )
                 .ToList();
@@ -128,6 +129,7 @@ namespace Hotels.Models.Experiments
             {
                 Statistics.RequestsAcceptedCount++;
                 request.RoomNumber = bookedRoom.Number;
+                request.Price = bookedRoom.Price;
             } else
             {
                 Statistics.RequestsRejectedCount++;
@@ -141,6 +143,7 @@ namespace Hotels.Models.Experiments
                 if (roomType == RoomType.SUITE)
                 {
                     this.RequestList.Add(request);
+                    Statistics.MissedProfit += roomTypeProfit;
                     return true;
                 }
 
@@ -160,7 +163,8 @@ namespace Hotels.Models.Experiments
                 {
                     Statistics.RequestsAcceptedCount++;
                     request.RoomNumber = discountBookedRoom.Number;
-                    Statistics.MissedProfit += roomTypeProfit - discountRoomTypeProfit;
+                    request.Price = discountRoomTypeProfit;
+                    Statistics.MissedProfit += discountRoomTypeProfit - roomTypeProfit;
                 } else
                 {
                     Statistics.RequestsRejectedCount++;

@@ -21,11 +21,11 @@ namespace Hotels.Models.Rooms
             }
             else if (roomTypeCount < 10)
             {
-                return ((int)roomType + 1) + "0" + (roomTypeCount + 1);
+                return "№" + ((int)roomType + 1) + "0" + (roomTypeCount + 1);
             }
             else
             {
-                return "" + ((int)roomType + 1) + (roomTypeCount + 1);
+                return "№" + ((int)roomType + 1) + (roomTypeCount + 1);
             }
         }
 

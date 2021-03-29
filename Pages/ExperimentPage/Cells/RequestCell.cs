@@ -15,6 +15,7 @@ namespace Hotels.Pages.ExperimentPage.Cells
         public string RoomNumber { get; set; }
         public string RequestType { get; }
         public bool HasDiscount { get; }
+        public string Price { get; }
 
         public RequestCell(
             string roomType, 
@@ -22,7 +23,8 @@ namespace Hotels.Pages.ExperimentPage.Cells
             bool isApproved, 
             string roomNumber, 
             string requestType, 
-            bool hasDiscount
+            bool hasDiscount,
+            string price
         )
         {
             this.RoomType = roomType;
@@ -31,6 +33,7 @@ namespace Hotels.Pages.ExperimentPage.Cells
             this.RoomNumber = roomNumber;
             this.RequestType = requestType;
             this.HasDiscount = hasDiscount;
+            this.Price = price;
         }
 
         public string FormatRoomNumber()
