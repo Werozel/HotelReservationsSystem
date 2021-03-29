@@ -39,6 +39,7 @@
                 RelativePanel.AlignRightWithPanel="True"
                 RelativePanel.Above="ProfitTextBlockContainer"
                 ScrollViewer.VerticalScrollMode="Enabled"
+                SelectionMode="None"
                 >
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
@@ -46,11 +47,14 @@
                         <Setter Property="VerticalContentAlignment" Value="Stretch"/>
                     </Style>
                 </ListView.ItemContainerStyle>
+                <ListView.ItemContainerTransitions>
+                    <TransitionCollection/>
+                </ListView.ItemContainerTransitions>
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="local:RequestCell">
                         <StackPanel
                             Orientation="Vertical"
-                            Background="{x:Bind BackgroundBrush}"
+                            Background="{x:Bind GetBackgroundBrush()}"
                             Padding="0, 5"
                             Margin="0, 0, 0, 5">
 
@@ -110,10 +114,8 @@
                 Name="StatisticsTextBlock"
                 Text="Статистика"
                 TextAlignment="Center"
-                Padding="20"
-                RelativePanel.AlignBottomWithPanel="True"
                 RelativePanel.AlignHorizontalCenterWithPanel="True"
-                Margin="0, 0, 0, 20"
+                RelativePanel.AlignVerticalCenterWith="StepButtonContainer"
                 />
 
             <StackPanel
@@ -192,6 +194,7 @@
                     ScrollViewer.HorizontalScrollMode="Auto"
                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
                     ScrollViewer.VerticalScrollMode="Disabled"
+                    SelectionMode="None"
                     Margin="20, 0, 0, 0"
                     Grid.Column="1"
                     Grid.Row="0">
@@ -207,11 +210,14 @@
                             <Setter Property="VerticalContentAlignment" Value="Stretch"/>
                         </Style>
                     </ListView.ItemContainerStyle>
+                    <ListView.ItemContainerTransitions>
+                        <TransitionCollection/>
+                    </ListView.ItemContainerTransitions>
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="local:RoomCell">
                             <StackPanel
                                 Orientation="Vertical"
-                                Background="{x:Bind BackgroundBrush}"
+                                Background="{x:Bind GetBackgroundBrush()}"
                                 Padding="10"
                                 Margin="0, 5">
 
@@ -236,6 +242,7 @@
                     ScrollViewer.HorizontalScrollMode="Auto"
                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
                     ScrollViewer.VerticalScrollMode="Disabled"
+                    SelectionMode="None"
                     Margin="20, 0, 0, 0"
                     Grid.Column="1"
                     Grid.Row="1">
@@ -251,11 +258,14 @@
                             <Setter Property="VerticalContentAlignment" Value="Stretch"/>
                         </Style>
                     </ListView.ItemContainerStyle>
+                    <ListView.ItemContainerTransitions>
+                        <TransitionCollection/>
+                    </ListView.ItemContainerTransitions>
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="local:RoomCell">
                             <StackPanel
                                 Orientation="Vertical"
-                                Background="{x:Bind BackgroundBrush}"
+                                Background="{x:Bind GetBackgroundBrush()}"
                                 Padding="10"
                                 Margin="0, 5">
 
@@ -280,6 +290,7 @@
                     ScrollViewer.HorizontalScrollMode="Auto"
                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
                     ScrollViewer.VerticalScrollMode="Disabled"
+                    SelectionMode="None"
                     Margin="20, 0, 0, 0"
                     Grid.Column="1"
                     Grid.Row="2">
@@ -295,11 +306,14 @@
                             <Setter Property="VerticalContentAlignment" Value="Stretch"/>
                         </Style>
                     </ListView.ItemContainerStyle>
+                    <ListView.ItemContainerTransitions>
+                        <TransitionCollection/>
+                    </ListView.ItemContainerTransitions>
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="local:RoomCell">
                             <StackPanel
                                 Orientation="Vertical"
-                                Background="{x:Bind BackgroundBrush}"
+                                Background="{x:Bind GetBackgroundBrush()}"
                                 Padding="10"
                                 Margin="0, 5">
 
@@ -324,6 +338,7 @@
                     ScrollViewer.HorizontalScrollMode="Auto"
                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
                     ScrollViewer.VerticalScrollMode="Disabled"
+                    SelectionMode="None"
                     Margin="20, 0, 0, 0"
                     Grid.Column="1"
                     Grid.Row="3">
@@ -339,11 +354,14 @@
                             <Setter Property="VerticalContentAlignment" Value="Stretch"/>
                         </Style>
                     </ListView.ItemContainerStyle>
+                    <ListView.ItemContainerTransitions>
+                        <TransitionCollection/>
+                    </ListView.ItemContainerTransitions>
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="local:RoomCell">
                             <StackPanel
                                 Orientation="Vertical"
-                                Background="{x:Bind BackgroundBrush}"
+                                Background="{x:Bind GetBackgroundBrush()}"
                                 Padding="10"
                                 Margin="0, 5">
 
@@ -368,6 +386,7 @@
                     ScrollViewer.HorizontalScrollMode="Auto"
                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
                     ScrollViewer.VerticalScrollMode="Disabled"
+                    SelectionMode="None"
                     Margin="20, 0, 0, 0"
                     Grid.Column="1"
                     Grid.Row="4">
@@ -383,11 +402,14 @@
                             <Setter Property="VerticalContentAlignment" Value="Stretch"/>
                         </Style>
                     </ListView.ItemContainerStyle>
+                    <ListView.ItemContainerTransitions>
+                        <TransitionCollection/>
+                    </ListView.ItemContainerTransitions>
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="local:RoomCell">
                             <StackPanel
                                 Orientation="Vertical"
-                                Background="{x:Bind BackgroundBrush}"
+                                Background="{x:Bind GetBackgroundBrush()}"
                                 Padding="10"
                                 Margin="0, 5">
 

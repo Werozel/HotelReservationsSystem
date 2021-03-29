@@ -13,6 +13,34 @@ namespace Hotels.Models
         public static readonly int VALID_DAYS_AFTER_ENDING = 14;
     }
 
+    class Statistics
+    {
+        public int TotalRequestCount;
+        public int RequestsAcceptedCount;
+        public int RequestsRejectedCount;
+        public int MissedProfit;
+
+        public Statistics(
+            int totalRequestsCount,
+            int requestsAcceptedCount,
+            int requestsRejectedCount,
+            int missedProfit
+        )
+        {
+            this.TotalRequestCount = totalRequestsCount;
+            this.RequestsAcceptedCount = requestsAcceptedCount;
+            this.RequestsRejectedCount = requestsRejectedCount;
+            this.MissedProfit = missedProfit;
+        }
+
+        public override string ToString()
+        {
+            return "Всего заявок: " + this.TotalRequestCount + "\n" +
+                "Одобрено: " + this.RequestsAcceptedCount + "\n" +
+                "Отклонено: " + this.RequestsRejectedCount + "\n" +
+                "Упущенная прибыль: " + this.MissedProfit + "\n";
+        }
+    }
 
     class Experiment
     {
@@ -20,6 +48,8 @@ namespace Hotels.Models
         private readonly IDictionary<RoomType, RoomInitInfo> RoomsInfoMap;
 
         private Random Rand = new Random();
+
+        public Statistics statistics { get; } = new Statistics(0, 0, 0, 0); 
 
         private static readonly Array RoomTypeValues = Enum.GetValues(typeof(RoomType));
         private static readonly int MaxRoomTypeInt = Enum.GetValues(typeof(RoomType)).Cast<int>().Max();
@@ -77,14 +107,14 @@ namespace Hotels.Models
                 .ToList();
         }
 
-        public Request Step()
+        public bool Step()
         {
             // TODO: true/false & room number in list not correct
             int hoursPassed = Rand.Next(1, this.MaxHoursPerStep);
             CurrentDateTime = CurrentDateTime.AddHours(Convert.ToDouble(hoursPassed));
             if (CurrentDateTime >= EndDateTime)
             {
-                return null;
+                return false;
             }
             RequestType requestType = (RequestType)Rand.Next(0, MaxRequestTypeInt);
             RoomType roomType = (RoomType)Rand.Next(0, MaxRoomTypeInt);
@@ -117,13 +147,23 @@ namespace Hotels.Models
                 default:
                     throw new Exception(String.Format("Unknown request Type: %s", requestType));
             }
+            statistics.TotalRequestCount++;
             Room bookedRoom = Hotel.Book(request);
             if (bookedRoom != null)
             {
+                statistics.RequestsAcceptedCount++;
                 request.RoomNumber = bookedRoom.Number;
+            } else
+            {
+                statistics.RequestsRejectedCount++;
+                bool gotRoomInfo = RoomsInfoMap.TryGetValue(roomType, out RoomInitInfo roomInfo);
+                if (gotRoomInfo)
+                {
+                    statistics.MissedProfit += roomInfo.Price;
+                }
             }
             this.RequestList.Add(request);
-            return request;
+            return true;
         }
         
         private DateTime getRandomValidDateTime(DateTime start, DateTime end)

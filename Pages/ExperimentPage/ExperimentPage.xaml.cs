@@ -32,7 +32,6 @@ namespace Hotels.Pages.ExperimentPage
         public string TimeRange { get; }
         public bool IsApproved { get; }
         public string RoomNumber { get; set; }
-        public SolidColorBrush BackgroundBrush { get; }
 
         public RequestCell(string roomType, string timeRange, bool isApproved, string roomNumber)
         {
@@ -40,14 +39,18 @@ namespace Hotels.Pages.ExperimentPage
             this.TimeRange = timeRange;
             this.IsApproved = isApproved;
             this.RoomNumber = roomNumber;
-            this.BackgroundBrush = isApproved
-                ? new SolidColorBrush(Colors.GREED)
-                : new SolidColorBrush(Colors.RED);
         }
 
         public string FormatRoomNumber()
         {
             return RoomNumber ?? "";
+        }
+
+        public SolidColorBrush GetBackgroundBrush()
+        {
+            return IsApproved
+                ? new SolidColorBrush(Colors.GREED)
+                : new SolidColorBrush(Colors.RED);
         }
     }
 
@@ -55,13 +58,16 @@ namespace Hotels.Pages.ExperimentPage
     {
         public string Number { get; }
         public bool IsAvaliable { get; }
-        public SolidColorBrush BackgroundBrush { get; }
 
         public RoomCell(string number, bool isAvaliable)
         {
             this.Number = number;
             this.IsAvaliable = isAvaliable;
-            this.BackgroundBrush = isAvaliable
+        }
+
+        public SolidColorBrush GetBackgroundBrush()
+        {
+            return IsAvaliable
                 ? new SolidColorBrush(Colors.GREED)
                 : new SolidColorBrush(Colors.RED);
         }
@@ -113,16 +119,8 @@ namespace Hotels.Pages.ExperimentPage
                     ToExperimentEndedState();
                     return;
                 }
-                Request newRequest = experiment.Step();
-                IsExperimentEnded = newRequest == null;
-                UpdateCells(
-                    new RequestCell(
-                        RoomTypeHelper.RoomTypeToString(newRequest.RoomType),
-                        newRequest.TimeRange.ToCellString(),
-                        newRequest.IsApproved(),
-                        newRequest.RoomNumber
-                    )
-                );
+                IsExperimentEnded = !experiment.Step();
+                UpdateCells();
                 UpdateCurrentTimeText();
                 UpdateRoomsList(experiment.Hotel, experiment.CurrentDateTime);
                 UpdateStatisticsText();
@@ -148,27 +146,28 @@ namespace Hotels.Pages.ExperimentPage
                 parameters.MaxHoursPerStep,
                 parameters.MaxDaysToBook
             );
-            
-            InitCells();
+
+            UpdateCells();
             UpdateCurrentTimeText();
             UpdateRoomsList(experiment.Hotel, experiment.CurrentDateTime);
             UpdateStatisticsText();
             UpdateProfitText();
         }
 
-        private void UpdateCells(RequestCell cell)
-        {
-            RequestCells.Add(cell);
-            RequestsListView.ScrollIntoView(RequestsListView.Items[RequestsListView.Items.Count - 1]);
-        }
-
-        private void InitCells()
+        private void UpdateCells()
         {
             RequestCells.Clear();
             var cells = experiment.GetCells();
             foreach (RequestCell cell in cells)
             {
                 RequestCells.Add(cell);
+            }
+            var listItems = RequestsListView.Items;
+            var listItemsCount = listItems.Count;
+            if (listItemsCount != 0)
+            {
+                RequestsListView.ScrollIntoView(listItems[listItemsCount - 1]);
+
             }
         }
 
@@ -242,7 +241,7 @@ namespace Hotels.Pages.ExperimentPage
 
         private void UpdateStatisticsText()
         {
-
+            StatisticsTextBlock.Text = experiment.statistics.ToString();
         }
 
         private void UpdateProfitText()
