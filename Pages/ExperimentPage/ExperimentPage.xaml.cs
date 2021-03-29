@@ -1,20 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using System.Collections.ObjectModel;
 using Hotels.Models;
-using Windows.UI;
 using Hotels.Pages.ExperimentPage.Cells;
 using Hotels.Models.Rooms;
 using Hotels.Models.Experiments;
@@ -45,8 +35,7 @@ namespace Hotels.Pages.ExperimentPage
         {
             this.InitializeComponent();
 
-            ListView requestsListView = this.FindName("RequestsListView") as ListView;
-            requestsListView.ItemsSource = RequestCells;
+            RequestsListView.ItemsSource = RequestCells;
 
             this.SingleRoomsList.ItemsSource = SingleRoomCells;
             this.SingleRoomsList.ItemClick += OnRoomClick;
@@ -61,16 +50,16 @@ namespace Hotels.Pages.ExperimentPage
 
             this.BookedTimesList.ItemsSource = this.BookedTimeCells;
 
-            (this.FindName("ExitButton") as Button).Click += (s, e) =>
+            (this.ExitButton).Click += (s, e) =>
             {
                 Application.Current.Exit();
             };
 
-            (this.FindName("RestartButton") as Button).Click += (s, e) =>
+            (this.RestartButton).Click += (s, e) =>
             {
                 this.Frame.Navigate(typeof(InitPage.InitPage));
             };
-            (this.FindName("StepButton") as Button).Click += (s, e) =>
+            (this.StepButton).Click += (s, e) =>
             {
                 if (IsExperimentEnded)
                 {
