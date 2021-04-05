@@ -17,13 +17,17 @@ namespace Hotels.Models.Requests
         public bool HasDiscount { get; set; } = false;
         public RoomType DiscountRoomType { get; set; }
         public double Price { get; set; }
+        public int Step { get; }
+        public DateTime BookTime { get; }
 
-        public Request(RequestType type, RoomType roomType, TimeRange timeRange)
+        public Request(RequestType type, RoomType roomType, TimeRange timeRange, int step, DateTime bookTime)
         {
             this.Type = type;
             this.RoomType = roomType;
             this.TimeRange = timeRange;
             this.RoomNumber = null;
+            this.Step = step;
+            this.BookTime = bookTime;
         }
 
         public bool IsApproved()

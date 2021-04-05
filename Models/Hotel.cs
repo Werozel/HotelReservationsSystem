@@ -1,6 +1,8 @@
 ﻿using Hotels.Models.Requests;
 using Hotels.Models.Rooms;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Hotels.Models
 {
@@ -17,8 +19,9 @@ namespace Hotels.Models
 
         public Room Book(Request request)
         {
+            var rnd = new Random();
             RoomType roomType = request.HasDiscount ? request.DiscountRoomType : request.RoomType;
-            IList<Room> roomsFilteredByType = GetAllRoomsByRoomType(roomType);
+            List<Room> roomsFilteredByType = GetAllRoomsByRoomType(roomType).OrderBy(a => rnd.Next()).ToList();
 
             foreach (Room room in roomsFilteredByType)
             {

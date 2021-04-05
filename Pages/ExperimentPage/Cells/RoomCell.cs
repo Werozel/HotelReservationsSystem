@@ -14,12 +14,16 @@ namespace Hotels.Pages.ExperimentPage.Cells
         public string Number { get; }
         public bool IsAvaliable { get; }
         public List<TimeRange> BookedTimes { get; }
+        public int RequestsCount { get; }
+        public string OccupancyText { get; }
 
-        public RoomCell(string number, bool isAvaliable, List<TimeRange> bookedTimes)
+        public RoomCell(string number, bool isAvaliable, List<TimeRange> bookedTimes, int requestCount, string occupancyText)
         {
             this.Number = number;
             this.IsAvaliable = isAvaliable;
             this.BookedTimes = bookedTimes;
+            this.RequestsCount = requestCount;
+            this.OccupancyText = occupancyText;
         }
 
         public SolidColorBrush GetBackgroundBrush()

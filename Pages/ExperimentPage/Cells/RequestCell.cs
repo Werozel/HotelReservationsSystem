@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,11 +12,13 @@ namespace Hotels.Pages.ExperimentPage.Cells
     {
         public string RoomType { get; }
         public string TimeRange { get; }
-        public bool IsApproved { get; }
-        public string RoomNumber { get; set; }
+        private bool IsApproved { get; }
+        private string RoomNumber { get; }
         public string RequestType { get; }
-        public bool HasDiscount { get; }
+        private bool HasDiscount { get; }
         public string Price { get; }
+        private bool IsCurrentStep { get; }
+        public string BookTime { get;  }
 
         public RequestCell(
             string roomType, 
@@ -24,7 +27,9 @@ namespace Hotels.Pages.ExperimentPage.Cells
             string roomNumber, 
             string requestType, 
             bool hasDiscount,
-            string price
+            string price,
+            bool isCurrentStep,
+            string bookTime
         )
         {
             this.RoomType = roomType;
@@ -34,6 +39,8 @@ namespace Hotels.Pages.ExperimentPage.Cells
             this.RequestType = requestType;
             this.HasDiscount = hasDiscount;
             this.Price = price;
+            this.IsCurrentStep = isCurrentStep;
+            this.BookTime = bookTime;
         }
 
         public string FormatRoomNumber()
@@ -52,6 +59,17 @@ namespace Hotels.Pages.ExperimentPage.Cells
             } else
             {
                 return new SolidColorBrush(Constants.Colors.GREEN);
+            }
+        }
+
+        public SolidColorBrush GetBorderBrush()
+        {
+            if (this.IsCurrentStep)
+            {
+                return new SolidColorBrush(Constants.Colors.GREY);
+            } else
+            {
+                return null;
             }
         }
     }

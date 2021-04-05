@@ -4,6 +4,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using Hotels.Models;
 using Hotels.Pages.ExperimentPage.Cells;
 using Hotels.Models.Rooms;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Linq;
 using Hotels.Models.Requests;
+using Hotels.Models.Experiment;
 
 namespace Hotels.Pages.ExperimentPage
 {
@@ -19,7 +21,7 @@ namespace Hotels.Pages.ExperimentPage
     public sealed partial class ExperimentPage : Page
     {
 
-        private Experiment experiment;
+        private Experiment Experiment;
         private bool IsExperimentEnded;
 
         private IDictionary<RoomType, RoomInitInfo> RoomsInfoMap;
@@ -36,6 +38,8 @@ namespace Hotels.Pages.ExperimentPage
         private ObservableCollection<RoomCell> SuiteRoomCells = new ObservableCollection<RoomCell>();
 
         private bool BackgroundTaskRunning = false;
+
+        private string SelectedRoomNumber = "";
 
         public ExperimentPage()
         {
@@ -73,10 +77,10 @@ namespace Hotels.Pages.ExperimentPage
                     ToExperimentEndedState();
                     return;
                 }
-                IsExperimentEnded = !experiment.Step();
+                IsExperimentEnded = !Experiment.Step();
                 UpdateCells();
                 UpdateCurrentTimeText();
-                UpdateRoomsList(experiment.Hotel, experiment.CurrentDateTime);
+                UpdateRoomsList(Experiment.Hotel, Experiment.CurrentDateTime);
                 UpdateStatisticsText();
                 UpdateProfitText();
             };
@@ -98,10 +102,10 @@ namespace Hotels.Pages.ExperimentPage
 
             this.ToTheEndButton.Click += (s, e) =>
             {
-                experiment.ToTheEnd();
+                Experiment.ToTheEnd();
                 UpdateCells();
                 UpdateCurrentTimeText();
-                UpdateRoomsList(experiment.Hotel, experiment.CurrentDateTime);
+                UpdateRoomsList(Experiment.Hotel, Experiment.CurrentDateTime);
                 UpdateStatisticsText();
                 UpdateProfitText();
                 ToExperimentEndedState();
@@ -120,7 +124,7 @@ namespace Hotels.Pages.ExperimentPage
 
             DateTime today = DateTime.Today;
             DateTime experimentEndTime = today.AddDays(this.DaysCount);
-            experiment = new Experiment(
+            Experiment = new Experiment(
                 this.RoomsInfoMap,
                 new TimeRange(today, experimentEndTime),
                 parameters.HoursPerStep,
@@ -152,7 +156,7 @@ namespace Hotels.Pages.ExperimentPage
 
             UpdateCells();
             UpdateCurrentTimeText();
-            UpdateRoomsList(experiment.Hotel, experiment.CurrentDateTime);
+            UpdateRoomsList(Experiment.Hotel, Experiment.CurrentDateTime);
             UpdateStatisticsText();
             UpdateProfitText();
         }
@@ -160,7 +164,13 @@ namespace Hotels.Pages.ExperimentPage
         private void OnRoomClick(Object s, ItemClickEventArgs e)
         {
             RoomCell cell = e.ClickedItem as RoomCell;
-            List<TimeRange> bookedTimes = (cell.BookedTimes as List<TimeRange>);
+            UpdateRoomInfo(cell);
+            this.SelectedRoomNumber = cell.Number;
+        }
+
+        private void UpdateRoomInfo(RoomCell cell)
+        {
+            List<TimeRange> bookedTimes = cell.BookedTimes as List<TimeRange>;
             bookedTimes.Sort(
                 new Comparison<TimeRange>((TimeRange a, TimeRange b) =>
                 {
@@ -185,12 +195,21 @@ namespace Hotels.Pages.ExperimentPage
                     )
                 );
             }
+            this.ListRoomNumberTB.Text = cell.Number;
+            this.ListRoomNumberTB.Visibility = Visibility.Visible;
+
+            this.ListRoomOccupancyTB.Text = $"Номер заполнен на {cell.OccupancyText}";
+            this.ListRoomOccupancyTB.Visibility = Visibility.Visible;
+
+            this.ListRoomRequestCountTB.Text = $"Всего {cell.RequestsCount} заявок на этот номер";
+            this.ListRoomRequestCountTB.Visibility = Visibility.Visible;
         }
 
         private void UpdateCells()
         {
             RequestCells.Clear();
-            var cells = experiment.RequestList
+            int currentStep = Experiment.CurrentStep;
+            var cells = Experiment.RequestList
                 .Select(request =>
                     new RequestCell(
                         RoomTypeHelper.RoomTypeToString(request.RoomType),
@@ -199,7 +218,9 @@ namespace Hotels.Pages.ExperimentPage
                         request.RoomNumber,
                         RequestTypeHelper.RequestTypeToString(request.Type),
                         request.HasDiscount,
-                        "+" + request.Price
+                        "+" + request.Price,
+                        currentStep == request.Step,
+                        request.BookTime.ToString(Constants.FULL_FORMAT_STRING)
                     )
                 )
                 .ToList();
@@ -218,88 +239,116 @@ namespace Hotels.Pages.ExperimentPage
 
         private void UpdateCurrentTimeText()
         {
-            DateTime currentDateTime = this.experiment.CurrentDateTime;
+            DateTime currentDateTime = this.Experiment.CurrentDateTime;
             this.CurrentTimeTextBlock.Text = currentDateTime.ToString(Constants.FULL_FORMAT_STRING);
-            DateTime endDateTime = this.experiment.EndDateTime;
+            DateTime endDateTime = this.Experiment.EndDateTime;
             this.DaysLeftTB.Text = String.Format("Осталось {0} дней", Math.Floor((endDateTime - currentDateTime).TotalDays));
         }
 
         private void UpdateRoomsList(Hotel hotel, DateTime currentDateTime)
         {
+            TimeRange experimentTimeRange = new TimeRange(this.Experiment.StartDateTime, this.Experiment.EndDateTime.AddDays(ExperimentConfig.VALID_DAYS_AFTER_ENDING));
+
             SingleRoomCells.Clear();
-            IList<Room> SingleRooms = hotel.GetAllRoomsByRoomType(RoomType.SINGLE);
-            foreach (Room room in SingleRooms)
+            IList<Room> singleRooms = hotel.GetAllRoomsByRoomType(RoomType.SINGLE);
+            foreach (Room room in singleRooms)
             {
-                SingleRoomCells.Add(
-                    new RoomCell(
-                        room.Number,
-                        room.IsFree(currentDateTime),
-                        room.BookedTimes
-                    )
+                var newRoomCell = new RoomCell(
+                    room.Number,
+                    room.IsFree(currentDateTime),
+                    room.BookedTimes,
+                    room.GetRequestsCount(),
+                    $"{room.GetOccupancyInPeriod(experimentTimeRange)}%"
                 );
+                if (room.Number == this.SelectedRoomNumber)
+                {
+                    UpdateRoomInfo(newRoomCell);
+                }
+                SingleRoomCells.Add(newRoomCell);
             }
 
             DoubleRoomCells.Clear();
-            IList<Room> DoubleRooms = hotel.GetAllRoomsByRoomType(RoomType.DOUBLE);
-            foreach (Room room in DoubleRooms)
+            IList<Room> doubleRooms = hotel.GetAllRoomsByRoomType(RoomType.DOUBLE);
+            foreach (Room room in doubleRooms)
             {
-                DoubleRoomCells.Add(
-                    new RoomCell(
-                        room.Number,
-                        room.IsFree(currentDateTime),
-                        room.BookedTimes
-                    )
+                var newRoomCell = new RoomCell(
+                    room.Number,
+                    room.IsFree(currentDateTime),
+                    room.BookedTimes,
+                    room.GetRequestsCount(),
+                    $"{room.GetOccupancyInPeriod(experimentTimeRange)}%"
                 );
+                if (room.Number == this.SelectedRoomNumber)
+                {
+                    UpdateRoomInfo(newRoomCell);
+                }
+                DoubleRoomCells.Add(newRoomCell);
             }
 
             DoubleWithSofaRoomCells.Clear();
-            IList<Room> DoubleWithSofaRooms = hotel.GetAllRoomsByRoomType(RoomType.DOUBLE_WITH_SOFA);
-            foreach (Room room in DoubleWithSofaRooms)
+            IList<Room> doubleWithSofaRooms = hotel.GetAllRoomsByRoomType(RoomType.DOUBLE_WITH_SOFA);
+            foreach (Room room in doubleWithSofaRooms)
             {
-                DoubleWithSofaRoomCells.Add(
-                    new RoomCell(
-                        room.Number,
-                        room.IsFree(currentDateTime),
-                        room.BookedTimes
-                    )
+
+                var newRoomCell = new RoomCell(
+                    room.Number,
+                    room.IsFree(currentDateTime),
+                    room.BookedTimes,
+                    room.GetRequestsCount(),
+                    $"{room.GetOccupancyInPeriod(experimentTimeRange)}%"
                 );
+                if (room.Number == this.SelectedRoomNumber)
+                {
+                    UpdateRoomInfo(newRoomCell);
+                }
+                DoubleWithSofaRoomCells.Add(newRoomCell);
             }
 
             JuniorSuiteRoomCells.Clear();
-            IList<Room> JuniorSuiteRooms = hotel.GetAllRoomsByRoomType(RoomType.JUNIOR_SUITE);
-            foreach (Room room in JuniorSuiteRooms)
+            IList<Room> juniorSuiteRooms = hotel.GetAllRoomsByRoomType(RoomType.JUNIOR_SUITE);
+            foreach (Room room in juniorSuiteRooms)
             {
-                JuniorSuiteRoomCells.Add(
-                    new RoomCell(
-                        room.Number,
-                        room.IsFree(currentDateTime),
-                        room.BookedTimes
-                    )
+                var newRoomCell = new RoomCell(
+                    room.Number,
+                    room.IsFree(currentDateTime),
+                    room.BookedTimes,
+                    room.GetRequestsCount(),
+                    $"{room.GetOccupancyInPeriod(experimentTimeRange)}%"
                 );
+                if (room.Number == this.SelectedRoomNumber)
+                {
+                    UpdateRoomInfo(newRoomCell);
+                }
+                JuniorSuiteRoomCells.Add(newRoomCell);
             }
 
             SuiteRoomCells.Clear();
-            IList<Room> SuiteRooms = hotel.GetAllRoomsByRoomType(RoomType.SUITE);
-            foreach (Room room in SuiteRooms)
+            IList<Room> suiteRooms = hotel.GetAllRoomsByRoomType(RoomType.SUITE);
+            foreach (Room room in suiteRooms)
             {
-                SuiteRoomCells.Add(
-                    new RoomCell(
-                        room.Number,
-                        room.IsFree(currentDateTime),
-                        room.BookedTimes
-                    )
+                var newRoomCell = new RoomCell(
+                    room.Number,
+                    room.IsFree(currentDateTime),
+                    room.BookedTimes,
+                    room.GetRequestsCount(),
+                    $"{room.GetOccupancyInPeriod(experimentTimeRange)}%"
                 );
+                if (room.Number == this.SelectedRoomNumber)
+                {
+                    UpdateRoomInfo(newRoomCell);
+                }
+                SuiteRoomCells.Add(newRoomCell);
             }
         }
 
         private void UpdateStatisticsText()
         {
-            StatisticsTextBlock.Text = experiment.Statistics.ToString();
+            StatisticsTextBlock.Text = Experiment.Statistics.ToString();
         }
 
         private void UpdateProfitText()
         {
-            this.ProfitTextBlock.Text = "Прибыль: " + this.experiment.Hotel.Profit;
+            this.ProfitTextBlock.Text = "Прибыль: " + this.Experiment.Hotel.Profit;
         }
 
         private void ToExperimentEndedState()
@@ -323,10 +372,10 @@ namespace Hotels.Pages.ExperimentPage
                         ToExperimentEndedState();
                         return;
                     }
-                    IsExperimentEnded = !experiment.Step();
+                    IsExperimentEnded = !Experiment.Step();
                     UpdateCells();
                     UpdateCurrentTimeText();
-                    UpdateRoomsList(experiment.Hotel, experiment.CurrentDateTime);
+                    UpdateRoomsList(Experiment.Hotel, Experiment.CurrentDateTime);
                     UpdateStatisticsText();
                     UpdateProfitText();
                     await Task.Delay(1000, new CancellationTokenSource().Token);

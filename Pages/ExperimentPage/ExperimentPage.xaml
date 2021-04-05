@@ -12,12 +12,11 @@
     <Grid>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="2.5*"/>
             <ColumnDefinition Width="7*"/>
         </Grid.ColumnDefinitions>
 
         <RelativePanel 
-            Name="RequestsListContainer"
             Grid.Column="0"
             BorderBrush="Black" 
             BorderThickness="1"
@@ -55,6 +54,8 @@
                     <DataTemplate x:DataType="cells:RequestCell">
                         <StackPanel
                             Orientation="Vertical"
+                            BorderBrush="{x:Bind GetBorderBrush()}"
+                            BorderThickness="2"
                             Background="{x:Bind GetBackgroundBrush()}"
                             Padding="5"
                             Margin="0, 0, 0, 5">
@@ -62,9 +63,22 @@
                             <RelativePanel>
 
                                 <TextBlock
+                                    Name="RequestTypeTB"
                                     RelativePanel.AlignLeftWithPanel="True"
                                     RelativePanel.AlignTopWithPanel="True"
                                     Text="{x:Bind RequestType}"/>
+
+                                <TextBlock
+                                    Name="DividerTB"
+                                    RelativePanel.RightOf="RequestTypeTB"
+                                    RelativePanel.AlignTopWithPanel="True"
+                                    Text=" - "/>
+
+                                <TextBlock
+                                    RelativePanel.RightOf="DividerTB"
+                                    RelativePanel.AlignTopWithPanel="True"
+                                    Margin="5, 0, 0, 0"
+                                    Text="{x:Bind BookTime}"/>
 
                                 <TextBlock
                                     RelativePanel.AlignRightWithPanel="True"
@@ -128,7 +142,7 @@
                 Text="Статистика"
                 TextAlignment="Center"
                 RelativePanel.AlignHorizontalCenterWithPanel="True"
-                RelativePanel.AlignVerticalCenterWith="StepButtonContainer"
+                RelativePanel.AlignBottomWithPanel="True"
                 />
 
             <StackPanel
@@ -198,34 +212,68 @@
 
             </Button>
 
-            <ListView
-                Name="BookedTimesList"
+            <RelativePanel
                 RelativePanel.AlignTopWithPanel="True"
                 RelativePanel.Above="RoomsGrid"
                 RelativePanel.AlignHorizontalCenterWith="RoomsGrid"
-                ScrollViewer.VerticalScrollBarVisibility="Visible"
-                Margin="0, 40"
-                SelectionMode="None"
-                >
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
-                    </Style>
-                </ListView.ItemContainerStyle>
-                <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="cells:BookedTimeCell">
-                        <StackPanel
-                            Orientation="Vertical"
-                            Padding="5">
+                Margin="0, 40">
 
-                            <TextBlock
-                                Text="{x:Bind BookTime}"/>
+                <ListView
+                    Name="BookedTimesList"
+                    SelectionMode="None"
+                    ScrollViewer.VerticalScrollBarVisibility="Visible"
+                    >
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemContainerTransitions>
+                        <TransitionCollection/>
+                    </ListView.ItemContainerTransitions>
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="cells:BookedTimeCell">
+                            <StackPanel
+                                Orientation="Vertical"
+                                Padding="5">
 
-                        </StackPanel>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                                <TextBlock
+                                    Text="{x:Bind BookTime}"/>
+
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <TextBlock
+                    Name="ListRoomNumberTB"
+                    RelativePanel.AlignTopWithPanel="True"
+                    RelativePanel.RightOf="BookedTimesList"
+                    Margin="10, 10, 5, 0"
+                    Text="№101"
+                    Visibility="Collapsed"
+                    />
+                
+                <TextBlock
+                    Name="ListRoomOccupancyTB"
+                    RelativePanel.Below="ListRoomNumberTB"
+                    RelativePanel.RightOf="BookedTimesList"
+                    Text="Заполнен на 50%"
+                    Margin="10, 5, 0, 0"
+                    Visibility="Collapsed"/>
+
+                <TextBlock
+                    Name="ListRoomRequestCountTB"
+                    RelativePanel.Below="ListRoomOccupancyTB"
+                    RelativePanel.RightOf="BookedTimesList"
+                    Text="Всего 100 заявок"
+                    Margin="10, 5, 0, 0"
+                    Visibility="Collapsed"/>
+                
+
+
+            </RelativePanel>
 
             <Grid
                 Name="RoomsGrid"
@@ -290,16 +338,31 @@
                     </ListView.ItemContainerTransitions>
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="cells:RoomCell">
-                            <StackPanel
-                                Orientation="Vertical"
+                            <RelativePanel
                                 Background="{x:Bind GetBackgroundBrush()}"
-                                Padding="10"
+                                Padding="5, 2"
                                 Margin="0, 5">
 
                                 <TextBlock
+                                    RelativePanel.AlignTopWithPanel="True"
+                                    RelativePanel.AlignLeftWithPanel="True"
                                     Text="{x:Bind Number}"/>
 
-                            </StackPanel>
+                                <RelativePanel
+                                    RelativePanel.AlignLeftWithPanel="True"
+                                    RelativePanel.AlignRightWithPanel="True"
+                                    RelativePanel.AlignBottomWithPanel="True">
+
+                                    <TextBlock
+                                        RelativePanel.AlignLeftWithPanel="True"
+                                        Text="{x:Bind OccupancyText}"/>
+
+                                    <TextBlock
+                                        RelativePanel.AlignRightWithPanel="True"
+                                        Text="{x:Bind RequestsCount}"/>
+
+                                </RelativePanel>
+                            </RelativePanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
 
@@ -349,16 +412,32 @@
                     </ListView.ItemContainerTransitions>
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="cells:RoomCell">
-                            <StackPanel
-                                Orientation="Vertical"
+                            <RelativePanel
                                 Background="{x:Bind GetBackgroundBrush()}"
-                                Padding="10"
+                                Padding="5, 2"
                                 Margin="0, 5">
 
                                 <TextBlock
+                                    RelativePanel.AlignTopWithPanel="True"
+                                    RelativePanel.AlignLeftWithPanel="True"
                                     Text="{x:Bind Number}"/>
 
-                            </StackPanel>
+                                <RelativePanel
+                                    RelativePanel.AlignLeftWithPanel="True"
+                                    RelativePanel.AlignRightWithPanel="True"
+                                    RelativePanel.AlignBottomWithPanel="True">
+
+                                    <TextBlock
+                                        RelativePanel.AlignLeftWithPanel="True"
+                                        Text="{x:Bind OccupancyText}"/>
+
+                                    <TextBlock
+                                        RelativePanel.AlignRightWithPanel="True"
+                                        Text="{x:Bind RequestsCount}"/>
+
+                                </RelativePanel>
+
+                            </RelativePanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
 
@@ -408,16 +487,32 @@
                     </ListView.ItemContainerTransitions>
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="cells:RoomCell">
-                            <StackPanel
-                                Orientation="Vertical"
+                            <RelativePanel
                                 Background="{x:Bind GetBackgroundBrush()}"
-                                Padding="10"
+                                Padding="5, 2"
                                 Margin="0, 5">
 
                                 <TextBlock
+                                    RelativePanel.AlignTopWithPanel="True"
+                                    RelativePanel.AlignLeftWithPanel="True"
                                     Text="{x:Bind Number}"/>
 
-                            </StackPanel>
+                                <RelativePanel
+                                    RelativePanel.AlignLeftWithPanel="True"
+                                    RelativePanel.AlignRightWithPanel="True"
+                                    RelativePanel.AlignBottomWithPanel="True">
+
+                                    <TextBlock
+                                        RelativePanel.AlignLeftWithPanel="True"
+                                        Text="{x:Bind OccupancyText}"/>
+
+                                    <TextBlock
+                                        RelativePanel.AlignRightWithPanel="True"
+                                        Text="{x:Bind RequestsCount}"/>
+
+                                </RelativePanel>
+
+                            </RelativePanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
 
@@ -467,16 +562,32 @@
                     </ListView.ItemContainerTransitions>
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="cells:RoomCell">
-                            <StackPanel
-                                Orientation="Vertical"
+                            <RelativePanel
                                 Background="{x:Bind GetBackgroundBrush()}"
-                                Padding="10"
+                                Padding="5, 2"
                                 Margin="0, 5">
 
                                 <TextBlock
+                                    RelativePanel.AlignTopWithPanel="True"
+                                    RelativePanel.AlignLeftWithPanel="True"
                                     Text="{x:Bind Number}"/>
 
-                            </StackPanel>
+                                <RelativePanel
+                                    RelativePanel.AlignLeftWithPanel="True"
+                                    RelativePanel.AlignRightWithPanel="True"
+                                    RelativePanel.AlignBottomWithPanel="True">
+
+                                    <TextBlock
+                                        RelativePanel.AlignLeftWithPanel="True"
+                                        Text="{x:Bind OccupancyText}"/>
+
+                                    <TextBlock
+                                        RelativePanel.AlignRightWithPanel="True"
+                                        Text="{x:Bind RequestsCount}"/>
+
+                                </RelativePanel>
+
+                            </RelativePanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
 
@@ -526,21 +637,36 @@
                     </ListView.ItemContainerTransitions>
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="cells:RoomCell">
-                            <StackPanel
-                                Orientation="Vertical"
+                            <RelativePanel
                                 Background="{x:Bind GetBackgroundBrush()}"
-                                Padding="10"
+                                Padding="5, 2"
                                 Margin="0, 5">
 
                                 <TextBlock
+                                    RelativePanel.AlignTopWithPanel="True"
+                                    RelativePanel.AlignLeftWithPanel="True"
                                     Text="{x:Bind Number}"/>
 
-                            </StackPanel>
+                                <RelativePanel
+                                    RelativePanel.AlignLeftWithPanel="True"
+                                    RelativePanel.AlignRightWithPanel="True"
+                                    RelativePanel.AlignBottomWithPanel="True">
+
+                                    <TextBlock
+                                        RelativePanel.AlignLeftWithPanel="True"
+                                        Text="{x:Bind OccupancyText}"/>
+
+                                    <TextBlock
+                                        RelativePanel.AlignRightWithPanel="True"
+                                        Text="{x:Bind RequestsCount}"/>
+
+                                </RelativePanel>
+
+                            </RelativePanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
 
                 </ListView>
-
 
             </Grid>
 

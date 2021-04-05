@@ -5,6 +5,7 @@ using Hotels.Pages.ExperimentPage;
 using Hotels.Pages.ExperimentPage.Cells;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,17 +20,18 @@ namespace Hotels.Models.Experiments
 
         private Random Rand = new Random();
 
-        public Statistics Statistics { get; } = new Statistics(0, 0, 0, 0); 
+        public Statistics Statistics { get; } = new Statistics(0, 0, 0, 0, 0); 
 
         private static readonly Array RoomTypeValues = Enum.GetValues(typeof(RoomType));
         private static readonly int MaxRoomTypeInt = Enum.GetValues(typeof(RoomType)).Cast<int>().Max();
         private static readonly int MaxRequestTypeInt = Enum.GetValues(typeof(RequestType)).Cast<int>().Max();
 
+        public int CurrentStep = 0;
         private readonly int HoursPerStep;
         private readonly double Discount;
         private readonly int MaxHoursUntilRequest;
         public DateTime CurrentDateTime { get; private set; }
-        private readonly DateTime StartDateTime;
+        public DateTime StartDateTime { get; private set; }
         public DateTime EndDateTime { get; private set; }
 
         public List<Request> RequestList { get; } = new List<Request>();
@@ -79,11 +81,13 @@ namespace Hotels.Models.Experiments
             {
                 return false;
             }
+            ++CurrentStep;
             DateTime nextStepDateTime = CurrentDateTime.AddHours(HoursPerStep);
             if (nextStepDateTime > EndDateTime)
             {
                 nextStepDateTime = EndDateTime;
             }
+            
             DateTime maxLimitDayTime = nextStepDateTime.AddHours(-MaxHoursUntilRequest);
             while (CurrentDateTime < maxLimitDayTime)
             {
@@ -120,7 +124,7 @@ namespace Hotels.Models.Experiments
                         randomEndDateTime.Date
                     );
 
-                    request = new Request(requestType, roomType, bookTimeRange);
+                    request = new Request(requestType, roomType, bookTimeRange, CurrentStep, CurrentDateTime);
                     break;
                 case RequestType.IMMEDIATE:
 
@@ -130,7 +134,7 @@ namespace Hotels.Models.Experiments
                     DateTime end = start.AddDays(lengthDays);
                     TimeRange immediateBookTimeRange = new TimeRange(start, end);
 
-                    request = new Request(requestType, roomType, immediateBookTimeRange);
+                    request = new Request(requestType, roomType, immediateBookTimeRange, CurrentStep, CurrentDateTime);
                     break;
                 default:
                     throw new Exception(String.Format("Unknown request Type: %s", requestType));
@@ -156,6 +160,7 @@ namespace Hotels.Models.Experiments
                 if (roomType == RoomType.SUITE)
                 {
                     this.RequestList.Add(request);
+                    Statistics.IncRequestCountWithType(request.RoomType);
                     Statistics.MissedProfit += roomTypeProfit;
                     return;
                 }
@@ -178,6 +183,7 @@ namespace Hotels.Models.Experiments
                     request.RoomNumber = discountBookedRoom.Number;
                     request.Price = discountRoomTypeProfit;
                     Statistics.MissedProfit += Math.Max(roomTypeProfit - discountRoomTypeProfit, 0);
+                    Statistics.RequestsDiscounted += 1;
                 }
                 else
                 {
@@ -186,6 +192,7 @@ namespace Hotels.Models.Experiments
                 }
 
             }
+            Statistics.IncRequestCountWithType(request.RoomType);
             this.RequestList.Add(request);
         }
         

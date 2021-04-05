@@ -44,5 +44,21 @@ namespace Hotels.Models.Rooms
             return true;
         }
 
+        public int GetOccupancyInPeriod(TimeRange timeRange)
+        {
+            double periodTotalHours = (timeRange.End - timeRange.Start).TotalHours;
+            double bookedTotalHours = 0;
+            foreach (TimeRange bookedTimeRange in this.BookedTimes)
+            {
+                bookedTotalHours += (bookedTimeRange.End - bookedTimeRange.Start).TotalHours;
+            }
+            return Convert.ToInt32(Math.Round(bookedTotalHours / periodTotalHours * 100)) ; 
+        }
+
+        public int GetRequestsCount()
+        {
+            return this.BookedTimes.Count;
+        }
+
     }
 }
