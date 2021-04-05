@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Hotels.Models.Experiments
 {
-    class Statistics
+    internal class Statistics
     {
         public int TotalRequestCount;
         public int RequestsAcceptedCount;
         public int RequestsDiscounted;
         public int RequestsRejectedCount;
         public double MissedProfit;
-        IDictionary<Rooms.RoomType, int> RequestsPerRoomTypeMap;
+        private readonly IDictionary<Rooms.RoomType, int> _requestsPerRoomTypeMap;
 
         public Statistics(
             int totalRequestsCount,
@@ -23,17 +19,17 @@ namespace Hotels.Models.Experiments
             double missedProfit
         )
         {
-            this.TotalRequestCount = totalRequestsCount;
-            this.RequestsAcceptedCount = requestsAcceptedCount;
-            this.RequestsDiscounted = requestsDiscounted;
-            this.RequestsRejectedCount = requestsRejectedCount;
-            this.MissedProfit = missedProfit;
-            RequestsPerRoomTypeMap = new Dictionary<Rooms.RoomType, int>();
+            TotalRequestCount = totalRequestsCount;
+            RequestsAcceptedCount = requestsAcceptedCount;
+            RequestsDiscounted = requestsDiscounted;
+            RequestsRejectedCount = requestsRejectedCount;
+            MissedProfit = missedProfit;
+            _requestsPerRoomTypeMap = new Dictionary<Rooms.RoomType, int>();
         }
 
         public void IncRequestCountWithType(Rooms.RoomType roomType)
         {
-            bool hasValue = RequestsPerRoomTypeMap.TryGetValue(roomType, out int oldValue);
+            var hasValue = _requestsPerRoomTypeMap.TryGetValue(roomType, out var oldValue);
             int newValue;
             if (hasValue)
             {
@@ -42,22 +38,22 @@ namespace Hotels.Models.Experiments
             {
                 newValue = 1;
             }
-            RequestsPerRoomTypeMap[roomType] = newValue;
+            _requestsPerRoomTypeMap[roomType] = newValue;
         }
 
         public override string ToString()
         {
-            string res = "Всего заявок: " + this.TotalRequestCount + "\n" +
-                "Одобрено: " + this.RequestsAcceptedCount + "\n" +
-                "Отклонено: " + this.RequestsRejectedCount + "\n" +
-                "Скидок: " + this.RequestsDiscounted + "\n" +
-                "Потерянная прибыль: " + this.MissedProfit + "\n\n";
+            var res = "Всего заявок: " + TotalRequestCount + "\n" +
+                      "Одобрено: " + RequestsAcceptedCount + "\n" +
+                      "Отклонено: " + RequestsRejectedCount + "\n" +
+                      "Скидок: " + RequestsDiscounted + "\n" +
+                      "Потерянная прибыль: " + MissedProfit + "\n\n";
 
             res += "Количество заявок по типу номера:\n";
-            Rooms.RoomType currentRoomType = Rooms.RoomType.SINGLE;
-            for (int i = 0; i < 5; i++, currentRoomType++)
+            var currentRoomType = Rooms.RoomType.SINGLE;
+            for (var i = 0; i < 5; i++, currentRoomType++)
             {
-                bool hasValue = RequestsPerRoomTypeMap.TryGetValue(currentRoomType, out int value);
+                var hasValue = _requestsPerRoomTypeMap.TryGetValue(currentRoomType, out int value);
                 if (hasValue)
                 {
                     res += Rooms.RoomTypeHelper.RoomTypeToString(currentRoomType) + ": " + value + "\n";

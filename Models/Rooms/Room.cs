@@ -1,32 +1,29 @@
-﻿using Hotels.Models.Rooms;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Hotels.Models.Rooms
 {
-    class Room
+    internal class Room
     {
-        public string Number { get; set; }
-        public RoomType RoomType { get; set; }
-        public int Price { get; set; }
-        public List<TimeRange> BookedTimes { get; set; }
+        public string Number { get; }
+        public RoomType RoomType { get; }
+        public int Price { get; }
+        public List<TimeRange> BookedTimes { get; }
 
         public Room(string number, RoomType roomType, int price)
         {
-            this.Number = number;
-            this.RoomType = roomType;
-            this.Price = price;
-            this.BookedTimes = new List<TimeRange>();
+            Number = number;
+            RoomType = roomType;
+            Price = price;
+            BookedTimes = new List<TimeRange>();
         }
 
         public bool Book(TimeRange timeToBook)
         {
-            foreach (TimeRange time in BookedTimes)
+            if (BookedTimes.Any(timeToBook.Intersects))
             {
-                if (timeToBook.Intersects(time))
-                {
-                    return false;
-                }
+                return false;
             }
             BookedTimes.Add(timeToBook);
             return true;
@@ -48,7 +45,7 @@ namespace Hotels.Models.Rooms
         {
             double periodTotalHours = (timeRange.End - timeRange.Start).TotalHours;
             double bookedTotalHours = 0;
-            foreach (TimeRange bookedTimeRange in this.BookedTimes)
+            foreach (TimeRange bookedTimeRange in BookedTimes)
             {
                 bookedTotalHours += (bookedTimeRange.End - bookedTimeRange.Start).TotalHours;
             }
@@ -57,7 +54,7 @@ namespace Hotels.Models.Rooms
 
         public int GetRequestsCount()
         {
-            return this.BookedTimes.Count;
+            return BookedTimes.Count;
         }
 
     }

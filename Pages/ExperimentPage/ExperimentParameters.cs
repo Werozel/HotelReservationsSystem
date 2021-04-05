@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Hotels.Models;
+﻿using System.Collections.Generic;
 using Hotels.Models.Rooms;
 
 namespace Hotels.Pages.ExperimentPage
 {
-    class ExperimentParameters
+    internal class ExperimentParameters
     {
         public IDictionary<RoomType, RoomInitInfo> RoomsInfoMap { get; }
         public int DaysCount { get; }
@@ -26,24 +21,24 @@ namespace Hotels.Pages.ExperimentPage
             double discount
         )
         {
-            this.RoomsInfoMap = roomsInfoMap;
-            this.DaysCount = daysCount;
-            this.HoursPerStep = maxHoursPerStep;
-            this.MaxHoursUntilRequest = maxHoursUntilRequest;
-            this.MaxDaysToBook = MaxDaysToBook;
-            this.Discount = discount;
+            RoomsInfoMap = roomsInfoMap;
+            DaysCount = daysCount;
+            HoursPerStep = maxHoursPerStep;
+            MaxHoursUntilRequest = maxHoursUntilRequest;
+            MaxDaysToBook = maxDaysToBook;
+            Discount = discount;
         }
     }
 
     public class RoomInitInfo
     {
-        public int Count { get; set; }
-        public int Price { get; set; }
+        public int Count { get; }
+        public int Price { get; }
 
         public RoomInitInfo(int count, int price)
         {
-            this.Count = count;
-            this.Price = price;
+            Count = count;
+            Price = price;
         }
     }
 }

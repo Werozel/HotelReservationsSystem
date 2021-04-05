@@ -1,91 +1,86 @@
 ﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-using Windows.UI;
 using Hotels.Pages.ExperimentPage;
-using Hotels.Models;
 using Hotels.Models.Rooms;
 
 namespace Hotels.Pages.InitPage
 {
 
-    public sealed partial class InitPage : Page
+    public sealed partial class InitPage
     {
         public InitPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
 
-            (this.ExitButton).Click += (s, e) =>
+            ExitButton.Click += (s, e) =>
             {
                 Application.Current.Exit();
             };
 
-            (this.StartButton).Click += (s, e) =>
+            StartButton.Click += (s, e) =>
             {
                 IDictionary<RoomType, RoomInitInfo> roomsMap = new Dictionary<RoomType, RoomInitInfo>();
 
-                bool success = true;
-                success &= int.TryParse(this.SingleCountTB.Text, out int singleCount);
+                var success = true;
+                success &= int.TryParse(SingleCountTextBox.Text, out var singleCount);
                 success &= 0 < singleCount && singleCount < 99;
-                success &= int.TryParse(this.SinglePriceTB.Text, out int singlePrice);
+                success &= int.TryParse(SinglePriceTextBox.Text, out var singlePrice);
                 success &= 0 < singlePrice && singlePrice <= 1000;
                 roomsMap.Add(RoomType.SINGLE, new RoomInitInfo(singleCount, singlePrice));
 
-                success &= int.TryParse(this.DoubleCountTB.Text, out int doubleCount);
+                success &= int.TryParse(DoubleCountTextBox.Text, out var doubleCount);
                 success &= 0 < doubleCount && doubleCount < 99;
-                success &= int.TryParse(this.DoublePriceTB.Text, out int doublePrice);
+                success &= int.TryParse(DoublePriceTextBox.Text, out var doublePrice);
                 success &= 0 < doublePrice && doublePrice <= 1000;
                 roomsMap.Add(RoomType.DOUBLE, new RoomInitInfo(doubleCount, doublePrice));
 
-                success &= int.TryParse(this.DoubleWithSofaCountTB.Text, out int doubleWithSofaCount);
+                success &= int.TryParse(DoubleWithSofaCountTextBox.Text, out var doubleWithSofaCount);
                 success &= 0 < doubleWithSofaCount && doubleWithSofaCount < 99;
-                success &= int.TryParse(this.DoubleWithSofaPriceTB.Text, out int doubleWithSofaPrice);
+                success &= int.TryParse(DoubleWithSofaPriceTextBox.Text, out var doubleWithSofaPrice);
                 success &= 0 < doubleWithSofaPrice && doubleWithSofaPrice <= 1000;
                 roomsMap.Add(RoomType.DOUBLE_WITH_SOFA, new RoomInitInfo(doubleWithSofaCount, doubleWithSofaPrice));
                 
-                success &= int.TryParse(this.JuniorSuiteCountTB.Text, out int juniourSuiteCount);
-                success &= 0 < juniourSuiteCount && juniourSuiteCount < 99;
-                success &= int.TryParse(this.JuniorSuitePriceTB.Text, out int juniourSuitePrice);
-                success &= 0 < juniourSuitePrice && juniourSuitePrice <= 1000;
-                roomsMap.Add(RoomType.JUNIOR_SUITE, new RoomInitInfo(juniourSuiteCount, juniourSuitePrice));
+                success &= int.TryParse(JuniorSuiteCountTextBox.Text, out var juniorSuiteCount);
+                success &= 0 < juniorSuiteCount && juniorSuiteCount < 99;
+                success &= int.TryParse(JuniorSuitePriceTextBox.Text, out var juniorSuitePrice);
+                success &= 0 < juniorSuitePrice && juniorSuitePrice <= 1000;
+                roomsMap.Add(RoomType.JUNIOR_SUITE, new RoomInitInfo(juniorSuiteCount, juniorSuitePrice));
 
-                success &= int.TryParse(this.SuiteCountTB.Text, out int suiteCount);
+                success &= int.TryParse(SuiteCountTextBox.Text, out var suiteCount);
                 success &= 0 < suiteCount && suiteCount < 99;
-                success &= int.TryParse(this.SuitePriceTB.Text, out int suitePrice);
+                success &= int.TryParse(SuitePriceTextBox.Text, out var suitePrice);
                 success &= 0 < suitePrice && suitePrice <= 1000;
                 roomsMap.Add(RoomType.SUITE, new RoomInitInfo(suiteCount, suitePrice));
                 
-                success &= int.TryParse(this.DaysCountTB.Text, out int daysCount);
+                success &= int.TryParse(DaysCountTextBox.Text, out var daysCount);
                 success &= 12 <= daysCount && daysCount <= 30;
 
-                success &= int.TryParse(this.HoursPerStepTB.Text, out int hoursPerStep);
+                success &= int.TryParse(HoursPerStepTextBox.Text, out var hoursPerStep);
                 success &= 0 < hoursPerStep && hoursPerStep <= 24;
 
-                success &= int.TryParse(this.MaxDaysToStayTB.Text, out int maxDaysToBook);
+                success &= int.TryParse(MaxDaysToStayTextBox.Text, out var maxDaysToBook);
                 success &= 0 < maxDaysToBook && maxDaysToBook <= 28;
 
-                success &= int.TryParse(this.MaxHoursUntilRequestTB.Text, out int maxHoursUntilRequest);
+                success &= int.TryParse(MaxHoursUntilRequestTextBox.Text, out var maxHoursUntilRequest);
                 success &= 0 < maxHoursUntilRequest && maxHoursUntilRequest <= 12 && maxHoursUntilRequest <= hoursPerStep;
 
-                success &= int.TryParse(this.DiscountTB.Text, out int discountInt);
+                success &= int.TryParse(DiscountTextBox.Text, out var discountInt);
                 success &= 0 <= discountInt && discountInt <= 100;
 
                 if (success)
                 {
-                    this.Frame.Navigate(typeof(ExperimentPage.ExperimentPage), new ExperimentParameters(roomsMap, daysCount, hoursPerStep, maxHoursUntilRequest, maxDaysToBook, discountInt / 100));
+                    Frame.Navigate(
+                        typeof(ExperimentPage.ExperimentPage), 
+                        new ExperimentParameters(
+                            roomsMap, 
+                            daysCount, 
+                            hoursPerStep, 
+                            maxHoursUntilRequest, 
+                            maxDaysToBook, 
+                            Convert.ToInt32(discountInt / 100)
+                        )
+                    );
                 } else
                 {
                     ErrorBlock.Visibility = Visibility.Visible;

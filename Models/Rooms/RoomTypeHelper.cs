@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hotels.Models.Rooms
 {
-    static class RoomTypeHelper
+    internal static class RoomTypeHelper
     {
 
         public static string RoomTypeToRoomNumber(RoomType roomType, int roomTypeCount)
@@ -15,18 +11,15 @@ namespace Hotels.Models.Rooms
             {
                 throw new Exception("Negative roomTypeCount!");
             }
-            else if (roomTypeCount >= 99)
+            if (roomTypeCount >= 99)
             {
                 throw new Exception("Room type can't be >= 99");
             }
-            else if (roomTypeCount < 10)
+            if (roomTypeCount < 10)
             {
                 return "№" + ((int)roomType + 1) + "0" + (roomTypeCount + 1);
             }
-            else
-            {
-                return "№" + ((int)roomType + 1) + (roomTypeCount + 1);
-            }
+            return "№" + ((int)roomType + 1) + (roomTypeCount + 1);
         }
 
         public static string RoomTypeToString(RoomType roomType)

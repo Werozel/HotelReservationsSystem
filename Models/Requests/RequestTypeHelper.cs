@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hotels.Models.Requests
 {
-    static class RequestTypeHelper
+    internal static class RequestTypeHelper
     {
 
         public static string RequestTypeToString(RequestType requestType)

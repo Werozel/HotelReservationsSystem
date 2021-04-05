@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.UI.Xaml.Media;
+﻿using Windows.UI.Xaml.Media;
 
 namespace Hotels.Pages.ExperimentPage.Cells
 {
-    class RequestCell
+    internal class RequestCell
     {
         public string RoomType { get; }
         public string TimeRange { get; }
@@ -34,16 +28,16 @@ namespace Hotels.Pages.ExperimentPage.Cells
             string bookTime
         )
         {
-            this.RoomType = roomType;
-            this.TimeRange = timeRange;
-            this.IsApproved = isApproved;
-            this.RoomNumber = roomNumber;
-            this.RequestType = requestType;
-            this.HasDiscount = hasDiscount;
-            this.Price = price;
-            this.Step = step;
-            this.IsCurrentStep = isCurrentStep;
-            this.BookTime = bookTime;
+            RoomType = roomType;
+            TimeRange = timeRange;
+            IsApproved = isApproved;
+            RoomNumber = roomNumber;
+            RequestType = requestType;
+            HasDiscount = hasDiscount;
+            Price = price;
+            Step = step;
+            IsCurrentStep = isCurrentStep;
+            BookTime = bookTime;
         }
 
         public string FormatRoomNumber()
@@ -53,27 +47,21 @@ namespace Hotels.Pages.ExperimentPage.Cells
 
         public SolidColorBrush GetBackgroundBrush()
         {
-            if (!this.IsApproved)
+            if (!IsApproved)
             {
-                return new SolidColorBrush(Constants.Colors.RED);
-            } else if (this.HasDiscount)
+                return new SolidColorBrush(Constants.Colors.Red);
+            } else if (HasDiscount)
             {
-                return new SolidColorBrush(Constants.Colors.YELLOW);
+                return new SolidColorBrush(Constants.Colors.Yellow);
             } else
             {
-                return new SolidColorBrush(Constants.Colors.GREEN);
+                return new SolidColorBrush(Constants.Colors.Green);
             }
         }
 
         public SolidColorBrush GetBorderBrush()
         {
-            if (this.IsCurrentStep)
-            {
-                return new SolidColorBrush(Constants.Colors.GREY);
-            } else
-            {
-                return null;
-            }
+            return IsCurrentStep ? new SolidColorBrush(Constants.Colors.Grey) : null;
         }
     }
 }

@@ -1,36 +1,32 @@
 ﻿using Hotels.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.UI.Xaml.Media;
 
 namespace Hotels.Pages.ExperimentPage.Cells
 {
 
-    class RoomCell
+    internal class RoomCell
     {
         public string Number { get; }
-        public bool IsAvaliable { get; }
+        private readonly bool _isAvailable;
         public List<TimeRange> BookedTimes { get; }
         public int RequestsCount { get; }
         public string OccupancyText { get; }
 
-        public RoomCell(string number, bool isAvaliable, List<TimeRange> bookedTimes, int requestCount, string occupancyText)
+        public RoomCell(string number, bool isAvailable, List<TimeRange> bookedTimes, int requestCount, string occupancyText)
         {
-            this.Number = number;
-            this.IsAvaliable = isAvaliable;
-            this.BookedTimes = bookedTimes;
-            this.RequestsCount = requestCount;
-            this.OccupancyText = occupancyText;
+            Number = number;
+            _isAvailable = isAvailable;
+            BookedTimes = bookedTimes;
+            RequestsCount = requestCount;
+            OccupancyText = occupancyText;
         }
 
         public SolidColorBrush GetBackgroundBrush()
         {
-            return IsAvaliable
-                ? new SolidColorBrush(Constants.Colors.GREEN)
-                : new SolidColorBrush(Constants.Colors.RED);
+            return _isAvailable
+                ? new SolidColorBrush(Constants.Colors.Green)
+                : new SolidColorBrush(Constants.Colors.Red);
         }
     }
 }
