@@ -54,12 +54,16 @@ namespace Hotels.Models.Experiments
                 "Потерянная прибыль: " + this.MissedProfit + "\n\n";
 
             res += "Количество заявок по типу номера:\n";
-            foreach (Rooms.RoomType roomType in RequestsPerRoomTypeMap.Keys.ToArray())
+            Rooms.RoomType currentRoomType = Rooms.RoomType.SINGLE;
+            for (int i = 0; i < 5; i++, currentRoomType++)
             {
-                bool hasValue = RequestsPerRoomTypeMap.TryGetValue(roomType, out int value);
+                bool hasValue = RequestsPerRoomTypeMap.TryGetValue(currentRoomType, out int value);
                 if (hasValue)
                 {
-                    res += Rooms.RoomTypeHelper.RoomTypeToString(roomType) + ": " + value + "\n";
+                    res += Rooms.RoomTypeHelper.RoomTypeToString(currentRoomType) + ": " + value + "\n";
+                } else
+                {
+                    res += Rooms.RoomTypeHelper.RoomTypeToString(currentRoomType) + ": 0\n";
                 }
             }
             return res;
