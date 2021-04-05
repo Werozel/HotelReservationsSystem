@@ -111,7 +111,7 @@ namespace Hotels.Pages.ExperimentPage
             experiment = new Experiment(
                 this.RoomsInfoMap,
                 new TimeRange(today, experimentEndTime),
-                parameters.MaxHoursPerStep,
+                parameters.HoursPerStep,
                 parameters.MaxDaysToBook
             );
 
