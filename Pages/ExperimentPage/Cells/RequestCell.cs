@@ -17,6 +17,7 @@ namespace Hotels.Pages.ExperimentPage.Cells
         public string RequestType { get; }
         private bool HasDiscount { get; }
         public string Price { get; }
+        public int Step { get; }
         private bool IsCurrentStep { get; }
         public string BookTime { get;  }
 
@@ -28,6 +29,7 @@ namespace Hotels.Pages.ExperimentPage.Cells
             string requestType, 
             bool hasDiscount,
             string price,
+            int step,
             bool isCurrentStep,
             string bookTime
         )
@@ -39,6 +41,7 @@ namespace Hotels.Pages.ExperimentPage.Cells
             this.RequestType = requestType;
             this.HasDiscount = hasDiscount;
             this.Price = price;
+            this.Step = step;
             this.IsCurrentStep = isCurrentStep;
             this.BookTime = bookTime;
         }

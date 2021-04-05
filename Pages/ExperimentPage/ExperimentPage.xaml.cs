@@ -219,6 +219,7 @@ namespace Hotels.Pages.ExperimentPage
                         RequestTypeHelper.RequestTypeToString(request.Type),
                         request.HasDiscount,
                         "+" + request.Price,
+                        request.Step,
                         currentStep == request.Step,
                         request.BookTime.ToString(Constants.FULL_FORMAT_STRING)
                     )
@@ -354,7 +355,7 @@ namespace Hotels.Pages.ExperimentPage
         private void ToExperimentEndedState()
         {
             StepButton.IsEnabled = false;
-            DaysLeftTB.Text = "Эксперимент закончен";
+            ExperimentEndedTB.Visibility = Visibility.Visible;
             BackgroundTaskRunning = false;
             StartStopButton.Content = "Старт";
             StartStopButton.IsEnabled = false;

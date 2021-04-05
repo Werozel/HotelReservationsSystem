@@ -14,9 +14,9 @@ namespace Hotels.Models.Requests
             switch (requestType)
             {
                 case RequestType.BOOK:
-                    return "Бронирование";
+                    return "Бронь";
                 case RequestType.IMMEDIATE:
-                    return "Поселение";
+                    return "Заселение";
                 default:
                     throw new Exception("RequestTypeToString: Unknown request type: " + requestType);
             }

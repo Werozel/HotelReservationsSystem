@@ -78,7 +78,7 @@
                                     RelativePanel.RightOf="DividerTB"
                                     RelativePanel.AlignTopWithPanel="True"
                                     Margin="5, 0, 0, 0"
-                                    Text="{x:Bind BookTime}"/>
+                                    Text="{x:Bind RoomType}"/>
 
                                 <TextBlock
                                     RelativePanel.AlignRightWithPanel="True"
@@ -87,8 +87,19 @@
 
                             </RelativePanel>
 
-                            <TextBlock
-                                Text="{x:Bind RoomType}"/>
+                            <StackPanel
+                                Orientation="Horizontal">
+                                
+                                <TextBlock
+                                    Text="{x:Bind BookTime}"/>
+                                
+                                <TextBlock
+                                    Text=" - Шаг:"
+                                    Margin="0, 0, 5, 0"/>
+
+                                <TextBlock
+                                    Text="{x:Bind Step}"/>
+                            </StackPanel>
 
                             <TextBlock
                                 Text="{x:Bind TimeRange}"/>
@@ -161,6 +172,12 @@
                     Name="DaysLeftTB"
                     Text="Осталось 0 дней"
                     Margin="0, 0, 0, 5"/>
+
+                <TextBlock
+                    Name="ExperimentEndedTB"
+                    Text="Эксперимент завершен"
+                    Margin="0, 0, 0, 5"
+                    Visibility="Collapsed"/>
 
                 <Button
                     Name="StepButton"
@@ -250,7 +267,7 @@
                     Name="ListRoomNumberTB"
                     RelativePanel.AlignTopWithPanel="True"
                     RelativePanel.RightOf="BookedTimesList"
-                    Margin="10, 10, 5, 0"
+                    Margin="10, 0, 5, 0"
                     Text="№101"
                     Visibility="Collapsed"
                     />
