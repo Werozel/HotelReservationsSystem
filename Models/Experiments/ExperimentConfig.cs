@@ -1,5 +1,4 @@
-﻿
-namespace Hotels.Models.Experiments
+﻿namespace Hotels.Models.Experiments
 {
     internal static class ExperimentConfig
     {

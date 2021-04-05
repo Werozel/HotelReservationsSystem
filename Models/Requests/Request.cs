@@ -5,7 +5,6 @@ namespace Hotels.Models.Requests
 {
     internal class Request
     {
-
         public RequestType Type { get; }
         public RoomType RoomType { get; }
         public TimeRange TimeRange { get; }

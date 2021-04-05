@@ -15,7 +15,6 @@ using Hotels.Models.Requests;
 
 namespace Hotels.Pages.ExperimentPage
 {
-
     public sealed partial class ExperimentPage
     {
 
@@ -242,7 +241,6 @@ namespace Hotels.Pages.ExperimentPage
             if (listItemsCount != 0)
             {
                 RequestsListView.ScrollIntoView(listItems[listItemsCount - 1]);
-
             }
         }
 

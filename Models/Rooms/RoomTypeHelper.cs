@@ -40,6 +40,5 @@ namespace Hotels.Models.Rooms
                     throw new Exception("Unknown RoomType: " + roomType);
             }
         }
-
     }
 }

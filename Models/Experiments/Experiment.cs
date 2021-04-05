@@ -10,7 +10,6 @@ namespace Hotels.Models.Experiments
 
     class Experiment
     {
-        
         private readonly IDictionary<RoomType, RoomInitInfo> _roomsInfoMap;
 
         private readonly Random _rand = new Random();

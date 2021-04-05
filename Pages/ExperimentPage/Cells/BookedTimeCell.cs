@@ -1,5 +1,4 @@
-﻿
-namespace Hotels.Pages.ExperimentPage.Cells
+﻿namespace Hotels.Pages.ExperimentPage.Cells
 {
     public class BookedTimeCell
     {

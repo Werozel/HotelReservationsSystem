@@ -6,7 +6,6 @@ using Hotels.Models.Rooms;
 
 namespace Hotels.Pages.InitPage
 {
-
     public sealed partial class InitPage
     {
         public InitPage()
@@ -86,7 +85,6 @@ namespace Hotels.Pages.InitPage
                     ErrorBlock.Visibility = Visibility.Visible;
                 }
             };
-
         }
     }
 }

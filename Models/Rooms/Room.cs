@@ -31,31 +31,20 @@ namespace Hotels.Models.Rooms
 
         public bool IsFree(DateTime dateTime)
         {
-            foreach (TimeRange time in BookedTimes)
-            {
-                if (time.Contains(dateTime))
-                {
-                    return false;
-                }
-            }
-            return true;
+            return BookedTimes.All(time => !time.Contains(dateTime));
         }
 
         public int GetOccupancyInPeriod(TimeRange timeRange)
         {
-            double periodTotalHours = (timeRange.End - timeRange.Start).TotalHours;
-            double bookedTotalHours = 0;
-            foreach (TimeRange bookedTimeRange in BookedTimes)
-            {
-                bookedTotalHours += (bookedTimeRange.End - bookedTimeRange.Start).TotalHours;
-            }
-            return Convert.ToInt32(Math.Round(bookedTotalHours / periodTotalHours * 100)) ; 
+            var periodTotalHours = (timeRange.End - timeRange.Start).TotalHours;
+            var bookedTotalHours = 
+                BookedTimes.Sum(bookedTimeRange => (bookedTimeRange.End - bookedTimeRange.Start).TotalHours);
+            return Convert.ToInt32(Math.Round(bookedTotalHours / periodTotalHours * 100)); 
         }
 
         public int GetRequestsCount()
         {
             return BookedTimes.Count;
         }
-
     }
 }

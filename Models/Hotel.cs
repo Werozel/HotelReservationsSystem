@@ -6,7 +6,6 @@ using System.Linq;
 
 namespace Hotels.Models
 {
-
     internal class Hotel
     {
         public List<Room> Rooms { get; }

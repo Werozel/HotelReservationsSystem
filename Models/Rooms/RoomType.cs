@@ -1,5 +1,4 @@
-﻿
-namespace Hotels.Models.Rooms
+﻿namespace Hotels.Models.Rooms
 {
     internal enum RoomType
     {

@@ -1,5 +1,4 @@
-﻿
-namespace Hotels.Models.Requests
+﻿namespace Hotels.Models.Requests
 {
     internal enum RequestType
     {
