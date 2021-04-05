@@ -31,6 +31,7 @@
                 Name="RoomsSP"
                 VerticalAlignment="Top" 
                 HorizontalAlignment="Left"
+                RelativePanel.AlignHorizontalCenterWithPanel="True"
                 Orientation="Vertical">
 
                 <StackPanel 
@@ -66,7 +67,7 @@
                         <TextBox Name="JuniorSuiteCountTB" Text="2" PlaceholderText="Количество" Margin="20, 10" Width="110" Grid.Column="1" Grid.Row="4"/>
                         <TextBox Name="SuiteCountTB" Text="2" PlaceholderText="Количество" Margin="20, 10" Width="110" Grid.Column="1" Grid.Row="5"/>
 
-                        <TextBlock Text="Цена (больше 0)" Margin="0, 10" TextAlignment="Center" Grid.Column="2" Grid.Row="0"/>
+                        <TextBlock Text="Цена (от 1 до 1000)" Margin="0, 10" TextAlignment="Center" Grid.Column="2" Grid.Row="0"/>
                         <TextBox Name="SinglePriceTB" Text="150" PlaceholderText="Цена" Margin="20, 10" Width="110" Grid.Column="2" Grid.Row="1"/>
                         <TextBox Name="DoublePriceTB" Text="250" PlaceholderText="Цена" Margin="20, 10" Width="110" Grid.Column="2" Grid.Row="2"/>
                         <TextBox Name="DoubleWithSofaPriceTB" Text="300" PlaceholderText="Цена" Margin="20, 10" Width="110" Grid.Column="2" Grid.Row="3"/>
@@ -81,9 +82,10 @@
             <StackPanel
                 Name="AdditionalInfoContainer"
                 Orientation="Vertical"
+                HorizontalAlignment="Stretch"
                 RelativePanel.Below="RoomsSP"
-                RelativePanel.AlignLeftWith="RoomsSP"
-                RelativePanel.AlignRightWith="RoomsSP"
+                RelativePanel.AlignLeftWithPanel="True"
+                RelativePanel.AlignRightWithPanel="True"
                 Margin="0, 30, 0, 0"
                 >
 
@@ -94,7 +96,7 @@
                     Orientation="Horizontal"
                     >
 
-                    <TextBlock Text="Количество дней (от 12 до 30)" VerticalAlignment="Center" Margin="20, 10"/>
+                    <TextBlock Text="Количество дней эксперимента (от 12 до 30)" VerticalAlignment="Center" Margin="20, 10"/>
                     <TextBox Name="DaysCountTB" Text="15" PlaceholderText="Введите число..." Margin="20, 10" Width="140"/>
 
                 </StackPanel>
@@ -108,6 +110,26 @@
 
                     <TextBlock Text="Количество часов за один шаг (от 1 до 24)" VerticalAlignment="Center" Margin="20, 10"/>
                     <TextBox Name="HoursPerStepTB" Text="6" PlaceholderText="Введите число..." Margin="20, 10" Width="140"/>
+
+                </StackPanel>
+
+                <StackPanel
+                    Name="MaxHoursUntilRequestSP"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal"
+                    >
+
+                    <StackPanel
+                        VerticalAlignment="Center" 
+                        Margin="20, 10"
+                        Orientation="Vertical">
+                        <TextBlock Text="Максимальное количество часов между заявками"/>
+                        <TextBlock Text="(от 1 до 12, не больше кол-ва часов за шаг)"/>
+
+                    </StackPanel>
+
+                    <TextBox Name="MaxHoursUntilRequestTB" Text="5" PlaceholderText="Введите число..." Margin="20, 10" Width="140"/>
 
                 </StackPanel>
 

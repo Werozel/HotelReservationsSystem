@@ -9,7 +9,7 @@ namespace Hotels.Pages.ExperimentPage
 {
     static class Constants
     {
-        public static string FULL_FORMAT_STRING = "hh:mm, dd.MM.yy";
+        public static string FULL_FORMAT_STRING = "HH:mm, dd.MM.yy";
 
         public static class Colors
         {

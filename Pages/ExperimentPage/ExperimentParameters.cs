@@ -14,12 +14,14 @@ namespace Hotels.Pages.ExperimentPage
         public int DaysCount { get; }
         public int HoursPerStep { get; }
         public int MaxDaysToBook { get; }
+        public int MaxHoursUntilRequest { get; }
         public double Discount { get; }
 
         public ExperimentParameters(
             IDictionary<RoomType, RoomInitInfo> roomsInfoMap, 
             int daysCount,
             int maxHoursPerStep,
+            int maxHoursUntilRequest,
             int maxDaysToBook,
             double discount
         )
@@ -27,6 +29,7 @@ namespace Hotels.Pages.ExperimentPage
             this.RoomsInfoMap = roomsInfoMap;
             this.DaysCount = daysCount;
             this.HoursPerStep = maxHoursPerStep;
+            this.MaxHoursUntilRequest = maxHoursUntilRequest;
             this.MaxDaysToBook = MaxDaysToBook;
             this.Discount = discount;
         }

@@ -25,24 +25,28 @@ namespace Hotels.Models.Experiments
         private static readonly int MaxRoomTypeInt = Enum.GetValues(typeof(RoomType)).Cast<int>().Max();
         private static readonly int MaxRequestTypeInt = Enum.GetValues(typeof(RequestType)).Cast<int>().Max();
 
-        private readonly int MaxHoursPerStep;
+        private readonly int HoursPerStep;
+        private readonly double Discount;
+        private readonly int MaxHoursUntilRequest;
         public DateTime CurrentDateTime { get; private set; }
         private readonly DateTime StartDateTime;
-        private readonly DateTime EndDateTime;
+        public DateTime EndDateTime { get; private set; }
 
         public List<Request> RequestList { get; } = new List<Request>();
         public Hotel Hotel = new Hotel(new List<Room>());
 
         private readonly int MaxDaysToBook;
 
-        public Experiment(IDictionary<RoomType, RoomInitInfo> roomInfoMap, TimeRange experimentTimeRange, int maxHoursPerStep, int maxDaysToBook)
+        public Experiment(IDictionary<RoomType, RoomInitInfo> roomInfoMap, TimeRange experimentTimeRange, int maxHoursPerStep, int maxHoursUntilRequest, int maxDaysToBook, double discount)
         {
             this.RoomsInfoMap = roomInfoMap;
             this.StartDateTime = experimentTimeRange.Start;
             this.EndDateTime = experimentTimeRange.End;
             this.CurrentDateTime = this.StartDateTime;
-            this.MaxHoursPerStep = maxHoursPerStep;
+            this.HoursPerStep = maxHoursPerStep;
             this.MaxDaysToBook = maxDaysToBook;
+            this.MaxHoursUntilRequest = maxHoursUntilRequest;
+            this.Discount = discount;
 
             foreach (RoomType roomType in RoomTypeValues)
             {
@@ -66,12 +70,31 @@ namespace Hotels.Models.Experiments
 
         public bool Step()
         {
-            int hoursPassed = Rand.Next(1, this.MaxHoursPerStep);
-            CurrentDateTime = CurrentDateTime.AddHours(Convert.ToDouble(hoursPassed));
             if (CurrentDateTime >= EndDateTime)
             {
                 return false;
             }
+            DateTime nextStepDateTime = CurrentDateTime.AddHours(HoursPerStep);
+            if (nextStepDateTime > EndDateTime)
+            {
+                nextStepDateTime = EndDateTime;
+            }
+            DateTime maxLimitDayTime = nextStepDateTime.AddHours(-MaxHoursUntilRequest);
+            while (CurrentDateTime < maxLimitDayTime)
+            {
+                int hoursPassed = Rand.Next(1, this.MaxHoursUntilRequest);
+                CurrentDateTime = CurrentDateTime.AddHours(Convert.ToDouble(hoursPassed));
+
+                GenerateRequest();
+            }
+            CurrentDateTime = nextStepDateTime;
+            GenerateRequest();
+
+            return true;
+        }
+
+        private void GenerateRequest()
+        {
             RequestType requestType = (RequestType)Rand.Next(0, MaxRequestTypeInt + 1);
             RoomType roomType = (RoomType)Rand.Next(0, MaxRoomTypeInt + 1);
 
@@ -83,7 +106,7 @@ namespace Hotels.Models.Experiments
                     DateTime offsetEndDate = EndDateTime.AddDays(ExperimentConfig.VALID_DAYS_AFTER_ENDING).Date;
                     DateTime randomStartDateTime = GetRandomValidDateTime(CurrentDateTime.Date, offsetEndDate);
                     DateTime randomEndDateTime = GetRandomValidDateTime(
-                        randomStartDateTime.Date, 
+                        randomStartDateTime.Date,
                         offsetEndDate
                     );
 
@@ -114,7 +137,8 @@ namespace Hotels.Models.Experiments
                 Statistics.RequestsAcceptedCount++;
                 request.RoomNumber = bookedRoom.Number;
                 request.Price = bookedRoom.Price;
-            } else
+            }
+            else
             {
                 Statistics.RequestsRejectedCount++;
                 bool gotRoomInfo = RoomsInfoMap.TryGetValue(roomType, out RoomInitInfo roomInfo);
@@ -128,7 +152,7 @@ namespace Hotels.Models.Experiments
                 {
                     this.RequestList.Add(request);
                     Statistics.MissedProfit += roomTypeProfit;
-                    return true;
+                    return;
                 }
 
                 request.HasDiscount = true;
@@ -139,7 +163,7 @@ namespace Hotels.Models.Experiments
                 double discountRoomTypeProfit = 0;
                 if (gotDiscountRoomInfo)
                 {
-                    discountRoomTypeProfit = 0.7 * discountRoomInfo.Price;
+                    discountRoomTypeProfit = (1 - this.Discount) * discountRoomInfo.Price;
                 }
 
                 Room discountBookedRoom = Hotel.Book(request);
@@ -148,8 +172,9 @@ namespace Hotels.Models.Experiments
                     Statistics.RequestsAcceptedCount++;
                     request.RoomNumber = discountBookedRoom.Number;
                     request.Price = discountRoomTypeProfit;
-                    Statistics.MissedProfit +=  Math.Max(roomTypeProfit - discountRoomTypeProfit, 0); 
-                } else
+                    Statistics.MissedProfit += Math.Max(roomTypeProfit - discountRoomTypeProfit, 0);
+                }
+                else
                 {
                     Statistics.RequestsRejectedCount++;
                     Statistics.MissedProfit += roomTypeProfit;
@@ -157,7 +182,6 @@ namespace Hotels.Models.Experiments
 
             }
             this.RequestList.Add(request);
-            return true;
         }
         
         private DateTime GetRandomValidDateTime(DateTime start, DateTime end)

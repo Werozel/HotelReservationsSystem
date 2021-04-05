@@ -134,13 +134,18 @@
             <StackPanel
                 Name="StepButtonContainer"
                 RelativePanel.AlignRightWithPanel="True"
-                RelativePanel.AlignVerticalCenterWith="RestartButton"
-                Margin="0, 0, 40, 0"
+                RelativePanel.AlignBottomWithPanel="True"
+                Margin="0, 0, 40, 5"
                 >
 
                 <TextBlock 
                     Name="CurrentTimeTextBlock"
                     Text="12:00, 01.01.1990"
+                    Margin="0, 0, 0, 5"/>
+
+                <TextBlock
+                    Name="DaysLeftTB"
+                    Text="Осталось 0 дней"
                     Margin="0, 0, 0, 5"/>
 
                 <Button
@@ -233,12 +238,23 @@
                     <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock
-                    Text="Одноместный"
-                    TextAlignment="Left"
-                    Padding="20"
+
+                <StackPanel
                     Grid.Column="0"
-                    Grid.Row="0"/>
+                    Grid.Row="0"
+                    Orientation="Vertical"
+                    Padding="20, 10">
+
+                    <TextBlock
+                        Text="Одноместный"
+                        TextAlignment="Left"/>
+                    <TextBlock
+                        Name="SinglePriceTB"
+                        Text="Цена"
+                        TextAlignment="Left"
+                        VerticalAlignment="Center"/>
+
+                </StackPanel>
                 <ListView
                     Name="SingleRoomsList"
                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
@@ -282,12 +298,22 @@
 
                 </ListView>
 
-                <TextBlock
-                    Text="Двухместный"
-                    TextAlignment="Left"
-                    Padding="20"
+                <StackPanel
                     Grid.Column="0"
-                    Grid.Row="1"/>
+                    Grid.Row="1"
+                    Orientation="Vertical"
+                    Padding="20, 10">
+
+                    <TextBlock
+                        Text="Двухместный"
+                        TextAlignment="Left"/>
+                    <TextBlock
+                        Name="DoublePriceTB"
+                        Text="Цена"
+                        TextAlignment="Left"
+                        VerticalAlignment="Center"/>
+
+                </StackPanel>
                 <ListView
                     Name="DoubleRoomsList"
                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
@@ -331,12 +357,22 @@
 
                 </ListView>
 
-                <TextBlock
-                    Text="Двухместный с диваном"
-                    TextAlignment="Left"
-                    Padding="20"
+                <StackPanel
                     Grid.Column="0"
-                    Grid.Row="2"/>
+                    Grid.Row="2"
+                    Orientation="Vertical"
+                    Padding="20, 10">
+
+                    <TextBlock
+                        Text="Двухместный с диваном"
+                        TextAlignment="Left"/>
+                    <TextBlock
+                        Name="DoubleWithSofaPriceTB"
+                        Text="Цена"
+                        TextAlignment="Left"
+                        VerticalAlignment="Center"/>
+
+                </StackPanel>
                 <ListView
                     Name="DoubleWithSofaRoomsList"
                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
@@ -380,12 +416,22 @@
 
                 </ListView>
 
-                <TextBlock
-                    Text="Полулюкс"
-                    TextAlignment="Left"
-                    Padding="20"
+                <StackPanel
                     Grid.Column="0"
-                    Grid.Row="3"/>
+                    Grid.Row="3"
+                    Orientation="Vertical"
+                    Padding="20, 10">
+
+                    <TextBlock
+                        Text="Полулюкс"
+                        TextAlignment="Left"/>
+                    <TextBlock
+                        Name="JuniorSuitePriceTB"
+                        Text="Цена"
+                        TextAlignment="Left"
+                        VerticalAlignment="Center"/>
+
+                </StackPanel>
                 <ListView
                     Name="JuniorSuiteRoomsList"
                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
@@ -429,12 +475,22 @@
 
                 </ListView>
 
-                <TextBlock
-                    Text="Люкс"
-                    TextAlignment="Left"
-                    Padding="20"
+                <StackPanel
                     Grid.Column="0"
-                    Grid.Row="4"/>
+                    Grid.Row="4"
+                    Orientation="Vertical"
+                    Padding="20, 10">
+
+                    <TextBlock
+                        Text="Люкс"
+                        TextAlignment="Left"/>
+                    <TextBlock
+                        Name="SuitePriceTB"
+                        Text="Цена"
+                        TextAlignment="Left"
+                        VerticalAlignment="Center"/>
+
+                </StackPanel>
                 <ListView
                     Name="SuiteRoomsList"
                     ScrollViewer.HorizontalScrollBarVisibility="Auto"

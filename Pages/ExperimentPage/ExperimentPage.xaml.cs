@@ -112,8 +112,31 @@ namespace Hotels.Pages.ExperimentPage
                 this.RoomsInfoMap,
                 new TimeRange(today, experimentEndTime),
                 parameters.HoursPerStep,
-                parameters.MaxDaysToBook
+                parameters.MaxHoursUntilRequest,
+                parameters.MaxDaysToBook,
+                parameters.Discount
             );
+
+            if (this.RoomsInfoMap.TryGetValue(RoomType.SINGLE, out RoomInitInfo singleRoomInfo))
+            {
+                this.SinglePriceTB.Text = singleRoomInfo.Price.ToString();
+            }
+            if (this.RoomsInfoMap.TryGetValue(RoomType.DOUBLE, out RoomInitInfo doubleRoomInfo))
+            {
+                this.DoublePriceTB.Text = doubleRoomInfo.Price.ToString();
+            }
+            if (this.RoomsInfoMap.TryGetValue(RoomType.DOUBLE_WITH_SOFA, out RoomInitInfo doubleWithSofaRoomInfo))
+            {
+                this.DoubleWithSofaPriceTB.Text = doubleWithSofaRoomInfo.Price.ToString();
+            }
+            if (this.RoomsInfoMap.TryGetValue(RoomType.JUNIOR_SUITE, out RoomInitInfo juniorSuiteRoomInfo))
+            {
+                this.JuniorSuitePriceTB.Text = juniorSuiteRoomInfo.Price.ToString();
+            }
+            if (this.RoomsInfoMap.TryGetValue(RoomType.SUITE, out RoomInitInfo suiteRoomInfo))
+            {
+                this.SuitePriceTB.Text = suiteRoomInfo.Price.ToString();
+            }
 
             UpdateCells();
             UpdateCurrentTimeText();
@@ -183,7 +206,10 @@ namespace Hotels.Pages.ExperimentPage
 
         private void UpdateCurrentTimeText()
         {
-            this.CurrentTimeTextBlock.Text = this.experiment.CurrentDateTime.ToString(Constants.FULL_FORMAT_STRING);
+            DateTime currentDateTime = this.experiment.CurrentDateTime;
+            this.CurrentTimeTextBlock.Text = currentDateTime.ToString(Constants.FULL_FORMAT_STRING);
+            DateTime endDateTime = this.experiment.EndDateTime;
+            this.DaysLeftTB.Text = String.Format("Осталось {0} дней", Math.Floor((endDateTime - currentDateTime).TotalDays));
         }
 
         private void UpdateRoomsList(Hotel hotel, DateTime currentDateTime)
@@ -267,7 +293,7 @@ namespace Hotels.Pages.ExperimentPage
         private void ToExperimentEndedState()
         {
             StepButton.IsEnabled = false;
-            CurrentTimeTextBlock.Text = "Эксперимент закончен";
+            DaysLeftTB.Text = "Эксперимент закончен";
             BackgroundTaskRunning = false;
             StartStopButton.Content = "Старт";
             StartStopButton.IsEnabled = false;
