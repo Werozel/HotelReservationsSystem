@@ -109,7 +109,7 @@
                     >
 
                     <TextBlock Text="Количество часов за один шаг (от 1 до 24)" VerticalAlignment="Center" Margin="20, 10"/>
-                    <TextBox Name="HoursPerStepTB" Text="6" PlaceholderText="Введите число..." Margin="20, 10" Width="140"/>
+                    <TextBox Name="HoursPerStepTB" Text="12" PlaceholderText="Введите число..." Margin="20, 10" Width="140"/>
 
                 </StackPanel>
 

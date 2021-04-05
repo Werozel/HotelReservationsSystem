@@ -63,6 +63,7 @@ namespace Hotels.Pages.ExperimentPage
 
             this.RestartButton.Click += (s, e) =>
             {
+                this.BackgroundTaskRunning = false;
                 this.Frame.Navigate(typeof(InitPage.InitPage));
             };
             this.StepButton.Click += (s, e) =>
@@ -93,6 +94,17 @@ namespace Hotels.Pages.ExperimentPage
                     BackgroundTaskRunning = true;
                     RunBackground();
                 }
+            };
+
+            this.ToTheEndButton.Click += (s, e) =>
+            {
+                experiment.ToTheEnd();
+                UpdateCells();
+                UpdateCurrentTimeText();
+                UpdateRoomsList(experiment.Hotel, experiment.CurrentDateTime);
+                UpdateStatisticsText();
+                UpdateProfitText();
+                ToExperimentEndedState();
             };
 
         }
@@ -297,6 +309,7 @@ namespace Hotels.Pages.ExperimentPage
             BackgroundTaskRunning = false;
             StartStopButton.Content = "Старт";
             StartStopButton.IsEnabled = false;
+            ToTheEndButton.IsEnabled = false;
         }
 
         private async void RunBackground()

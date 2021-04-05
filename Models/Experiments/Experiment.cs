@@ -68,6 +68,11 @@ namespace Hotels.Models.Experiments
             }
         }
 
+        public void ToTheEnd()
+        {
+            while (Step()) ;
+        }
+
         public bool Step()
         {
             if (CurrentDateTime >= EndDateTime)
