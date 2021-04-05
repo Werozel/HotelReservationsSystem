@@ -30,7 +30,7 @@ namespace Hotels.Models.Experiments
         private readonly DateTime StartDateTime;
         private readonly DateTime EndDateTime;
 
-        public IList<Request> RequestList { get; } = new List<Request>();
+        public List<Request> RequestList { get; } = new List<Request>();
         public Hotel Hotel = new Hotel(new List<Room>());
 
         private readonly int MaxDaysToBook;
@@ -64,22 +64,6 @@ namespace Hotels.Models.Experiments
             }
         }
 
-        public IList<RequestCell> GetCells() {
-            return RequestList
-                .Select(request =>
-                    new RequestCell(
-                        RoomTypeHelper.RoomTypeToString(request.RoomType),
-                        request.TimeRange.ToCellString(),
-                        request.IsApproved(),
-                        request.RoomNumber,
-                        RequestTypeHelper.RequestTypeToString(request.Type),
-                        request.HasDiscount,
-                        "+" + request.Price
-                    )
-                )
-                .ToList();
-        }
-
         public bool Step()
         {
             int hoursPassed = Rand.Next(1, this.MaxHoursPerStep);
@@ -97,8 +81,8 @@ namespace Hotels.Models.Experiments
                 case RequestType.BOOK:
 
                     DateTime offsetEndDate = EndDateTime.AddDays(ExperimentConfig.VALID_DAYS_AFTER_ENDING).Date;
-                    DateTime randomStartDateTime = getRandomValidDateTime(CurrentDateTime.Date, offsetEndDate);
-                    DateTime randomEndDateTime = getRandomValidDateTime(
+                    DateTime randomStartDateTime = GetRandomValidDateTime(CurrentDateTime.Date, offsetEndDate);
+                    DateTime randomEndDateTime = GetRandomValidDateTime(
                         randomStartDateTime.Date, 
                         offsetEndDate
                     );
@@ -176,7 +160,7 @@ namespace Hotels.Models.Experiments
             return true;
         }
         
-        private DateTime getRandomValidDateTime(DateTime start, DateTime end)
+        private DateTime GetRandomValidDateTime(DateTime start, DateTime end)
         {
             TimeSpan timeSpan = end.Date - start.Date;
             int totalDays = (int) timeSpan.TotalDays;

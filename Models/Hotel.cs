@@ -31,7 +31,7 @@ namespace Hotels.Models
             return null;
         }
 
-        public IList<Room> GetAllRoomsByRoomType(RoomType roomType)
+        public List<Room> GetAllRoomsByRoomType(RoomType roomType)
         {
             return Rooms.FindAll(room => room.RoomType == roomType);
         }

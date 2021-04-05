@@ -6,8 +6,6 @@ namespace Hotels.Models.Rooms
 {
     class Room
     {
-        public static int NO_NUMBER = -1;
-
         public string Number { get; set; }
         public RoomType RoomType { get; set; }
         public int Price { get; set; }

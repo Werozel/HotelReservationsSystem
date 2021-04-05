@@ -13,9 +13,9 @@ namespace Hotels.Pages.ExperimentPage.Cells
     {
         public string Number { get; }
         public bool IsAvaliable { get; }
-        public IList<TimeRange> BookedTimes { get; }
+        public List<TimeRange> BookedTimes { get; }
 
-        public RoomCell(string number, bool isAvaliable, IList<TimeRange> bookedTimes)
+        public RoomCell(string number, bool isAvaliable, List<TimeRange> bookedTimes)
         {
             this.Number = number;
             this.IsAvaliable = isAvaliable;

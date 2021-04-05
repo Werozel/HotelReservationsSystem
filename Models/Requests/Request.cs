@@ -13,7 +13,7 @@ namespace Hotels.Models.Requests
         public RequestType Type { get; }
         public RoomType RoomType { get; }
         public TimeRange TimeRange { get; }
-        public String RoomNumber { get; set; } = null;
+        public string RoomNumber { get; set; } = null;
         public bool HasDiscount { get; set; } = false;
         public RoomType DiscountRoomType { get; set; }
         public double Price { get; set; }

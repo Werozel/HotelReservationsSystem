@@ -10,6 +10,8 @@ using Hotels.Models.Rooms;
 using Hotels.Models.Experiments;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Linq;
+using Hotels.Models.Requests;
 
 namespace Hotels.Pages.ExperimentPage
 {
@@ -153,7 +155,19 @@ namespace Hotels.Pages.ExperimentPage
         private void UpdateCells()
         {
             RequestCells.Clear();
-            var cells = experiment.GetCells();
+            var cells = experiment.RequestList
+                .Select(request =>
+                    new RequestCell(
+                        RoomTypeHelper.RoomTypeToString(request.RoomType),
+                        request.TimeRange.ToCellString(),
+                        request.IsApproved(),
+                        request.RoomNumber,
+                        RequestTypeHelper.RequestTypeToString(request.Type),
+                        request.HasDiscount,
+                        "+" + request.Price
+                    )
+                )
+                .ToList();
             foreach (RequestCell cell in cells)
             {
                 RequestCells.Add(cell);
